@@ -1,0 +1,16 @@
+{
+  "name": "simbo.ninja",
+  "version": "0.0.0",
+  "description": "http://simbo.ninja",
+  "author": "Simon Lepel <mail@simbo.ninja>",
+  "keywords": [],
+  "license": {
+    "type": "MIT",
+    "url": "http://simbo.mit-license.org/"
+  },
+  "private": true,
+  "ignore": [
+    "node_modules",
+    "bower_components"
+  ]
+}

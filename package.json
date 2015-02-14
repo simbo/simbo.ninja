@@ -1,0 +1,25 @@
+{
+  "name": "simbo.ninja",
+  "version": "0.0.0",
+  "description": "http://simbo.ninja",
+  "author": "Simon Lepel <mail@simbo.ninja>",
+  "keywords": [],
+  "license": {
+    "type": "MIT",
+    "url": "http://simbo.mit-license.org/"
+  },
+  "private": true,
+  "scripts": {
+    "build": "./node_modules/.bin/gulp build --environment production",
+    "build-dev": "./node_modules/.bin/gulp build --environment development",
+    "dev": "./node_modules/.bin/gulp dev --environment development",
+    "postinstall": "bower install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/simbo/simbo.ninja.git"
+  },
+  "bugs": {
+    "url": "https://github.com/simbo/simbo.ninja/issues"
+  }
+}
