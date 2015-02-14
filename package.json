@@ -21,5 +21,15 @@
   },
   "bugs": {
     "url": "https://github.com/simbo/simbo.ninja/issues"
+  },
+  "dependencies": {
+    "express": "^4.11.2"
+  },
+  "devDependencies": {
+    "auto-plug": "^0.2.0",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-util": "^3.0.3",
+    "pm2": "^0.12.5"
   }
 }
