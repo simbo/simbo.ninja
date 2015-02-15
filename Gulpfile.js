@@ -7,27 +7,46 @@
 'use strict';
 
 // node modules
-var path = require('path'),
-    del  = require('del'),
-    gulp = require('gulp'),
-    pm2  = require('pm2');
+var autoplug = require('auto-plug'),
+    del      = require('del'),
+    gulp     = require('gulp'),
+    minimist = require('minimist'),
+    path     = require('path'),
+    pm2      = require('pm2');
 
 // external data
 var config = require(process.cwd() + '/Config.js'),
     pkg    = require(process.cwd() + '/package.json');
 
 // auto-require gulp plugins
-var g = require('auto-plug')({ config: pkg });
+var g = autoplug({ prefix: 'gulp', config: pkg });
 
 
 /**
  * + Error handling
+ * =====================================================================
  */
+
 function handleError(err) {
     g.util.log(err.toString());
     this.emit('end');
 }
+
 /* = Error handling */
+
+
+/**
+ * + Parse CLI params
+ * =====================================================================
+ */
+
+var params = (function(p){
+        var cliParams = minimist(process.argv.slice(2));
+        p.environment = cliParams.environment || cliParams.env || process.env.NODE_ENV || config.gulpParams.environment || 'production';
+        return p;
+    })({});
+
+/* = Parse CLI params */
 
 
 /**
