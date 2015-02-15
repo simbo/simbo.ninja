@@ -11,11 +11,6 @@ fi
 sudo locale-gen de_DE.UTF-8
 sudo dpkg-reconfigure locales
 
-# copy userdir files (including hidden elements)
-shopt -s dotglob
-cp -R /vagrant/.provision/files/vagrant/* ~/
-shopt -u dotglob
-
 # update sources, upgrade packages
 sudo apt-get update
 sudo apt-get upgrade
@@ -28,6 +23,7 @@ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 git clone git://github.com/olivierverdier/zsh-git-prompt.git ~/.zsh-git-prompt
 sudo apt-get -y install zsh
 sudo chsh -s /bin/zsh vagrant
+cp -R /vagrant/.provision/files/vagrant/.zshrc ~/
 
 # install couchdb
 sudo apt-get -y install couchdb
