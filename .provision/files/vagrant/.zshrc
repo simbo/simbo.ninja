@@ -4,7 +4,7 @@ DISABLE_AUTO_UPDATE="true"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="yyyy-mm-dd"
-plugins=(bower colored-man colorize cp git node npm)
+plugins=(git colored-man colorize node npm nvm bower)
 export PATH="/usr/local/bin:/usr/bin:/bin"
 source $ZSH/oh-my-zsh.sh
 export LANG=de_DE.UTF-8
@@ -20,6 +20,3 @@ source ~/.zsh-git-prompt/zshrc.sh
 PROMPT='%{%F{green}%}%n%{%f%} %B%{%F{magenta}%}%~%{%f%}%b $(git_super_status)
  %B%{%F{cyan}%}➜%{%f%}%b '
 RPROMPT=''
-
-# nvm
-source ~/.nvm/nvm.sh
