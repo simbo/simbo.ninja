@@ -1,10 +1,12 @@
+# start provisioning
+PROVISION_STARTED=`date +%s`
+echo "Starting provisioning..."
+
 # test if machine is already provisioned
 PROVISIONED="/tmp/PROVISIONED"
 if [[ -f $PROVISIONED ]]; then
     echo "Skipping provisioning. (already provisioned on $(cat $PROVISIONED))"
     exit
-else
-    echo "Provisioning..."
 fi
 
 # fix locale
@@ -57,5 +59,15 @@ pm2 start /vagrant/processes.json
 pm2 startup ubuntu &> /dev/null
 sudo env PATH=$PATH:/usr/bin pm2 startup ubuntu -u vagrant
 
-# write provision date to file
-echo "$(date)" >> $PROVISIONED
+# write provision date to file to avoid reprovisioning
+echo "$(date)" > $PROVISIONED
+
+# print provision duration
+PROVISION_DURATION=$((`date +%s`-$PROVISION_STARTED))
+format_duration() {
+    ((h=${1}/3600))
+    ((m=(${1}%3600)/60))
+    ((s=${1}%60))
+    printf "%02d:%02d:%02d\n" $h $m $s
+}
+echo "Provisioning done after $(format_duration $PROVISION_DURATION)."
