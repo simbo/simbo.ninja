@@ -1,0 +1,9 @@
+extends base.jade
+
+block content
+    ul
+        each post in posts
+            li.post.excerpt
+                h3.post-title= post.title
+                time.post-date= moment(post.date).format(dateFormat)
+                p.post-excerpt!= post.excerpt || post.contents

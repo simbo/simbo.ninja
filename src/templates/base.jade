@@ -1,0 +1,35 @@
+doctype html
+html
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        script
+            :uglify
+                WebFontConfig = !{JSON.stringify(webfontConfig)};
+                (function() {
+                    var wf = document.createElement('script');
+                    wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
+                        '://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
+                    wf.type = 'text/javascript';
+                    wf.async = 'true';
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(wf, s);
+                })();
+        if title
+            title #{title} | #{siteTitle}
+        else
+            title #{siteTitle}
+        meta(name='description' content=siteDescription)
+        block styles
+            each style in styles
+               link(rel="stylesheet", href=baseUrl + style, type="text/css")
+    body
+        block content
+            | !{contents}
+        block scripts
+            script(src='//ajax.googleapis.com/ajax/libs/jquery/#{jqueryVersion}/jquery.min.js')
+            script.
+                window.jQuery || document.write('<script src="#{baseUrl}assets/vendor/jquery/jquery.min.js"><\/script>')
+            each script in scripts
+                script(src=baseUrl + script)
