@@ -84,30 +84,33 @@ gulp.task('config-sync', function() {
 
 gulp.task('watch', function() {
 
+    // quick config
+    var watchTasks = {
+        app: {
+            glob: '**/*',
+            cwd: config.paths.app,
+            start: 'pm2-reload'
+        },
+        pkq: {
+            glob: 'package.json',
+            cwd: config.paths.root,
+            start: 'config-sync'
+        }
+    }
+
     // show watch info in console
     function logWatchInfo(event) {
         var eventPath = path.relative(config.paths.root, event.path);
         g.util.log('File \'' + g.util.colors.cyan(eventPath) + '\' was ' + g.util.colors.yellow(event.type) + ', running tasks...');
     }
 
-    // watch app
-    gulp.watch([
-        '**/*'
-    ], {
-        cwd: config.paths.app
-    }, function(event) {
-        logWatchInfo(event);
-        gulp.start('pm2-reload');
-    });
-
-    // watch package.json
-    gulp.watch([
-        'package.json'
-    ], {
-        cwd: config.paths.root
-    }, function(event) {
-        logWatchInfo(event);
-        gulp.start('config-sync');
+    // create watch tasks
+    Object.keys(watchTasks).forEach(function(key) {
+        var task = obj[key];
+        gulp.watch(task.glob, { cwd: task.cwd }, function(event) {
+            logWatchInfo(event);
+            gulp.start(task.start);
+        });
     });
 
 });
