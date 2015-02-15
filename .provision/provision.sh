@@ -1,5 +1,5 @@
 # test if machine is already provisioned
-PROVISIONED="/vagrant/.provision/PROVISIONED"
+PROVISIONED="/tmp/PROVISIONED"
 if [[ -f $PROVISIONED ]]; then
     echo "Skipping provisioning. (already provisioned on $(cat $PROVISIONED))"
     exit
