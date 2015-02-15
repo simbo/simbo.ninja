@@ -1,5 +1,5 @@
 /**
- * + Project Build Config
+ * + Project Config
  * =====================================================================
  */
 
@@ -9,12 +9,75 @@ module.exports = (function(config) {
 
     // project paths
     config.paths = (function(p) {
-        p.root = process.cwd();
-        p.app  = path.join(p.root, 'app');
-        p.src  = path.join(p.root, 'src');
-        p.web  = path.join(p.root, 'web');
+        p.root      = process.cwd();
+        p.bower     = path.join(p.root, 'bower_components')
+        p.app       = path.join(p.root, 'app');
+        p.src       = path.join(p.root, 'src');
+        p.web       = path.join(p.root, 'web');
+        p.site      = path.join(p.src,  'site');
+        p.templates = path.join(p.src,  'templates');
+        p.assetsSrc = path.join(p.site, 'assets');
+        p.assetsDev = path.join(p.src,  'assets-dev');
+        p.assets    = path.join(p.web,  'assets');
         return p;
     })({});
+
+    // metadata
+    config.metadata = {
+        siteTitle:          'simbo.ninja',
+        siteDescription:    'Some informative description for search engine results.',
+        baseUrl:            '//simbo.ninja/',
+        styles:             [
+                                'assets/css/main.css'
+                            ],
+        scripts:            [
+                                'assets/js/main.js'
+                            ],
+        googleAnalytics:    'UA-12345678-9',
+        googleFonts:        [
+                                'Open+Sans:300italic,400italic,700italic,700,300,400:latin',
+                                'Source+Code+Pro:400,700:latin'
+                            ],
+        dateLocale:         'de',
+        dateFormat:         'Do MMM YYYY',
+        dateFormatShort:    'DD.MM.YY',
+        dateFormatLong:     'dddd, Do MMMM YYYY'
+    };
+
+    // metadata changes depending on environment
+    config.metadata.environments = {
+        development: {
+            baseUrl:            '//localhost:8080/',
+            googleAnalytics:    false
+        }
+    };
+
+    // get jQuery version from bower.json
+    config.metadata.jqueryVersion = (function() {
+        var bowerPkg = require(process.cwd() + '/bower.json');
+        return bowerPkg.devDependencies.hasOwnProperty('jquery') ? version.replace(/[^.0-9]/g, '') : '';
+    })();
+
+    // gulp default params
+    config.gulpParams = {
+        environment: 'production'
+    };
+
+    // global watch task options
+    config.watch = {
+        mode: 'auto'
+    };
+
+    // marked options
+    config.marked = {
+        gfm: true,
+        tables: true,
+        breaks: false,
+        pedantic: false,
+        sanitize: false,
+        smartLists: true,
+        smartypants: false
+    };
 
     // autoprefixer options
     config.autoprefixer = {
@@ -49,4 +112,4 @@ module.exports = (function(config) {
     return config;
 })({});
 
-/* = Project Build Config */
+/* = Project Config */

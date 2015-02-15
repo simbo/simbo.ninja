@@ -7,19 +7,28 @@
 'use strict';
 
 // node modules
-var autoplug = require('auto-plug'),
-    del      = require('del'),
-    gulp     = require('gulp'),
-    minimist = require('minimist'),
-    path     = require('path'),
-    pm2      = require('pm2');
+var _            = require('lodash'),
+    autoPlug     = require('auto-plug'),
+    del          = require('del'),
+    gulp         = require('gulp'),
+    highlightjs  = require('highlight.js'),
+    jade         = require('jade'),
+    Metalsmith   = require('metalsmith'),
+    minimist     = require('minimist'),
+    moment       = require('moment'),
+    path         = require('path'),
+    pm2          = require('pm2'),
+    runSequence  = require('run-sequence'),
+    uglify       = require('uglify-js'),
+    util         = require('util');
 
 // external data
 var config = require(process.cwd() + '/Config.js'),
     pkg    = require(process.cwd() + '/package.json');
 
 // auto-require gulp plugins
-var g = autoplug({ prefix: 'gulp', config: pkg });
+var g  = autoPlug({ prefix: 'gulp', config: pkg }),
+    ms = autoPlug({ prefix: 'metalsmith', config: pkg });
 
 
 /**
@@ -50,6 +59,148 @@ var params = (function(p){
 
 
 /**
+ * + Custom jade filters
+ * =====================================================================
+ */
+
+// uglify inline scripts if in production mode
+jade.filters.uglify = function(data, options) {
+    return params.environment === 'production' ? uglify.minify(data, {fromString: true}).code : data;
+}
+
+/* = Custom jade filters */
+
+
+/**
+ * + Metalsmith rendering
+ * =====================================================================
+ */
+
+gulp.task('build:site', function(done) {
+
+    // parse metadata depending on environment
+    _.forEach(config.metadata.environments, function(values, env) {
+        if (params.environment===env) {
+            config.metadata = _.merge(config.metadata, values);
+        }
+    });
+
+    // localize moment
+    moment.locale(config.metadata.dateLocale);
+
+    // jade options
+    var jadeLocals = {
+            moment: moment,
+            environment: params.environment
+        },
+        jadeOptions = {
+            pretty: params.environment=='development' ? true : false,
+            directory: path.relative(config.paths.root, config.paths.templates),
+        };
+
+    // set default template to a metalsmith stream
+    function defaultTemplate(template) {
+        return ms.each(function(file, filename) {
+            if (!file.template && file.template!==null) {
+                file.template = template;
+            }
+        });
+    }
+
+    // go metalsmith!
+    var metalsmith = new Metalsmith(config.paths.root)
+
+        // set basic options
+        .source(config.paths.site)
+        .destination(config.paths.web)
+        .metadata(config.metadata)
+        .clean(false)
+
+        // enable drafts
+        .use(ms.drafts())
+
+        // define collections
+        .use(ms.collections({
+            posts: {
+                pattern: 'blog/**/*',
+                sortBy: 'date',
+                reverse: true
+            }
+        }))
+
+        // render markdown
+        .use(ms.branch([
+                '**/*.md'
+            ])
+            .use(ms.markdown(_.merge(config.marked, {
+                highlight: function (code) {
+                    return highlightjs.highlightAuto(code).value;
+                }
+            })))
+        )
+
+        // render jade files
+        .use(ms.branch([
+                '**/*.jade'
+            ])
+            .use(ms.jade(_.merge({
+                locals: _.merge(config.metadata, jadeLocals)
+            }, jadeOptions)))
+        )
+
+        // generate excerpts
+        .use(ms.betterExcerpts())
+
+        // parse content
+        .use(ms.branch([
+                '**/*.html',
+                '!blog/**/*'
+            ])
+            .use(defaultTemplate('page.jade'))
+            .use(ms.permalinks({
+                relative: false
+            }))
+        )
+
+        // parse blog
+        .use(ms.branch([
+                'blog/**/*.html'
+            ])
+            .use(ms.dateInFilename())
+            .use(defaultTemplate('post.jade'))
+            .use(ms.permalinks({
+                pattern: 'blog/:date/:title',
+                date: 'YYYY/MM',
+                relative: false
+            }))
+        )
+
+        // set absolute urls
+        .use(ms.branch([
+                '**/*.html'
+            ])
+            .use(ms.each(function(file, filename) {
+                file.url = config.metadata.baseUrl + file.path;
+            }))
+        )
+
+        // render templates
+        .use(ms.templates(_.merge({
+            engine: 'jade'
+        }, jadeOptions, jadeLocals)))
+
+        // put everything together...
+        .build(function(err) {
+            if (err) throw err;
+            done();
+        });
+
+});
+
+/* = Metalsmith rendering */
+
+
+/**
  * + PM2 reloading
  * =====================================================================
  */
@@ -69,16 +220,46 @@ gulp.task('pm2-reload', function(done) {
 
 
 /**
- * + Clean Tasks
+ * + Copy tasks
  * =====================================================================
  */
 
-// clean generated content
-gulp.task('clean:out', function(done) {
-    del(config.paths.out, done);
+// copy task definitions
+var copyTasks = {
+        jquery: {
+            src: '*',
+            cwd: 'jquery/dist'
+        },
+        highlightjs: {
+            src: 'github.css',
+            cwd: 'highlightjs/styles',
+            extReplace: '.styl',
+            intoDev: true
+        }
+    },
+    copySequence = [];
+
+// create copy tasks
+_.forEach(copyTasks, function(task, name) {
+    var taskName = 'copy:' + name;
+    gulp.task(taskName, function() {
+        return gulp
+            .src(task.src, {
+                cwd: path.join(config.paths.bower, task.cwd),
+                base: path.join(config.paths.bower, task.cwd)
+            })
+            .pipe(g.if(task.hasOwnProperty('extReplace'), g.extReplace('.styl')))
+            .pipe(gulp.dest(path.join(config.paths[task.intoDev ? 'assetsDev' : 'assetsSrc'], 'vendor', name)));
+    });
+    copySequence.push(taskName);
 });
 
-/* = Clean Tasks */
+// copy all dependencies
+gulp.task('copy:deps', ['clean:deps'], function(done) {
+    runSequence(copySequence, done);
+});
+
+/* = Copy tasks */
 
 
 /**
@@ -97,16 +278,50 @@ gulp.task('config-sync', function() {
 
 
 /**
+ * + Clean Tasks
+ * =====================================================================
+ */
+
+// clean generated content
+gulp.task('clean:web', function(done) {
+    del(config.paths.web, done);
+});
+
+// clean all dependencies
+gulp.task('clean:deps', function(done) {
+    del([
+        path.join(config.paths.assetsSrc, 'vendor'),
+        path.join(config.paths.assetsDev, 'vendor')
+    ], done);
+});
+
+/* = Clean Tasks */
+
+
+/**
  * + Watch Task
  * =====================================================================
  */
 
 gulp.task('watch', function() {
 
-    // quick config
+    // watch task defintions
     var watchTasks = {
+        stylus: {
+            src: '**/*.styl',
+            cwd: path.join(config.paths.assetsDev, 'stylus'),
+            start: 'build:css'
+        },
+        site: {
+            src: [
+                'site/**/*',
+                'templates/**/*'
+            ],
+            cwd: config.paths.src,
+            start: 'build:site'
+        },
         app: {
-            glob: '**/*',
+            glob: '**/*.js',
             cwd: config.paths.app,
             start: 'pm2-reload'
         },
@@ -126,7 +341,7 @@ gulp.task('watch', function() {
     // create watch tasks
     Object.keys(watchTasks).forEach(function(key) {
         var task = obj[key];
-        gulp.watch(task.glob, { cwd: task.cwd }, function(event) {
+        gulp.watch(task.glob, _.merge({ cwd: task.cwd }, config.watch), function(event) {
             logWatchInfo(event);
             gulp.start(task.start);
         });
@@ -146,9 +361,11 @@ gulp.task('watch', function() {
 gulp.task('default', ['build']);
 
 // full build
-gulp.task('build', []);
+gulp.task('build', ['copy:deps', 'clean:web', 'config-sync'], function(done) {
+    runSequence(['build:site'], done);
+});
 
-// build, serve and watch
+// build and watch
 gulp.task('dev', ['build'], function() {
     gulp.start('watch');
 });
