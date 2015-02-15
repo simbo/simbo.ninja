@@ -43,7 +43,7 @@ sudo service nginx restart
 git clone https://github.com/creationix/nvm.git ~/.nvm && cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`
 source ~/.nvm/nvm.sh
 echo "Installing node.js..."
-nvm install 0.12
+nvm install 0.12 &> /dev/null
 nvm alias default 0.12
 
 # install global node packages
@@ -58,7 +58,7 @@ npm run build-dev
 
 # run app via pm2
 pm2 start /vagrant/processes.json
-pm2 startup ubuntu
+pm2 startup ubuntu &> /dev/null
 sudo env PATH=$PATH:/usr/bin pm2 startup ubuntu -u vagrant
 
 # write provision date to file
