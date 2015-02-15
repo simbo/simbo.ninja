@@ -2,7 +2,9 @@
 # + Project related
 # ==================================================================
 
-
+web
+src/site/assets/vendor
+src/assets-dev/vendor
 
 # = Project related
 
