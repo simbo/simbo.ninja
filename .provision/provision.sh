@@ -1,3 +1,12 @@
+# test if machine is already provisioned
+PROVISIONED="/vagrant/.provision/PROVISIONED"
+if [[ -f $PROVISIONED ]]; then
+    echo "Skipping provisioning. (already provisioned on $(cat $PROVISIONED))"
+    exit
+else
+    echo "Provisioning..."
+fi
+
 # fix locale
 sudo locale-gen de_DE.UTF-8
 sudo dpkg-reconfigure locales
@@ -51,3 +60,6 @@ npm run build-dev
 pm2 start /vagrant/processes.json
 pm2 startup ubuntu
 sudo env PATH=$PATH:/usr/bin pm2 startup ubuntu -u vagrant
+
+# write provision date to file
+echo "$(date)" >> $PROVISIONED
