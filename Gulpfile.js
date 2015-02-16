@@ -240,8 +240,9 @@ var copyTasks = {
     copySequence = [];
 
 // create copy tasks
-_.forEach(copyTasks, function(task, name) {
-    var taskName = 'copy:' + name;
+Object.keys(copyTasks).forEach(function(name) {
+    var task = copyTasks[name],
+        taskName = 'copy:' + name;
     gulp.task(taskName, function() {
         return gulp
             .src(task.src, {
@@ -340,7 +341,7 @@ gulp.task('watch', function() {
 
     // create watch tasks
     Object.keys(watchTasks).forEach(function(key) {
-        var task = obj[key];
+        var task = watchTasks[key];
         gulp.watch(task.glob, _.merge({ cwd: task.cwd }, config.watch), function(event) {
             logWatchInfo(event);
             gulp.start(task.start);
