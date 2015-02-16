@@ -44,6 +44,14 @@ module.exports = (function(config) {
         dateFormatLong:     'dddd, Do MMMM YYYY'
     };
 
+    // config for webfontLoader
+    config.metadata.webfontConfig = {
+        google: {
+            families: config.metadata.googleFonts
+        }
+    };
+
+
     // metadata changes depending on environment
     config.metadata.environments = {
         development: {
