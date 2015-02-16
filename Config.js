@@ -55,7 +55,7 @@ module.exports = (function(config) {
     // get jQuery version from bower.json
     config.metadata.jqueryVersion = (function() {
         var bowerPkg = require(process.cwd() + '/bower.json');
-        return bowerPkg.devDependencies.hasOwnProperty('jquery') ? version.replace(/[^.0-9]/g, '') : '';
+        return bowerPkg.devDependencies.hasOwnProperty('jquery') ? bowerPkg.devDependencies.jquery.replace(/[^.0-9]/g, '') : '';
     })();
 
     // gulp default params
