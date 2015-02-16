@@ -9,6 +9,8 @@
 // node modules
 var _            = require('lodash'),
     autoPlug     = require('auto-plug'),
+    autoprefixer = require('autoprefixer-core'),
+    csswring     = require('csswring'),
     del          = require('del'),
     gulp         = require('gulp'),
     highlightjs  = require('highlight.js'),
@@ -16,6 +18,7 @@ var _            = require('lodash'),
     Metalsmith   = require('metalsmith'),
     minimist     = require('minimist'),
     moment       = require('moment'),
+    mqpacker     = require('css-mqpacker'),
     path         = require('path'),
     pm2          = require('pm2'),
     runSequence  = require('run-sequence'),
@@ -56,6 +59,72 @@ var params = (function(p){
     })({});
 
 /* = Parse CLI params */
+
+
+/**
+ * + Stylus / CSS processing
+ * =====================================================================
+ */
+
+gulp.task('build:css', function() {
+    return gulp
+
+        // grab all stylus files in stylus root folder
+        .src(config.paths.assetsDev + '/stylus/*.styl')
+
+        // pipe through stylus processor
+        .pipe(g.stylus({
+            // add imports and vendor folders to @import path
+            paths: [
+                path.join(config.paths.assetsDev, 'stylus/imports'),
+                path.join(config.paths.assetsDev, 'vendor'),
+                path.join(config.paths.assetsSrc, 'img')
+            ],
+            // create sourcemaps containing inline sources
+            sourcemap: {
+                inline: true,
+                sourceRoot: '.',
+                basePath: path.join(path.relative(config.paths.web, config.paths.assets), 'css')
+            }
+        }).on('error', handleError))
+
+        // pipe through sourcemaps processor
+        .pipe(g.sourcemaps.init({
+            loadMaps: true
+        }))
+
+        // pipe through postcss processor
+        .pipe(g.postcss((function(postcssPlugins){
+                // minify only when in production mode
+                if (params.environment === 'production') {
+                    postcssPlugins.push(csswring(config.csswring));
+                }
+                return postcssPlugins;
+            })([
+                autoprefixer(config.autoprefixer),
+                mqpacker
+            ])
+        ).on('error', handleError))
+
+        // pipe through csslint if in development mode
+        .pipe(g.if(
+            params.environment === 'development',
+            g.csslint(config.csslint)
+        ))
+        .pipe(g.csslint.reporter())
+
+        // write sourcemaps
+        .pipe(g.sourcemaps.write('.', {
+            includeContent: true,
+            sourceRoot: '.'
+        }))
+
+        // write processed styles
+        .pipe(gulp.dest(path.join(config.paths.assets, 'css')));
+
+});
+
+/* = Stylus / CSS processing */
 
 
 /**
@@ -363,7 +432,7 @@ gulp.task('default', ['build']);
 
 // full build
 gulp.task('build', ['copy:deps', 'clean:web', 'config-sync'], function(done) {
-    runSequence(['build:site'], done);
+    runSequence(['build:site', 'build:css'], done);
 });
 
 // build and watch
