@@ -73,20 +73,7 @@ gulp.task('build:css', function() {
         .src(config.paths.assetsDev + '/stylus/*.styl')
 
         // pipe through stylus processor
-        .pipe(g.stylus({
-            // add imports and vendor folders to @import path
-            paths: [
-                path.join(config.paths.assetsDev, 'stylus/imports'),
-                path.join(config.paths.assetsDev, 'vendor'),
-                path.join(config.paths.assetsSrc, 'img')
-            ],
-            // create sourcemaps containing inline sources
-            sourcemap: {
-                inline: true,
-                sourceRoot: '.',
-                basePath: path.join(path.relative(config.paths.web, config.paths.assets), 'css')
-            }
-        }).on('error', handleError))
+        .pipe(g.stylus(config.stylus).on('error', handleError))
 
         // pipe through sourcemaps processor
         .pipe(g.sourcemaps.init({

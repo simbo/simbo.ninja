@@ -88,6 +88,27 @@ module.exports = (function(config) {
         smartypants: false
     };
 
+    // stylus options
+    config.stylus = {
+        // add imports and vendor folders to @import path
+        paths: [
+            path.join(config.paths.assetsDev, 'stylus/imports'),
+            path.join(config.paths.assetsDev, 'vendor'),
+            path.join(config.paths.assetsSrc, 'img')
+        ],
+        // function for generating base64 data-uris
+        url: {
+            name: 'inline-url',
+            limit: false
+        },
+        // create sourcemaps containing inline sources
+        sourcemap: {
+            inline: true,
+            sourceRoot: '.',
+            basePath: path.join(path.relative(config.paths.web, config.paths.assets), 'css')
+        }
+    };
+
     // autoprefixer options
     config.autoprefixer = {
         browsers: [
