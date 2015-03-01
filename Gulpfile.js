@@ -382,12 +382,12 @@ gulp.task('watch', function() {
     // watch task defintions
     var watchTasks = {
         stylus: {
-            src: '**/*.styl',
+            glob: '**/*.styl',
             cwd: path.join(config.paths.assetsDev, 'stylus'),
             start: 'build:css'
         },
         site: {
-            src: [
+            glob: [
                 'site/**/*',
                 'templates/**/*'
             ],
