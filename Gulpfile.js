@@ -297,7 +297,8 @@ gulp.task('pm2-reload', function(done) {
 var copyTasks = {
         jquery: {
             src: '*',
-            cwd: 'jquery/dist'
+            cwd: 'jquery/dist',
+            baseCwd: config.paths.node
         },
         highlightjs: {
             src: 'github.css',
@@ -312,11 +313,14 @@ var copyTasks = {
 Object.keys(copyTasks).forEach(function(name) {
     var task = copyTasks[name],
         taskName = 'copy:' + name;
+    if (!task.hasOwnProperty('baseCwd')) {
+        task.baseCwd = config.paths.bower;
+    }
     gulp.task(taskName, function() {
         return gulp
             .src(task.src, {
-                cwd: path.join(config.paths.bower, task.cwd),
-                base: path.join(config.paths.bower, task.cwd)
+                cwd: path.join(task.baseCwd, task.cwd),
+                base: path.join(task.baseCwd, task.cwd)
             })
             .pipe(g.if(task.hasOwnProperty('extReplace'), g.extReplace('.styl')))
             .pipe(gulp.dest(path.join(config.paths[task.intoDev ? 'assetsDev' : 'assetsSrc'], 'vendor', name)));

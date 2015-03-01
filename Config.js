@@ -10,7 +10,8 @@ module.exports = (function(config) {
     // project paths
     config.paths = (function(p) {
         p.root      = process.cwd();
-        p.bower     = path.join(p.root, 'bower_components')
+        p.bower     = path.join(p.root, 'bower_components');
+        p.node      = path.join(p.root, 'node_modules');
         p.app       = path.join(p.root, 'app');
         p.src       = path.join(p.root, 'src');
         p.web       = path.join(p.root, 'web');
@@ -60,10 +61,10 @@ module.exports = (function(config) {
         }
     };
 
-    // get jQuery version from bower.json
+    // get jQuery version from package.json
     config.metadata.jqueryVersion = (function() {
-        var bowerPkg = require(process.cwd() + '/bower.json');
-        return bowerPkg.devDependencies.hasOwnProperty('jquery') ? bowerPkg.devDependencies.jquery.replace(/[^.0-9]/g, '') : '';
+        var pkg = require(process.cwd() + '/package.json');
+        return pkg.devDependencies.hasOwnProperty('jquery') ? pkg.devDependencies.jquery.replace(/[^.0-9]/g, '') : '';
     })();
 
     // gulp default params
