@@ -110,7 +110,10 @@ module.exports = (function(config) {
     // csslint options
     // https://github.com/CSSLint/csslint/wiki/Rules-by-ID
     config.csslint = {
-        'box-sizing': false
+        'box-sizing': false,
+        'bulletproof-font-face': false,
+        'font-faces': false,
+        'compatible-vendor-prefixes': false
     };
 
     // config sync options

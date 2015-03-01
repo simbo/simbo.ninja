@@ -1,0 +1,8 @@
+font-face(family, path, weight=400, style=normal, data-uri=true) {
+    @font-face {
+        font-family: family;
+        src: data-uri ? inline-url(path) : url(path);
+        font-weight: weight;
+        font-style: style;
+    }
+}
