@@ -35,23 +35,11 @@ module.exports = (function(config) {
                                 'assets/js/main.js'
                             ],
         googleAnalytics:    'UA-12345678-9',
-        googleFonts:        [
-                                'Open+Sans:300italic,400italic,700italic,700,300,400:latin',
-                                'Source+Code+Pro:400,700:latin'
-                            ],
         dateLocale:         'de',
         dateFormat:         'Do MMM YYYY',
         dateFormatShort:    'DD.MM.YY',
         dateFormatLong:     'dddd, Do MMMM YYYY'
     };
-
-    // config for webfontLoader
-    config.metadata.webfontConfig = {
-        google: {
-            families: config.metadata.googleFonts
-        }
-    };
-
 
     // metadata changes depending on environment
     config.metadata.environments = {
