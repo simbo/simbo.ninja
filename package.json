@@ -10,6 +10,7 @@
   },
   "private": true,
   "scripts": {
+    "test": "./node_modules/.bin/gulp build --environment production",
     "build": "./node_modules/.bin/gulp build --environment production",
     "build-dev": "./node_modules/.bin/gulp build --environment development",
     "dev": "./node_modules/.bin/gulp dev --environment development",
