@@ -24,15 +24,15 @@
     "url": "https://github.com/simbo/simbo.ninja/issues"
   },
   "dependencies": {
-    "express": "^4.12.0",
-    "lodash": "^3.3.1",
+    "express": "^4.12.2",
+    "lodash": "^3.4.0",
     "moment": "^2.9.0"
   },
   "devDependencies": {
     "auto-plug": "^1.0.1",
     "autoprefixer-core": "^5.1.7",
     "css-mqpacker": "^3.0.1",
-    "csswring": "^3.0.1",
+    "csswring": "^3.0.2",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
     "gulp-config-sync": "^1.0.1",
@@ -60,7 +60,7 @@
     "metalsmith-permalinks": "^0.4.0",
     "metalsmith-templates": "^0.6.1",
     "minimist": "^1.1.0",
-    "pm2": "^0.12.6",
+    "pm2": "^0.12.7",
     "run-sequence": "^1.0.2",
     "uglify-js": "^2.4.16"
   }
