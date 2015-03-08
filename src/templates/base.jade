@@ -19,13 +19,13 @@ html
         meta(name='description' content=siteDescription)
         block styles
             each style in styles
-               link(rel="stylesheet", href=baseUrl + style, type="text/css")
+                link(rel="stylesheet", href=style, type="text/css")
     body
         block content
             | !{contents}
         block scripts
             script(src='//ajax.googleapis.com/ajax/libs/jquery/#{jqueryVersion}/jquery.min.js')
             script.
-                window.jQuery || document.write('<script src="#{baseUrl}assets/vendor/jquery/jquery.min.js"><\/script>')
+                window.jQuery || document.write('<script src="/assets/vendor/jquery/jquery.min.js"><\/script>')
             each script in scripts
-                script(src=baseUrl + script)
+                script(src=script)
