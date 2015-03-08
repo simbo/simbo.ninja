@@ -283,7 +283,7 @@ gulp.task('pm2-reload', function(done) {
 // copy task definitions
 var copyTasks = {
         jquery: {
-            src: '*',
+            src: 'jquery.*',
             cwd: 'jquery/dist',
             baseCwd: config.paths.node
         },
