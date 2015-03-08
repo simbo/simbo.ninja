@@ -1,10 +1,13 @@
 
-var app = require('express')();
+var _       = require('lodash'),
+    express = require('express')(),
+    nano    = require('nano')('http://localhost:5984'),
+    moment  = require('moment');
 
-app.get('/', function (req, res) {
+express.get('/', function (req, res) {
     res.send('Hello Node!!!');
 });
 
-var server = app.listen(52323, function () {
-    console.log('app server listening on port %s', server.address().port);
+var server = express.listen(52323, function () {
+    console.log('express server listening on port %s', server.address().port);
 });
