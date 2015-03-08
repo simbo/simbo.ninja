@@ -6,9 +6,13 @@ html
         meta(name='viewport', content='width=device-width, initial-scale=1')
         script
             include:uglify ../assets-dev/js/load-webfonts.js
-        script
             :uglify
-                loadWebfonts('webfonts', '/assets/css/webfonts-woff.css', '/assets/css/webfonts-woff2.css');
+                loadWebfonts(
+                    '/assets/css/webfonts-woff.css',
+                    '/assets/css/webfonts-woff2.css',
+                    '#{hash("web/assets/css/webfonts-woff.css")}',
+                    '#{hash("web/assets/css/webfonts-woff2.css")}'
+                );
         if title
             title #{title} | #{siteTitle}
         else

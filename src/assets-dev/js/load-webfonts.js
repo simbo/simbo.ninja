@@ -1,4 +1,5 @@
-function loadWebfonts(uid, woffUrl, woff2Url) {
+function loadWebfonts(woffUrl, woff2Url, woffHash, woff2Hash, uid) {
+    uid = uid || '';
 
     var userAgent = navigator.userAgent,
         noSupport = !window.addEventListener || (userAgent.match(/(Android (2|3|4.0|4.1|4.2|4.3))|(Opera (Mini|Mobi))/) && !userAgent.match(/Chrome/));
@@ -15,23 +16,29 @@ function loadWebfonts(uid, woffUrl, woff2Url) {
     var localStoragePrefix = 'x-fonts-' + uid,
         localStorageUrlKey = localStoragePrefix + 'url',
         localStorageCssKey = localStoragePrefix + 'css',
-        storedFontUrl = loSto[localStorageUrlKey],
-        storedFontCss = loSto[localStorageCssKey];
+        localStorageHashKey = localStoragePrefix + 'hash',
+        woff2Support = supportsWoff2(),
+        url = woff2Support ? woff2Url : woffUrl,
+        hash = woff2Support ? woff2Hash : woffHash;
 
     var styleElement = document.createElement('style');
     styleElement.rel = 'stylesheet';
     document.head.appendChild(styleElement);
 
-    if (storedFontCss && (storedFontUrl === woffUrl || storedFontUrl === woff2Url)) {
-        styleElement.textContent = storedFontCss;
-    } else {
-        var url = (woff2Url && supportsWoff2()) ? woff2Url : woffUrl;
+    if (loSto[localStorageCssKey] && (loSto[localStorageUrlKey] === url) && (loSto[localStorageHashKey] === hash)) {
+        styleElement.textContent = loSto[localStorageCssKey];
+    }
+    else {
         var request = new XMLHttpRequest();
         request.open('GET', url);
         request.onload = function() {
             if (request.status >= 200 && request.status < 400) {
-                loSto[localStorageUrlKey] = url;
-                loSto[localStorageCssKey] = request.responseText;
+                try {
+                    loSto[localStorageUrlKey] = url;
+                    loSto[localStorageHashKey] = hash;
+                    loSto[localStorageCssKey] = request.responseText;
+                }
+                catch(e) {}
                 styleElement.textContent = request.responseText;
             }
         };
@@ -42,13 +49,13 @@ function loadWebfonts(uid, woffUrl, woff2Url) {
         if (!window.FontFace) {
             return false;
         }
-        var f = new FontFace('t', 'url("data:application/font-woff2,") format("woff2")', {});
-        var p = f.load();
+        var fontface = new FontFace('t', 'url("data:application/font-woff2,") format("woff2")', {}),
+            promise = fontface.load();
         try {
-            p.then(null, function(){});
+            promise.then(null, function(){});
         }
         catch(e) {}
-        return f.status === 'loading';
+        return fontface.status === 'loading';
     }
 
 }

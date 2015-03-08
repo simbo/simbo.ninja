@@ -423,7 +423,11 @@ gulp.task('default', ['build']);
 
 // full build
 gulp.task('build', ['copy:deps', 'clean:web', 'config-sync'], function(done) {
-    runSequence(['build:site', 'build:css'], done);
+    runSequence(
+        'build:css',
+        'build:site',
+        done
+    );
 });
 
 // build and watch
