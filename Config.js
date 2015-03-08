@@ -54,6 +54,20 @@ module.exports = (function(config) {
         return pkg.devDependencies.hasOwnProperty('jquery') ? pkg.devDependencies.jquery.replace(/[^.0-9]/g, '') : '';
     })();
 
+    // template function to get the hash of a file
+    config.metadata.hash = function(file, algorithm) {
+        var crypto = require('crypto');
+        if (!algorithm || crypto.getHashes().indexOf(algorithm)===-1) {
+            algorithm = 'md5';
+        }
+        var fs = require('fs'),
+            fileContents = fs.readFileSync(path.join(config.paths.root, file));
+        return crypto
+            .createHash(algorithm)
+            .update(fileContents, 'utf8')
+            .digest('hex');
+    }
+
     // gulp default params
     config.gulpParams = {
         environment: 'production'
