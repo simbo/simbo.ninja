@@ -29,6 +29,8 @@ cp -R /vagrant/.provision/files/vagrant/.zshrc ~/
 
 # install couchdb
 sudo apt-get -y install couchdb
+sudo cp /vagrant/.provision/files/root/etc/nginx/* /etc/couchdb
+sudo service couchdb restart
 
 # install nginx, setup site
 sudo apt-get -y install nginx
