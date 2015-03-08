@@ -34,7 +34,6 @@ module.exports = (function(config) {
         scripts:            [
                                 'assets/js/main.js'
                             ],
-        googleAnalytics:    'UA-12345678-9',
         dateLocale:         'de',
         dateFormat:         'Do MMM YYYY',
         dateFormatShort:    'DD.MM.YY',
