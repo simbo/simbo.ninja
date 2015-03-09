@@ -25,14 +25,14 @@
   },
   "dependencies": {
     "express": "^4.12.2",
-    "lodash": "^3.4.0",
+    "lodash": "^3.5.0",
     "moment": "^2.9.0",
     "nano": "^6.1.2"
   },
   "devDependencies": {
     "auto-plug": "^1.0.1",
     "autoprefixer-core": "^5.1.7",
-    "css-mqpacker": "^3.0.1",
+    "css-mqpacker": "^3.1.0",
     "csswring": "^3.0.2",
     "del": "^1.1.1",
     "gulp": "^3.8.11",
