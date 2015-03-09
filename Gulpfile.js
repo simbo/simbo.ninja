@@ -26,7 +26,7 @@ var _            = require('lodash'),
     util         = require('util');
 
 // external data
-var config = require(process.cwd() + '/Config.js'),
+var config = require(process.cwd() + '/GulpConfig.js'),
     pkg    = require(process.cwd() + '/package.json');
 
 // auto-require gulp plugins
