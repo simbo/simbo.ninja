@@ -9,6 +9,9 @@ if [[ -f $PROVISIONED ]]; then
     exit
 fi
 
+# vars for provisioning
+PROVISION_FILES="/vagrant/.provision/files"
+
 # fix locale
 sudo locale-gen de_DE.UTF-8
 sudo dpkg-reconfigure locales
@@ -25,16 +28,16 @@ git clone git://github.com/robbyrussell/oh-my-zsh.git ~/.oh-my-zsh
 git clone git://github.com/olivierverdier/zsh-git-prompt.git ~/.zsh-git-prompt
 sudo apt-get -y install zsh
 sudo chsh -s /bin/zsh vagrant
-cp -R /vagrant/.provision/files/vagrant/.zshrc ~/
+cp -R $PROVISION_FILES/vagrant/.zshrc ~/
 
 # install couchdb
 sudo apt-get -y install couchdb
-sudo cp /vagrant/.provision/files/root/etc/couchdb/* /etc/couchdb
+sudo cp $PROVISION_FILES/root/etc/couchdb/* /etc/couchdb
 sudo service couchdb restart
 
 # install nginx, setup site
 sudo apt-get -y install nginx
-sudo cp -R /vagrant/.provision/files/root/etc/nginx/* /etc/nginx
+sudo cp -R $PROVISION_FILES/root/etc/nginx/* /etc/nginx
 sudo rm /etc/nginx/sites-enabled/default
 sudo ln -s /etc/nginx/sites-available/vagrant /etc/nginx/sites-enabled/vagrant
 sudo service nginx restart
