@@ -1,5 +1,5 @@
 /**
- * + Project Config
+ * + Gulp Config
  * =====================================================================
  */
 
@@ -146,4 +146,4 @@ module.exports = (function(config) {
     return config;
 })({});
 
-/* = Project Config */
+/* = Gulp Config */
