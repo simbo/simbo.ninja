@@ -9,8 +9,8 @@ html
                 loadWebfonts(
                     '/assets/css/webfonts-woff.css',
                     '/assets/css/webfonts-woff2.css',
-                    '#{hash("web/assets/css/webfonts-woff.css")}',
-                    '#{hash("web/assets/css/webfonts-woff2.css")}'
+                    '#{hash(fileContents("web/assets/css/webfonts-woff.css"))}',
+                    '#{hash(fileContents("web/assets/css/webfonts-woff2.css"))}'
                 );
         if title
             title #{title} | #{siteTitle}
@@ -24,7 +24,7 @@ html
         block content
             | !{contents}
         block scripts
-            script(src='//ajax.googleapis.com/ajax/libs/jquery/#{jqueryVersion}/jquery.min.js')
+            script(src='//ajax.googleapis.com/ajax/libs/jquery/#{getDependencyVersion("jquery")}/jquery.min.js')
             script.
                 window.jQuery || document.write('<script src="/assets/vendor/jquery/jquery.min.js"><\/script>')
             each script in scripts

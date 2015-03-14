@@ -5,11 +5,23 @@
 
 module.exports = (function(config) {
 
-    var path = require('path');
+    // required packages
+    var crypto = require('crypto'),
+        fs     = require('fs'),
+        path   = require('path');
 
-    // project paths
+    // data
+    var cwd   = process.cwd(),
+        pkg   = require(cwd + '/package.json'),
+        bower = require(cwd + '/package.json');
+
+    /**
+     * + Paths
+     * =====================================================================
+     */
+
     config.paths = (function(p) {
-        p.root      = process.cwd();
+        p.root      = cwd;
         p.bower     = path.join(p.root, 'bower_components');
         p.node      = path.join(p.root, 'node_modules');
         p.app       = path.join(p.root, 'app');
@@ -23,7 +35,15 @@ module.exports = (function(config) {
         return p;
     })({});
 
-    // metadata
+    /* = Paths */
+
+
+    /**
+     * + Metadata (available in templates)
+     * =====================================================================
+     */
+
+    // static metadata
     config.metadata = {
         siteTitle:          'simbo.ninja',
         siteDescription:    'Some informative description for search engine results.',
@@ -48,25 +68,45 @@ module.exports = (function(config) {
         }
     };
 
-    // get jQuery version from package.json
-    config.metadata.jqueryVersion = (function() {
-        var pkg = require(process.cwd() + '/package.json');
-        return pkg.devDependencies.hasOwnProperty('jquery') ? pkg.devDependencies.jquery.replace(/[^.0-9]/g, '') : '';
-    })();
+    /* = Metadata (available in templates) */
 
-    // template function to get the hash of a file
-    config.metadata.hash = function(file, algorithm) {
-        var crypto = require('crypto');
+
+    /**
+     * + Functions (available in templates)
+     * =====================================================================
+     */
+
+    // get dependency version from package.json or bower.json
+    config.metadata.getDependencyVersion = function(dep, data, dev) {
+        data = data=='bower' ? bower : pkg;
+        dev = dev===undefined ? true : dev;
+        data = data[(dev?'devD':'d') + 'ependencies']
+        return data.hasOwnProperty(dep) ? data[dep].replace(/[^.0-9]/g, '') : '';
+    };
+
+    // get the contents of a file
+    config.metadata.fileContents = function(file) {
+        return fs.readFileSync(path.join(config.paths.root, file));
+    };
+
+    // get the hash of a string
+    config.metadata.hash = function(string, algorithm) {
         if (!algorithm || crypto.getHashes().indexOf(algorithm)===-1) {
             algorithm = 'md5';
         }
-        var fs = require('fs'),
-            fileContents = fs.readFileSync(path.join(config.paths.root, file));
         return crypto
             .createHash(algorithm)
-            .update(fileContents, 'utf8')
+            .update(string, 'utf8')
             .digest('hex');
-    }
+    };
+
+    /* = Functions (available in templates) */
+
+
+    /**
+      * + Gulp module options
+      * =====================================================================
+      */
 
     // gulp default params
     config.gulpParams = {
@@ -142,6 +182,9 @@ module.exports = (function(config) {
         ],
         space: 2
     };
+
+    /* = Gulp module options */
+
 
     return config;
 })({});
