@@ -264,7 +264,7 @@ gulp.task('build:site', function(done) {
 gulp.task('pm2-reload', function(done) {
     pm2.connect(function(err) {
         pm2.restart('simbo.ninja', function(err, proc) {
-            if (err) throw new Error('err');
+            if (err) throw err;
             pm2.disconnect(function() {
                 done();
             });
