@@ -20,3 +20,6 @@ source ~/.zsh-git-prompt/zshrc.sh
 PROMPT='%{%F{green}%}%n%{%f%} %B%{%F{magenta}%}%~%{%f%}%b $(git_super_status)
  %B%{%F{cyan}%}➜%{%f%}%b '
 RPROMPT=''
+
+# enter project folder
+cd /vagrant
