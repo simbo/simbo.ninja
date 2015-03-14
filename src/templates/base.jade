@@ -20,6 +20,7 @@ html
         block styles
             each style in styles
                 link(rel="stylesheet", href=style, type="text/css")
+        link(rel="icon", href="#{gravatar(96)}")
     body
         block content
             | !{contents}

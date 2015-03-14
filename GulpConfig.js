@@ -47,6 +47,7 @@ module.exports = (function(config) {
     config.metadata = {
         siteTitle:          'simbo.ninja',
         siteDescription:    'Some informative description for search engine results.',
+        siteEmail:          'mail@simbo.ninja',
         baseUrl:            '//simbo.ninja/',
         styles:             [
                                 'assets/css/main.css'
@@ -98,6 +99,12 @@ module.exports = (function(config) {
             .createHash(algorithm)
             .update(string, 'utf8')
             .digest('hex');
+    };
+
+    // get a gravatar url
+    config.metadata.gravatar = function(size, email) {
+        var hash = config.metadata.hash(email || config.metadata.siteEmail, 'md5');
+        return '//gravatar.com/avatar/' + hash + '.png' + (size ? '?s=' + size : '');
     };
 
     /* = Functions (available in templates) */
