@@ -218,18 +218,18 @@ gulp.task('build:site', function(done) {
             }))
         )
 
-        // parse blog
-        .use(ms.branch([
-                'blog/**/*.html'
-            ])
-            .use(ms.dateInFilename())
-            .use(defaultTemplate('post.jade'))
-            .use(ms.permalinks({
-                pattern: 'blog/:date/:title',
-                date: 'YYYY/MM',
-                relative: false
-            }))
-        )
+        // // parse blog
+        // .use(ms.branch([
+        //         'blog/**/*.html'
+        //     ])
+        //     .use(ms.dateInFilename())
+        //     .use(defaultTemplate('post.jade'))
+        //     .use(ms.permalinks({
+        //         pattern: 'blog/:date/:title',
+        //         date: 'YYYY/MM',
+        //         relative: false
+        //     }))
+        // )
 
         // set absolute urls
         .use(ms.branch([
