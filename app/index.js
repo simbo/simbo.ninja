@@ -18,13 +18,17 @@ var couch = nano({
             });
 
 // check if database exists, create if necessary
-couch.db.list(function(err, body) {
+couch.db.list(function (err, body) {
     var dbName = couch.config.db;
     if (body.indexOf(dbName)===-1) {
         couch.db.create(dbName, function(err, body) {
-            if (err) throw err;
+            if (err) throw new Error(err);
         });
     }
+});
+
+express.get('/add-post', function (req, res) {
+    res.send('');
 });
 
 express.get('/', function (req, res) {
