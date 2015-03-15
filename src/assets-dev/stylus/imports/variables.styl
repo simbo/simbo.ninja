@@ -8,6 +8,18 @@ font-family = {
     monospace: MesloWeb\, Meslo\, Menlo\, Consolas\, Monaco\, Lucida Console\, Liberation Mono\, DejaVu Sans Mono\, Bitstream Vera Sans Mono\, Courier New\, monospace\, serif
 }
 
+line-height = {
+    normal: (20 / 14)
+    small: (20 / 14 * .85),
+    large: (20 / 14 * 1.25)
+    headline: 1.2
+}
+
+spacing = {
+    outer: 16px,
+    inner: 20px,
+    flow: .675em
+}
 
 /**
  * Mediaquery breakpoints
@@ -33,6 +45,10 @@ breakpoints = {
     },
     lg: {
         min: 1200px,
+        max: 1599px
+    },
+    xl: {
+        min: 1600px,
         max: 0
     }
 }
@@ -50,7 +66,7 @@ for key, value in breakpoints
 
 grid-config = {
     placeholders-only: true,
-    column-count: 12,
-    gutter-width: 0,
+    column-count: 24,
+    gutter-width: 16px,
     breakpoints: grid-breakpoints
 }

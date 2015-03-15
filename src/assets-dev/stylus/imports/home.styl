@@ -1,0 +1,204 @@
+body
+    background: #ddd;
+    line-height: line-height.normal
+    font-size: 16px
+    +mq-bp(sm)
+        font-size: 17px
+    +mq-bp(md)
+        font-size: 18px
+    +mq-bp(lg)
+        font-size: 19px
+    +mq-bp(xl)
+        font-size: 20px
+
+a
+    color: #246694
+    text-decoration: none
+
+    &:hover,
+    &:active
+        text-decoration: underline
+
+main
+    margin: 0 auto
+    padding: 0 spacing.outer spacing.outer spacing.outer
+    +mq-bp(md)
+        max-width: 1000px
+    +mq-bp(lg, min)
+        max-width: 1200px
+
+$spacing-inner
+    padding: spacing.inner
+
+.row
+    @extends $row
+    +mq-bp(xsl, min)
+        display: flex
+        align-items: stretch
+
+.col-right
+    @extends $col-xs-24, $col-xsl-12, $col-xsl-push-12, $col-lg-10, $col-lg-push-14
+    padding-top: spacing.outer
+    display: flex
+    align-items: stretch
+
+.col-left
+    @extends $col-xs-24, $col-xsl-12, $col-xsl-pull-12, $col-lg-14, $col-lg-pull-10
+    padding-top: spacing.outer
+    display: flex
+    align-items: stretch
+
+.about
+    @extends $clearfix
+    @extends $spacing-inner
+    background: #246694
+    color: #fff
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
+    > .inner
+        @extends $row
+
+        +mq-bp(sm, min)
+            display: flex
+            align-items: stretch
+
+    .content
+        @extends $col-xs-24, $col-sm-16, $col-sm-push-8, $col-lg-14, $col-lg-push-10
+
+
+.avatar
+    @extends $col-xs-16, $col-xs-push-4, $col-sm-8, $col-sm-push-0, $col-sm-pull-16, $col-lg-10, $col-lg-pull-14
+    display: flex
+    align-items: center
+    +mq-bp(xsl, max)
+        padding-top: spacing.inner
+
+    img
+        display: block
+        border-radius: 50%
+        width: 100%
+        height: auto
+
+.my-name
+    font-size: 2em
+    font-weight: 900
+    margin-bottom: spacing.inner
+
+.profiles
+    margin-top: spacing.inner
+    display: flex
+    justify-content: space-around
+
+    li
+        display: inline-block
+
+        a
+            color: #fff
+            text-decoration: none
+
+            &::before
+                @extends $icon_block
+                font-size: 1.5em
+
+            &.github::before
+                @extends $icon-github
+
+            &.twitter::before
+                @extends $icon-twitter
+
+            &.google::before
+                @extends $icon-google
+
+            span
+                display: none
+
+.intro
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    background: #fff
+
+    .content
+        @extends $spacing-inner
+
+        p + p
+            padding-top: spacing.flow
+
+@keyframes blink
+    to
+        visibility: hidden
+
+.hello-world
+    @extends $spacing-inner
+    background: #1a1a1a
+    color: #eee
+
+    &::before
+        content: '$'
+        padding-right: .5em
+        color: #ddd
+
+    &::after
+        content: '_'
+        padding-left: .5em
+        color: #ddd
+        animation: blink 2s steps(2, start) infinite
+
+.no-thanks
+    @extends $spacing-inner
+    font-weight: 700
+
+    p
+        @extends $icon_parent-container
+
+        &::before
+            @extends $icon_block
+            @extends $icon-minus-circle
+            color: #a40041
+
+.contact
+    margin: spacing.outer auto 0 auto
+    +mq-bp(xsl, min)
+        display: flex
+        justify-content: center
+
+    address
+        @extends $icon_parent-container
+        white-space: nowrap
+
+        &::before
+            @extends $icon_block
+            @extends $icon-home
+
+    ul
+        @extends $spacing-inner
+        background: #f6cb6e
+        list-style-type: none
+
+        + ul
+            +mq-bp(xs)
+                padding-top: 0
+
+            li + li
+                margin-top: spacing.flow
+
+        li
+
+            a
+                color: #000
+
+                @extends $icon_parent-container
+
+                &::before
+                    @extends $icon_block
+
+                &.phone::before
+                    @extends $icon-phone
+
+                &.mail::before
+                    @extends $icon-envelope
+
+                &.pgp::before
+                    @extends $icon-key

@@ -16,11 +16,10 @@ html
             title #{title} | #{siteTitle}
         else
             title #{siteTitle}
-        meta(name='description' content=siteDescription)
+        meta(name="description", content=siteDescription)
         block styles
-            each style in styles
-                link(rel="stylesheet", href=style, type="text/css")
-        link(rel="icon", href="#{gravatar(96)}")
+            link(href="/assets/css/main.css", rel="stylesheet", type="text/css")
+        link(href="#{gravatar(96)}", rel="icon")
     body
         block content
             | !{contents}
