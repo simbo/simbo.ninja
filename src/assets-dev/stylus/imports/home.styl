@@ -1,4 +1,10 @@
+html, body
+    height: 100%
+
 body
+    display: flex
+    flex-direction: column
+    justify-content: center
     background: #ddd;
     line-height: line-height.normal
     font-size: 16px
@@ -21,7 +27,7 @@ a
 
 main
     margin: 0 auto
-    padding: 0 spacing.outer spacing.outer spacing.outer
+    padding: 0 spacing.outer
     +mq-bp(md)
         max-width: 1000px
     +mq-bp(lg, min)
@@ -159,7 +165,7 @@ $spacing-inner
             color: #a40041
 
 .contact
-    margin: spacing.outer auto 0 auto
+    margin: spacing.outer auto
     +mq-bp(xsl, min)
         display: flex
         justify-content: center
