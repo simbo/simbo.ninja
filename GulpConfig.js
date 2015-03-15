@@ -45,16 +45,10 @@ module.exports = (function(config) {
 
     // static metadata
     config.metadata = {
-        siteTitle:          'simbo.ninja',
-        siteDescription:    'Some informative description for search engine results.',
+        siteTitle:          'Simon Lepel',
+        siteDescription:    'Nerd. Coder. Developer. Web enthusiast. Got lost in Berlin. Spending too much time in front of screens…',
         siteEmail:          'mail@simbo.ninja',
         baseUrl:            '//simbo.ninja/',
-        styles:             [
-                                'assets/css/main.css'
-                            ],
-        scripts:            [
-                                'assets/js/main.js'
-                            ],
         dateLocale:         'de',
         dateFormat:         'Do MMM YYYY',
         dateFormatShort:    'DD.MM.YY',
@@ -174,8 +168,11 @@ module.exports = (function(config) {
         'bulletproof-font-face': false,
         'compatible-vendor-prefixes': false,
         'font-faces': false,
+        'font-sizes': false,
         'important': false,
+        'known-properties': false,
         'outline-none': false,
+        'overqualified-elements': false,
         'universal-selector': false
     };
 
