@@ -1,8 +1,21 @@
-@import 'variables';
+use('collection/plugins/quote.js')
 
-@import 'mixins/*';
+@import 'variables'
 
-@import 'highlightjs/github';
+@import 'collection/functions/grid-generator'
 
-@import 'typo';
-@import 'styles';
+@import 'collection/mixins/clearfix'
+@import 'collection/mixins/font-face'
+@import 'collection/mixins/improved-text-rendering'
+@import 'collection/mixins/mediaqueries'
+
+@import 'collection/modules/mediaquery-placeholders'
+
+create-grid(grid-config)
+
+@import 'collection/modules/reset-and-normalize'
+@import 'collection/modules/responsive-helpers'
+
+@import 'highlightjs/github'
+
+@import 'typo'

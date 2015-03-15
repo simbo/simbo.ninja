@@ -292,6 +292,12 @@ var copyTasks = {
             cwd: 'highlightjs/styles',
             extReplace: '.styl',
             intoDev: true
+        },
+        collection: {
+            src: '**/*',
+            cwd: 'collection.stylus/src/stylus/imports',
+            baseCwd: config.paths.node,
+            intoDev: true
         }
     },
     copySequence = [];

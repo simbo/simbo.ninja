@@ -172,8 +172,11 @@ module.exports = (function(config) {
     config.csslint = {
         'box-sizing': false,
         'bulletproof-font-face': false,
+        'compatible-vendor-prefixes': false,
         'font-faces': false,
-        'compatible-vendor-prefixes': false
+        'important': false,
+        'outline-none': false,
+        'universal-selector': false
     };
 
     // config sync options
