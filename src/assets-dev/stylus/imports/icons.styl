@@ -1,0 +1,51 @@
+$icon
+    font-family: 'Icons'
+    speak: none
+    font-style: normal
+    font-weight: normal
+    font-variant: normal
+    text-transform: none
+    line-height: 1
+    -webkit-font-smoothing: antialiased
+    -moz-osx-font-smoothing: grayscale
+
+$icon_block
+    @extends $icon
+    display: block
+    width: 1em
+    text-align: center
+
+$icon_parent-container
+    display: inline-block
+    position: relative
+    padding-left: 1.5em
+
+    &::before
+        position: absolute
+        top: 0
+        left: 0
+        line-height: inherit
+
+$icon-home
+    content: '\f015'
+
+$icon-minus-circle
+    content: '\f056'
+
+$icon-key
+    content: '\f084'
+
+$icon-twitter
+    content: '\f099'
+
+$icon-github
+    content: '\f09b'
+
+$icon-envelope
+    content: '\f0e0'
+
+$icon-phone
+    content: '\f095'
+
+$icon-google
+    content: '\f1a0'
