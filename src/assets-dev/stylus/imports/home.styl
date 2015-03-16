@@ -55,13 +55,16 @@ $spacing-inner
     align-items: stretch
 
 .about
-    @extends $clearfix
     @extends $spacing-inner
     background: #246694
     color: #fff
     display: flex
     flex-direction: column
     justify-content: space-between
+
+    &::after
+        content: ''
+        display: block
 
     > .inner
         @extends $row
