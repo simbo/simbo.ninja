@@ -32,7 +32,7 @@
   "devDependencies": {
     "auto-plug": "^1.0.1",
     "autoprefixer-core": "^5.1.7",
-    "collection.stylus": "^0.1.1",
+    "collection.stylus": "^0.1.2",
     "css-mqpacker": "^3.1.0",
     "csswring": "^3.0.2",
     "del": "^1.1.1",
