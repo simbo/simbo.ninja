@@ -23,10 +23,7 @@ html
     body
         block content
             | !{contents}
-        //- block scripts
-        //-     script(src='//ajax.googleapis.com/ajax/libs/jquery/#{getDependencyVersion("jquery")}/jquery.min.js')
-        //-     script.
-        //-         window.jQuery || document.write('<script src="/assets/vendor/jquery/jquery.min.js"><\/script>')
-        //-     each script in scripts
-        //-         script(src=script)
+        block scripts
+            include partials/jquery.jade
+            script(src="/assets/js/main.js")
         include partials/piwik.jade
