@@ -1,25 +1,26 @@
 doctype html
 html
     head
-        meta(charset='utf-8')
-        meta(name='viewport', content='width=device-width, initial-scale=1')
-        script
-            include:uglify ../assets-dev/js/load-webfonts.js
-            :uglify
-                loadWebfonts(
-                    '/assets/css/webfonts-woff.css',
-                    '/assets/css/webfonts-woff2.css',
-                    '#{hash(fileContents("web/assets/css/webfonts-woff.css"))}',
-                    '#{hash(fileContents("web/assets/css/webfonts-woff2.css"))}'
-                );
-        if title
-            title #{title} | #{siteTitle}
-        else
-            title #{siteTitle}
-        meta(name="description", content=siteDescription)
-        block styles
-            link(href="/assets/css/main.css", rel="stylesheet", type="text/css")
-        link(href="#{gravatar(96)}", rel="icon")
+        block head
+            meta(charset='utf-8')
+            meta(name='viewport', content='width=device-width, initial-scale=1')
+            script
+                include:uglify ../assets-dev/js/load-webfonts.js
+                :uglify
+                    loadWebfonts(
+                        '/assets/css/webfonts-woff.css',
+                        '/assets/css/webfonts-woff2.css',
+                        '#{hash(fileContents("web/assets/css/webfonts-woff.css"))}',
+                        '#{hash(fileContents("web/assets/css/webfonts-woff2.css"))}'
+                    );
+            if title
+                title #{title} | #{siteTitle}
+            else
+                title #{siteTitle}
+            meta(name="description", content=siteDescription)
+            block styles
+                link(href="/assets/css/main.css", rel="stylesheet", type="text/css")
+            link(href="#{gravatar(96)}", rel="icon")
     body
         block content
             | !{contents}
