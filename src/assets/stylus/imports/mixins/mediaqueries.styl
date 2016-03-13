@@ -1,0 +1,45 @@
+/**
+ * Mediaquery mixins
+ * =============================================================================
+ */
+
+// retina displays
+mq-retina()
+  @media only screen and (-webkit-min-device-pixel-ratio: 2),
+    only screen and (min--moz-device-pixel-ratio: 2),
+    only screen and (-o-min-device-pixel-ratio: 2/1),
+    only screen and (min-device-pixel-ratio: 2),
+    only screen and (min-resolution: 192dpi),
+    only screen and (min-resolution: 2dppx)
+    block
+
+// media min-width
+mq-min($min-width)
+  @media only screen and (min-width: $min-width)
+    block
+
+// media max- and min-width
+mq-minmax($min-width, $max-width)
+  @media only screen and (min-width: $min-width) and (max-width: $max-width)
+    block
+
+// media max-width
+mq-max($max-width)
+  @media only screen and (max-width: $max-width)
+    block
+
+// media queries for defined breakpoints
+mq-bp($key, $minmax = false, $bp = $breakpoints)
+  $key = toString(s('%s', $key))
+  $minmax = toString(s('%s', $minmax))
+  unless ($bp[$key])
+    return
+  if (($minmax == 'max') and ($bp[$key].max != 0)) or ($bp[$key].min == 0)
+    +mq-max($bp[$key].max)
+      block
+  else if (($minmax == 'min') and ($bp[$key].min != 0)) or ($bp[$key].max == 0)
+    +mq-min($bp[$key].min)
+      block
+  else if ($bp[$key].min != 0) and ($bp[$key].max != 0)
+    +mq-minmax($bp[$key].min, $bp[$key].max)
+      block

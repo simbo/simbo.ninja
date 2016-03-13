@@ -1,0 +1,8 @@
+server {
+
+  listen 52323;
+  server_name *.simbo.ninja;
+
+  return 301 $scheme://simbo.ninja$request_uri;
+
+}

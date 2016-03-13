@@ -1,0 +1,121 @@
+/**
+ * custom styles for home page
+ */
+
+@require 'base'
+
+$intro = {}
+$intro.breakpoint = 740px
+
+$intro.noise-src = '/assets/img/noise.gif'
+$intro.noise-size = image-size($intro.noise-src)
+$intro.noise-img = inline-url($intro.noise-src)
+
+$intro.colors = {}
+$intro.colors.background = darken(midnightblue, 90%)
+$intro.colors.foreground = lime
+$intro.colors.highlight = magenta
+$intro.colors.shadow = alpha(lighten($intro.colors.background, 30%), .3)
+$intro.colors.text = alpha($intro.colors.foreground, .85)
+$intro.colors.text-shadow = $intro.colors.foreground
+$intro.colors.link = alpha($intro.colors.highlight, .85)
+$intro.colors.link-active = $intro.colors.highlight
+
+$intro.font-family = $font-family.monospace
+$intro.font-size = {}
+$intro.font-size.small = 20px
+$intro.font-size.large = 28px
+
+@keyframes half-transparent
+  to
+    opacity: .5
+
+@require 'components/typed'
+@require 'components/icons'
+
+body
+  background: $intro.colors.background
+  color: $intro.colors.text
+  text-shadow: 0 0 1em $intro.colors.text-shadow
+  font-family: $intro.font-family
+  font-size: $intro.font-size.small
+  +mq-min($intro.breakpoint)
+    font-size: $intro.font-size.large
+
+  .is-touch &
+    cursor: pointer
+
+  &::before,
+  &::after
+    content: ''
+    position: fixed
+    top: 0
+    left: 0
+    width: 100vw
+    height: 100vh
+
+  &::before
+    z-index: 1
+    background: transparent $intro.noise-img 0 0 repeat
+    opacity: .05
+
+  &::after
+    z-index: 2
+    box-shadow: 0 0 25vh $intro.colors.shadow inset
+    +mq-min($intro.breakpoint)
+      box-shadow: 0 0 25vw $intro.colors.shadow inset
+
+a
+  color: $intro.colors.link
+  text-shadow: 0 0 1em $intro.colors.link
+
+  &:hover
+    color: $intro.colors.link-active
+    text-shadow: 0 0 1em $intro.colors.link-active
+
+.typed
+  position: relative
+  z-index: 3
+  height: 100vh
+  +mq-min($intro.breakpoint)
+    max-width: $intro.breakpoint
+    margin: 0 auto
+
+  &-content
+    animation: half-transparent .1s steps(4, start) infinite
+
+    &,
+    &_view
+      padding: 1.2em
+      opacity: .85
+      +mq-min($intro.breakpoint)
+        padding: 2em
+
+    &::after
+      box-shadow: 0 0 1em $intro.colors.text
+
+  &-icon
+    position: relative
+    display: inline-block
+    width: 1em
+    text-align: center
+    transition: transform .1s ease
+
+    &:hover
+      text-decoration: none
+      transform: scale(1.3)
+
+    + .typed-icon
+      margin-left: .5em
+
+    &.icon-npm
+      width: 1.5em
+
+    &::before
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+
+    &::after
+      content: ' '

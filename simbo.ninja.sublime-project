@@ -1,0 +1,12 @@
+{
+	"folders":
+	[
+		{
+			"folder_exclude_patterns":
+			[
+				".vagrant"
+			],
+			"path": "/Users/simbo/Projects/simbo.ninja"
+		}
+	]
+}

@@ -1,0 +1,36 @@
+[class^='icon-'],
+[class*=' icon-']
+  speak: none
+  font-family: icons
+  font-weight: normal
+  font-style: normal
+  font-variant: normal
+  text-transform: none
+  line-height: 1
+  text-rendering: auto
+  -webkit-font-smoothing: antialiased
+  -moz-osx-font-smoothing: grayscale
+
+$icons = {
+  npm: '\e901',
+  key: '\f084',
+  phone: '\f095',
+  twitter: '\f099',
+  facebook: '\f09a',
+  globe: '\f0ac',
+  gplus: '\f0d5',
+  envelope: '\f0e1',
+  linkedin: '\f0e2',
+  octocat: '\f114',
+  stack-overflow: '\f16c',
+  google: '\f1a1',
+  rebel: '\f1d0',
+  paper-plane: '\f1d8',
+  at: '\f1fa',
+  cc: '\f25e'
+}
+
+for $key, $char in $icons
+  $icon-{$key},
+  .icon-{$key}::before
+    content: $char

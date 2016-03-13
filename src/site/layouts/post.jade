@@ -1,0 +1,13 @@
+extends /layouts/base.jade
+
+block body_contents
+
+  .post
+    h1.post-title= title
+    time.post-date= moment(date).format(dateFormat)
+    .post-content!= contents
+    .post-navigate
+      if previous
+        a.previous(href=previous.url)= previous.title
+      if next
+        a.next(href=next.url)= next.title

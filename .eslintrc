@@ -1,0 +1,20 @@
+{
+  "extends": "simbo/default/node",
+  "rules": {
+    "callback-return": 0,
+    "max-params": [1, 5],
+    "max-statements": [1, 12],
+    "new-cap": 0,
+    "no-unused-vars": [1, {
+      "vars": "local",
+      "args": "none"
+    }],
+    "sort-vars": 0,
+    "vars-on-top": 1,
+    "id-length": [2, {
+      "min": 2,
+      "properties": "never",
+      "exceptions": ["i", "x", "y", "z", "_", "$", Q]
+    }]
+  }
+}

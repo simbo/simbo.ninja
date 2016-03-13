@@ -1,0 +1,14 @@
+{
+  "extends": "simbo/default/browser",
+  "env": {
+    "commonjs": true
+  },
+  "globals": {
+    "global": true,
+    "$": true
+  },
+  "rules": {
+    "require-jsdoc": 0,
+    "vars-on-top": 0
+  }
+}

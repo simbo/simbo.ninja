@@ -1,0 +1,81 @@
+{
+  "name": "simbo",
+  "realname": "Simon Lepel",
+  "about": "Nerd. Coder. Developer. Web enthusiast. Got lost in Berlin. Spending too much time in front of screens…",
+  "address": {
+    "street": "Oranienstr.",
+    "streetNo": "112",
+    "zip": "10969",
+    "city": "Berlin",
+    "country": "Germany",
+    "countryShort": "de"
+  },
+  "contacts": {
+    "email": {
+      "url": "mailto:simbo@simbo.de",
+      "label": "simbo@simbo.de",
+      "description": "send an email to simbo",
+      "icon": "paper-plane"
+    },
+    "website": {
+      "url": "http://simbo.ninja/",
+      "label": "simbo.ninja",
+      "description": "visit simbo's website",
+      "icon": "globe"
+    },
+    "phone": {
+      "url": "tel:+491791441387",
+      "label": "+49 179 1441387",
+      "description": "call simbo",
+      "icon": "phone"
+    },
+    "npm": {
+      "url": "https://npmjs.com/~simbo",
+      "label": "npmjs.com/~simbo",
+      "description": "simbo's profile on npmjs.com",
+      "icon": "npm"
+    },
+    "github": {
+      "url": "https://github.com/simbo",
+      "label": "github.com/simbo",
+      "description": "follow @simbo on GitHub",
+      "icon": "octocat"
+    },
+    "twitter": {
+      "url": "https://twitter.com/simbo23",
+      "label": "@simbo23",
+      "description": "follow @simbo23 on Twitter",
+      "icon": "twitter"
+    },
+    "gpgkey": {
+      "url": "/files/simbo-pubkey.asc",
+      "label": "FBE1AA39",
+      "description": "get simbo's GPG public key",
+      "icon": "key"
+    },
+    "google": {
+      "url": "https://www.google.com/search?q=%22Simon+Lepel%22",
+      "label": "Google 'Simon Lepel'",
+      "description": "Search the web for Simon Lepel",
+      "icon": "google"
+    },
+    "facebook": {
+      "url": "https://www.facebook.com/simon.lepel",
+      "label": "facebook.com/simon.lepel",
+      "description": "Simon Lepel on facebook",
+      "icon": "facebook"
+    },
+    "gplus": {
+      "url": "https://plus.google.com/+SimonLepel",
+      "label": "plug.google.com/+SimonLepel",
+      "description": "Simon Lepel on Google+",
+      "icon": "gplus"
+    },
+    "linkedin": {
+      "url": "https://www.linkedin.com/in/simonlepel",
+      "label": "linkedin.com/in/simonlepel",
+      "description": "Simon Lepel on LinkedIn",
+      "icon": "linkedin"
+    }
+  }
+}

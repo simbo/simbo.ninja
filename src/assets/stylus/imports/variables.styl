@@ -1,0 +1,86 @@
+
+$colorValues = {
+}
+
+$colorUseCases = {
+  background: ivory,
+  text: black,
+  links: dodgerblue,
+  borders: slategray
+}
+
+$colors = merge($colorValues, $colorUseCases)
+
+$font-family = {
+  primary: "Helvetica Neue"\, Helvetica\, Arial\, NimbusSansL\, LiberationSans\, FreeSans\, Clean\, sans-serif,
+  monospace: Consolas\, "Liberation Mono"\, Menlo\, Courier\, monospace
+}
+
+$font-size = {
+  normal: 16px,
+  large: 20px,
+  small: 12px
+}
+
+$line-height = {
+  normal: 1.42857 // 20/14
+}
+
+$spacing = {
+  normal: $font-size.normal * $line-height.normal
+}
+$spacing.small = $spacing.normal * .75
+$spacing.large = $spacing.normal * 1.5
+
+$z-index = {
+  nav: 1000
+}
+
+$nav = {
+  width: 240px,
+  item-padding: {
+    v: .75em
+    h: .75em
+  },
+  transition-duration: .4s
+}
+
+$hamburger-size = ($font-size.normal * (1 + $nav.item-padding.v * 2))
+$hamburger = {
+  width: $hamburger-size,
+  height: $hamburger-size,
+  bar-thickness: round($hamburger-size * .075),
+  bar-color: $colors.text,
+  pad: round($hamburger-size * .2),
+  bar-space: round($hamburger-size * .15),
+  transition-duration: $nav.transition-duration
+}
+
+/**
+ * Mediaquery breakpoints
+ */
+
+$breakpoints = {
+  xs: {
+    min: 0,
+    max: 479px
+  },
+  s: {
+    min: 480,
+    max: 1023px
+  },
+  m: {
+    min: 1024px,
+    max: 1199px
+  },
+  l: {
+    min: 1200px,
+    max: 1599px
+  },
+  xl: {
+    min: 1600px,
+    max: 0
+  }
+}
+
+

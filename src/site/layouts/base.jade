@@ -1,0 +1,22 @@
+include /partials/mixins/assets.jade
+
+doctype html
+html
+  head
+    block head
+      meta(charset='utf-8')
+      meta(name='viewport', content='width=device-width, initial-scale=1')
+      block head_title
+        title= (title ? title + ' | ' : '') + site.title
+      block head_description
+        meta(name="description", content= description ? description : site.description)
+      block head_styles
+        +style("default")
+      block head_scripts
+  body
+    block body
+      block body_contents
+        | !{contents}
+      block body_scripts
+      if environment == 'production'
+        include /partials/piwik.jade

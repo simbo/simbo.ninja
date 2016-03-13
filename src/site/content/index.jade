@@ -1,0 +1,75 @@
+---
+layout: false
+---
+
+extends /layouts/base.jade
+
+block append head
+  link(rel="openid.server", href="https://srvkist.shaula.uberspace.de/id/")
+  link(rel="openid.delegate", href="https://srvkist.shaula.uberspace.de/id/simbo")
+  link(rel="openid2.provider", href="https://srvkist.shaula.uberspace.de/id/")
+  link(rel="openid2.local_id", href="https://srvkist.shaula.uberspace.de/id/simbo")
+  meta(http-equiv="X-XRDS-Location", content="https://srvkist.shaula.uberspace.de/id/xrds/simbo")
+
+block head_styles
+  +style("home")
+
+block head_scripts
+  +script("home")
+
+block body_contents
+
+  .typed(data-speed=10)
+    p.typed-content_view
+      span(data-pause=1200)
+      strong Hello World!
+        span(data-pause=1000)
+      br
+      span(data-pause=250)
+      br
+      span(data-pause=250)
+      | You've just stumbled upon my website.
+      span(data-pause=1000)
+      |  You are so awesome.
+      span(data-pause=500)
+      | .
+      span(data-pause=500)
+      | .
+      span(data-pause=1000)
+      br
+      span(data-pause=250)
+      br
+      span(data-pause=250)
+      | There is not much to see here
+      span(data-pause=750)
+      |  but you can
+      |  #[a(href=personal.contacts.email.url) get in touch with me#[span(data-pause=750)]]
+      | , if you feel like you have to.
+      span(data-pause=1000)
+      br
+      span(data-pause=250)
+      br
+      span(data-pause=1200)
+      | simbo
+      span(data-pause=500)
+      | !{' ~ '}
+      span(data-pause=500)
+      | Simon Lepel
+      span(data-pause=750)
+      br
+      span(data-pause=250)
+      | --
+      span(data-pause=250)
+      br
+      span(data-pause=500)
+      for key in ['email', 'gpgkey', 'twitter', 'github', 'npm']
+        - var item = personal.contacts[key]
+        a(
+          href=item.url,
+          title=item.description,
+          class="typed-icon icon-#{item.icon}"
+        )= ' '
+        |  #[span(data-pause=500)]
+      br
+      span(data-pause=250)
+      br

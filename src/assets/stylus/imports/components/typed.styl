@@ -1,0 +1,27 @@
+/**
+ * basic styling for animated typed text using typed.js
+ */
+
+.typed
+  white-space: pre-wrap
+  line-height: $line-height.normal
+
+  &-content
+
+    &::after
+      content: ''
+      display: inline-block
+      width: .55em
+      height: 1em
+      background-color: currentColor
+      line-height: 1
+      opacity: .8
+      transform: translate(.05em, .15em)
+      animation: typed-cursor-blink .8s steps(2, start) infinite
+
+    &_view
+      display: inline-block
+
+@keyframes typed-cursor-blink
+  to
+    visibility: hidden
