@@ -7,7 +7,8 @@ var browserSync = require('browser-sync'),
     ReqMapper = require('requirements-mapper');
 
 // get config
-var config = require('./config');
+var config = require('./config'),
+    envSetup = require('./.gulp/modules/env-setup.js');
 
 // initialize gulpplug
 var plug = new gulpplug.Plug(gulp, {tasksDir: '.gulp/tasks'});
@@ -20,17 +21,8 @@ Object.keys(config).forEach(function(prop) {
 // initialize a requirements mapper for the data folder
 plug.data = new ReqMapper(plug.paths.data);
 
-// setter/getter for environment
-Object.defineProperty(plug, 'env', {
-  get: function() { return process.env.NODE_ENV; },
-  set: function(val) {
-    if (['production', 'development'].indexOf(val) !== -1) {
-      process.env.NODE_ENV = val;
-      plug.util.log('Environment: ' + plug.util.colors.yellow(plug.env));
-    }
-  }
-});
-plug.env = process.env.NODE_ENV;
+// setup environment
+envSetup(plug);
 
 // global browsersync instance
 plug.browserSync = browserSync;
@@ -64,4 +56,9 @@ plug
     'build:nginx-conf',
     'uberspace:rsync-nginx-conf',
     'uberspace:restart-nginx'
+  ])
+  .addSequence('release:www', [
+    'env:prod',
+    'build',
+    'uberspace:rsync-www'
   ]);
