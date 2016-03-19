@@ -61,4 +61,8 @@ plug
     'env:prod',
     'build',
     'uberspace:rsync-www'
+  ])
+  .addSequence('release:app', [
+    'uberspace:rsync-app',
+    'uberspace:after-rsync-app'
   ]);
