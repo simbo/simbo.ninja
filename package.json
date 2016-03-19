@@ -59,6 +59,7 @@
     "uglifyify": "^3.0.1"
   },
   "dependencies": {
+    "arrayify": "^1.0.0",
     "express": "^4.13.4",
     "highlight.js": "^9.1.0",
     "jade": "^1.11.0",
