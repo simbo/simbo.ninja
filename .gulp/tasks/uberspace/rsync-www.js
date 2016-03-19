@@ -4,7 +4,7 @@ var path = require('path');
 
 module.exports = [
 
-  'rsync dest/www to uberspace',
+  'rsync www to uberspace',
 
   function() {
     return this.gulp.src(this.paths.site.dest)
