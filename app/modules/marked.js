@@ -1,4 +1,7 @@
 'use strict';
+/**
+ * exports marked with custom code highlighter
+ */
 
 var marked = require('marked');
 

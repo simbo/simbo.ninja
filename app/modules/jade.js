@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * exports jade with custom filters
+ */
+
 var jade = require('jade');
 
 jade.filters.markdown = require('../functions/render-markdown');
