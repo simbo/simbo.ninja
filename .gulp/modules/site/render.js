@@ -11,34 +11,35 @@ var renderJade = require('../../../app/functions/render-jade'),
 
 var layoutCache = {};
 
-module.exports = function(options) {
+module.exports = renderSite;
+
+function renderSite(options) {
 
   return through.obj(transform);
 
-  function transform(file, enc, cb) {
-    if ((/\.(md|markdown)$/i).test(file.history[0])) {
-      file.contents = new Buffer(renderMarkdown(String(file.contents)));
-    }
+  function transform(file, enc, done) {
     if ((/\.jade$/i).test(file.history[0])) {
       options.jade.filename = file.history[0];
       file.contents = new Buffer(renderJade(String(file.contents), options.jade, file.data));
+    } else if ((/\.(md|markdown)$/i).test(file.history[0])) {
+      file.contents = new Buffer(renderMarkdown(String(file.contents)));
     }
     if (!file.data.hasOwnProperty('layout')) {
       file.data.layout = options.layout.default;
     }
-    if (file.data.layout) applyLayout(file, cb);
-    else cb(null, file);
+    if (file.data.layout) applyLayout(file, done);
+    else done(null, file);
   }
 
-  function applyLayout(file, cb) {
+  function applyLayout(file, done) {
     getLayout(file.data.layout).done(function(layout) {
       if (layout) {
         file.data.contents = String(file.contents);
         options.jade.filename = layout.path;
         file.contents = new Buffer(renderJade(layout.contents, options.jade, file.data));
       }
-      cb(null, file);
-    }, cb);
+      done(null, file);
+    }, done);
   }
 
   function getLayout(layout) {
@@ -60,4 +61,4 @@ module.exports = function(options) {
     });
   }
 
-};
+}
