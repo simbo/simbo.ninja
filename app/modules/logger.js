@@ -35,7 +35,7 @@ logger = new winston.Logger({
     new winston.transports.Console({
       silent: false,
       colorize: true,
-      handleExceptions: false,
+      handleExceptions: true,
       timestamp: function() {
         return moment(new Date()).format('hh:mm:ss');
       },
@@ -46,18 +46,18 @@ logger = new winston.Logger({
     }),
 
     new winston.transports.DailyRotateFile({
-      silent: false,
-      filename: path.join(config.paths.app, 'log', 'app'),
+      silent: true,
+      filename: path.join(config.paths.cwd, 'log', 'app'),
       datePattern: '.yyyy-MM-dd.log',
       handleExceptions: true
     }),
 
     new winston.transports.Couchdb({
       silent: false,
-      host: config.settings.couch.host,
-      port: config.settings.couch.host,
+      host: config.app.couchdb.host,
+      port: config.app.couchdb.port,
       db: 'log',
-      auth: config.settings.couch.connectionOptions.auth,
+      auth: config.app.couchdb.connectionOptions.auth,
       handleExceptions: true
     })
 
