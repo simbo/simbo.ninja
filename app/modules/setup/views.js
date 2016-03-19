@@ -34,7 +34,7 @@ function render(templatePath, options, cb) {
         merge({}, options, {
           filename: template.path,
           basedir: config.paths.site.src,
-          pretty: true
+          pretty: process.env.NODE_ENV === 'development'
         })
       );
       cb(null, rendered);
