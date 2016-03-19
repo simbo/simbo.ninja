@@ -1,7 +1,6 @@
 'use strict';
 
-var fs = require('fs'),
-    path = require('path');
+var fs = require('fs');
 
 var merge = require('merge'),
     Q = require('q'),
@@ -29,15 +28,10 @@ function setupViews(app) {
 function render(templatePath, options, cb) {
   getTemplate(templatePath)
     .done(function(template) {
-      var rendered = renderJade(
-        template.contents,
-        merge({}, options, {
-          filename: template.path,
-          basedir: config.paths.site.src,
-          pretty: process.env.NODE_ENV === 'development'
-        })
-      );
-      cb(null, rendered);
+      options.filename = template.path;
+      options.basedir = config.paths.site.src;
+      options.pretty = process.env.NODE_ENV === 'development';
+      cb(null, renderJade(template.contents, options));
     });
 }
 
