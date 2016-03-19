@@ -7,5 +7,5 @@ var setup = require('./modules/setup');
 
 Q(express())
   .then(setup.routes)
-  .then(setup.errorhandler)
+  .then(setup.errorhandling)
   .done(setup.server);
