@@ -11,7 +11,7 @@ var config = require('../../../config'),
     jade = require('../jade'),
     renderJade = require('../../functions/render-jade');
 
-var data = (new ReqMapper(config.paths.data)).map(),
+var data = new ReqMapper(config.paths.data),
     templateCache = {};
 
 jade.__express = render;
@@ -19,7 +19,7 @@ jade.__express = render;
 module.exports = setupViews;
 
 function setupViews(app) {
-  // app.locals = merge({}, app.locals, data.map());
+  app.locals = merge({}, app.locals, data.map());
   app.engine('jade', jade.__express);
   app.set('views', config.paths.views);
   app.set('view engine', 'jade');
