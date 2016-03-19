@@ -8,6 +8,7 @@ module.exports = renderJade;
 
 function renderJade(str, options, data) {
   var id = str + JSON.stringify(options);
+  data = data || options;
   if (!cache.hasOwnProperty(id)) {
     cache[id] = jade.compile(str, options);
   }

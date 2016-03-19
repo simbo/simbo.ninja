@@ -24,6 +24,7 @@ paths.site = {
 paths.content = path.join(paths.site.src, 'content');
 paths.layouts = path.join(paths.site.src, 'layouts');
 paths.static = path.join(paths.site.src, 'static');
+paths.views = path.join(paths.site.src, 'views');
 
 paths.assets = {
   src: path.join(paths.src, 'assets'),
