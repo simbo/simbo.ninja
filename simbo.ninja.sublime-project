@@ -7,6 +7,30 @@
 				".vagrant"
 			],
 			"path": "."
+		},
+		{
+			"file_exclude_patterns":
+			[
+				".*"
+			],
+			"follow_symlinks": false,
+			"path": "./app"
+    },
+    {
+      "file_exclude_patterns":
+      [
+        ".*"
+      ],
+      "follow_symlinks": false,
+      "path": "./src/assets"
+    },
+    {
+      "file_exclude_patterns":
+      [
+        ".*"
+      ],
+      "follow_symlinks": false,
+      "path": "./config"
 		}
 	]
 }
