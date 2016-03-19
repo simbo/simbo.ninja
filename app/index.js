@@ -7,8 +7,8 @@ var path = require('path');
 var express = require('express');
 
 // require project modules
-var config = require('config'),
-    logger = require('app/modules/logger');
+var config = require('../config'),
+    logger = require('./modules/logger');
 
 // scope vars
 var app = express(),

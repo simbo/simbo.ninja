@@ -5,7 +5,7 @@ var path = require('path');
 var moment = require('moment'),
     winston = require('winston');
 
-var config = require('config');
+var config = require('../../config');
 
 var logger, loglevels;
 
