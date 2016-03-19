@@ -2,6 +2,8 @@
 
 var path = require('path');
 
+var uberspace = require('./uberspace');
+
 var paths = {};
 
 paths.cwd = path.dirname(__dirname);
@@ -9,6 +11,7 @@ paths.cwd = path.dirname(__dirname);
 paths.src = path.join(paths.cwd, 'src');
 
 paths.app = path.join(paths.cwd, 'app');
+paths.config = path.join(paths.cwd, 'config');
 
 paths.dest = path.join(paths.cwd, 'dest');
 
@@ -42,11 +45,6 @@ paths.nginx = {
   dest: path.join(paths.dest, 'nginx')
 };
 
-paths.remote = {
-  root: '/var/www/virtual/simbo/nginx/simbo.ninja',
-  nginx: '/home/simbo/nginx/conf'
-};
-paths.remote.www = path.join(paths.remote.root, 'www');
-paths.remote.app = path.join(paths.remote.root, 'app');
+paths.remote = uberspace.paths;
 
 module.exports = paths;
