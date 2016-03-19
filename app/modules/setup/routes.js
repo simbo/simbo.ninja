@@ -16,7 +16,7 @@ function setupRoutes(app) {
 
   async.each(config.app.routes, function(route, cb) {
 
-    var routeRequirePath = '..' + path.join(path.sep, 'routes', route.module);
+    var routeRequirePath = '../../' + path.join('routes', route.module);
     app.use(route.path, require(routeRequirePath));
     logger.log('verbose', 'created route %s using module %s', route.path, route.module);
     cb();
