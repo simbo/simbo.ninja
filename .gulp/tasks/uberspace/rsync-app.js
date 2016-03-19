@@ -4,13 +4,15 @@ var path = require('path');
 
 module.exports = [
 
-  'rsync app, config and package.json to uberspace',
+  'rsync app and dependencies to uberspace',
 
   function() {
     return this.gulp.src([
       this.paths.app,
+      this.paths.src,
       this.paths.config,
-      path.join(this.paths.cwd, 'package.json')
+      path.join(this.paths.cwd, 'package.json'),
+      path.join(this.paths.cwd, 'pm2.json')
     ])
       .pipe(this.plugins.rsync({
         root: this.paths.cwd,
