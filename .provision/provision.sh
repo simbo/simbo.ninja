@@ -29,12 +29,12 @@ curl -X POST http://$COUCHDB_USER:$COUCHDB_PASS@localhost:5984/_restart -H"Conte
 
 # install global node packages
 echo_c "Installing global node.js packages..."
-npm install -g pm2@1.0.1 gulp@3.9.1
+npm i -g pm2@1.0.2 gulp@3.9.1
 
-# install project dependencies and build
-# echo_c "Installing local node.js packages..."
-# cd /vagrant/
-# npm install
+# install project dependencies
+echo_c "Installing local node.js packages..."
+cd /vagrant
+npm i
 
 # run app via pm2
 # echo_c "Configuring pm2..."
