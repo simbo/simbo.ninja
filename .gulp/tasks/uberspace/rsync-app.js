@@ -8,11 +8,10 @@ module.exports = [
 
   function() {
     return this.gulp.src([
-      this.paths.app,
-      this.paths.src,
-      this.paths.config,
-      path.join(this.paths.cwd, 'package.json'),
-      path.join(this.paths.cwd, 'pm2.json')
+      path.join(this.paths.app, '**/*'),
+      path.join(this.paths.src, '**/*'),
+      path.join(this.paths.config, '**/*'),
+      path.join(this.paths.cwd, 'package.json')
     ])
       .pipe(this.plugins.rsync({
         root: this.paths.cwd,
