@@ -7,7 +7,7 @@ module.exports = [
   'apply nginx config on uberspace',
 
   function(done) {
-    ssh('nginx -s reload', done);
+    ssh('~/bin/nginx -s reload', done);
   }
 
 ];
