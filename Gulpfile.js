@@ -46,16 +46,11 @@ plug
   .addSequence('copy', [
     ['copy:img', 'copy:files']
   ])
-  .addSequence('release', [
-    'env:prod',
-    'build',
-    'uberspace:rsync-www'
-  ])
-  .addSequence('nginx-conf', [
+  .addSequence('release:nginx', [
     'clean:nginx-conf',
     'build:nginx-conf',
     'uberspace:rsync-nginx-conf',
-    'uberspace:restart-nginx'
+    'uberspace:reload-nginx'
   ])
   .addSequence('release:www', [
     'env:prod',
@@ -65,4 +60,7 @@ plug
   .addSequence('release:app', [
     'uberspace:rsync-app',
     'uberspace:after-rsync-app'
+  ])
+  .addSequence('release', [
+    ['release:www', 'release:app']
   ]);
