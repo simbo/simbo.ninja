@@ -1,0 +1,39 @@
+{
+  "name": "simbo.ninja-app",
+  "version": "0.1.0",
+  "description": "http://simbo.ninja",
+  "author": "Simon Lepel <mail@simbo.ninja>",
+  "keywords": [],
+  "license": {
+    "type": "MIT",
+    "url": "http://simbo.mit-license.org/"
+  },
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/simbo/simbo.ninja.git"
+  },
+  "bugs": {
+    "url": "https://github.com/simbo/simbo.ninja/issues"
+  },
+  "main": "app/index.js",
+  "dependencies": {
+    "arrayify": "^1.0.0",
+    "async": "^2.0.0-rc.1",
+    "express": "^4.13.4",
+    "highlight.js": "^9.2.0",
+    "jade": "^1.11.0",
+    "marked": "^0.3.5",
+    "merge": "^1.2.0",
+    "moment": "^2.12.0",
+    "q": "^1.4.1",
+    "requirements-mapper": "^1.0.1",
+    "uglify-js": "^2.6.2",
+    "winston": "^2.2.0",
+    "winston-couchdb": "^0.6.3",
+    "winston-daily-rotate-file": "^1.0.1"
+  }
+}
