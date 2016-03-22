@@ -7,20 +7,17 @@ module.exports = [
   'rsync www to uberspace',
 
   function() {
-    return this.gulp.src(this.paths.site.dest)
+    return this.gulp.src([
+      path.join(this.paths.site.dest, '**/*'),
+      '!' + path.join(this.paths.site.dest, '@(blog|contact)/**/*')
+    ])
       .pipe(this.plugins.rsync({
-        root: path.relative(this.paths.cwd, this.paths.site.dest),
-        destination: this.paths.remote.www,
+        root: this.paths.dest,
+        destination: path.join(this.paths.remote.root, 'dest'),
         hostname: this.uberspace.host,
         username: this.uberspace.user,
-        exclude: [
-          '/contact',
-          '/blog'
-        ],
-        incremental: true,
-        recursive: true,
         progress: true,
-        clean: false
+        incremental: true
       }));
   }
 

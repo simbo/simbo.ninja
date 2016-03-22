@@ -1,8 +1,10 @@
 'use strict';
 
+var path = require('path');
+
 var ssh = require('../../modules/ssh');
 
-var paths = require('../../../config/paths');
+var paths = require('../../../src/config/paths');
 
 module.exports = [
 
@@ -12,7 +14,7 @@ module.exports = [
     ssh([
       'source ~/.bash_profile &> /dev/null',
       'cp -fa ' + paths.remote.config.src + '/* ' + paths.remote.config.dest,
-      'cd ' + paths.remote.root,
+      'cd ' + path.join(paths.remote.root, 'src'),
       'npm install --production'
     ], done);
   }

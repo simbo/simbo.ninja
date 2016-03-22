@@ -5,7 +5,7 @@ var childProcess = require('child_process');
 var arrayify = require('arrayify'),
     gUtil = require('gulp-util');
 
-var config = require('../../config');
+var config = require('../../src/config');
 
 function ssh(commands, done) {
 

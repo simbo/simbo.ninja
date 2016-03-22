@@ -187,7 +187,7 @@ in uberspace wiki.
 npm i -g pm2@1.0.2
 
 # start app via pm2; save process list; stop app; kill pm2 daemon
-pm2 start /var/www/virtual/simbo/nginx/simbo.ninja/config/pm2.json
+pm2 start /var/www/virtual/simbo/nginx/simbo.ninja/src/config/pm2.json
 pm2 save
 pm2 stop 0
 pm2 kill

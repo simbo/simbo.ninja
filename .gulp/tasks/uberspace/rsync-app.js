@@ -4,25 +4,19 @@ var path = require('path');
 
 module.exports = [
 
-  'rsync app and dependencies to uberspace',
+  'rsync src to uberspace',
 
   function() {
     return this.gulp.src([
-      path.join(this.paths.app, '**/*'),
-      path.join(this.paths.src, '**/*'),
-      path.join(this.paths.config, '**/*'),
-      path.join(this.paths.cwd, 'package.json')
+      path.join(this.paths.src, '**/*')
     ])
       .pipe(this.plugins.rsync({
-        root: this.paths.cwd,
-        destination: this.paths.remote.root,
+        root: this.paths.src,
+        destination: path.join(this.paths.remote.root, 'src'),
         hostname: this.uberspace.host,
         username: this.uberspace.user,
-        exclude: [],
         incremental: true,
-        recursive: true,
-        progress: true,
-        clean: false
+        progress: true
       }));
   }
 

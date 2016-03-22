@@ -6,8 +6,8 @@ var fs = require('fs'),
 var Q = require('q'),
     through = require('through2');
 
-var renderJade = require('../../../app/functions/render-jade'),
-    renderMarkdown = require('../../../app/functions/render-markdown');
+var renderJade = require('../../../src/app/functions/render-jade'),
+    renderMarkdown = require('../../../src/app/functions/render-markdown');
 
 var layoutCache = {};
 

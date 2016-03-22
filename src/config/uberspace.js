@@ -12,11 +12,10 @@ var uberspace = {
 };
 
 uberspace.paths.nginx = path.join(uberspace.paths.home, 'nginx/conf');
-uberspace.paths.www = path.join(uberspace.paths.root, 'www');
-uberspace.paths.app = path.join(uberspace.paths.root, 'app');
+
 uberspace.paths.config = {
-  src: path.join(uberspace.paths.home, 'simbo.ninja/config'),
-  dest: path.join(uberspace.paths.root, 'config')
+  src: path.join(uberspace.paths.home, 'simbo.ninja/src/config'),
+  dest: path.join(uberspace.paths.root, 'src/config')
 };
 
 module.exports = uberspace;

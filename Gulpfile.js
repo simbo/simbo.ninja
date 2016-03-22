@@ -7,7 +7,7 @@ var browserSync = require('browser-sync'),
     ReqMapper = require('requirements-mapper');
 
 // get config
-var config = require('./config'),
+var config = require('./src/config'),
     envSetup = require('./.gulp/modules/env-setup.js');
 
 // initialize gulpplug
