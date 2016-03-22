@@ -36,11 +36,11 @@ echo_c "Installing local node.js packages..."
 cd /vagrant
 npm i
 
-# run app via pm2
-# echo_c "Configuring pm2..."
-# pm2 start /vagrant/processes.json
-# pm2 startup ubuntu &> /dev/null
-# sudo env PATH=$PATH:/usr/bin pm2 startup ubuntu -u vagrant
+# setup pm2 and start app
+echo_c "Configuring pm2..."
+sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u vagrant --hp /home/vagrant"
+pm2 start /vagrant/config/pm2.json
+pm2 save
 
 # print provision duration
 PROVISION_DURATION=$((`date +%s`-$PROVISION_STARTED))
