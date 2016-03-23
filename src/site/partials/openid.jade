@@ -1,0 +1,7 @@
+var openIdUrl = 'https://srvkist.shaula.uberspace.de/id/'
+
+link(rel="openid.server", href="#{openIdUrl}")
+link(rel="openid.delegate", href="#{openIdUrl}simbo")
+link(rel="openid2.provider", href="#{openIdUrl}")
+link(rel="openid2.local_id", href="#{openIdUrl}simbo")
+meta(http-equiv="X-XRDS-Location", content="#{openIdUrl}xrds/simbo")

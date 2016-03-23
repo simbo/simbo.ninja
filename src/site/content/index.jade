@@ -5,11 +5,7 @@ layout: false
 extends /layouts/base.jade
 
 block append head
-  link(rel="openid.server", href="https://srvkist.shaula.uberspace.de/id/")
-  link(rel="openid.delegate", href="https://srvkist.shaula.uberspace.de/id/simbo")
-  link(rel="openid2.provider", href="https://srvkist.shaula.uberspace.de/id/")
-  link(rel="openid2.local_id", href="https://srvkist.shaula.uberspace.de/id/simbo")
-  meta(http-equiv="X-XRDS-Location", content="https://srvkist.shaula.uberspace.de/id/xrds/simbo")
+  include /partials/openid.jade
 
 block head_styles
   +style("home")
