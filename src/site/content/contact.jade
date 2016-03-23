@@ -27,7 +27,7 @@ block body_contents
         span.contact-address_zip #{personal.address.zip} #[span.contact-address_city= personal.address.city], #[span.contact-address_country= personal.address.country]
 
       ul.contact-items
-        for key in ['phone', 'email', 'gpgkey']
+        for key in ["phone", "email", "gpgkey"]
           - var item = personal.contacts[key]
           li.contact-item
             a.contact-item_link(
@@ -38,7 +38,7 @@ block body_contents
               span.contact-item_label= item.label
 
     ul.social-links
-      for key in ['github', 'npm', 'twitter', 'google', 'facebook', 'gplus']
+      for key in ["github", "npm", "twitter", "google", "facebook", "gplus"]
         - var item = personal.contacts[key]
         li.social-links_item
           a.social-links_link(

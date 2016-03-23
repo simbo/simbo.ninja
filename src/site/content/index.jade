@@ -52,7 +52,7 @@ block body_contents
       span(data-pause=1200)
       | simbo
       span(data-pause=500)
-      | !{' ~ '}
+      | !{" ~ "}
       span(data-pause=500)
       | Simon Lepel
       span(data-pause=750)
@@ -62,13 +62,13 @@ block body_contents
       span(data-pause=250)
       br
       span(data-pause=500)
-      for key in ['email', 'gpgkey', 'twitter', 'github', 'npm']
+      for key in ["email", "gpgkey", "twitter", "github", "npm"]
         - var item = personal.contacts[key]
         a(
           href=item.url,
           title=item.description,
           class="typed-icon icon-#{item.icon}"
-        )= ' '
+        )= " "
         |  #[span(data-pause=500)]
       br
       span(data-pause=250)
