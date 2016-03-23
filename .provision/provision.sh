@@ -35,11 +35,13 @@ npm i -g pm2@1.0.2 gulp@3.9.1
 echo_c "Installing local node.js packages..."
 cd /vagrant
 npm i
+cd src
+npm i
 
 # setup pm2 and start app
 echo_c "Configuring pm2..."
 sudo su -c "env PATH=$PATH:/usr/bin pm2 startup ubuntu -u vagrant --hp /home/vagrant"
-pm2 start /vagrant/config/pm2.json
+pm2 start /vagrant/src/config/pm2.json
 pm2 save
 
 # print provision duration

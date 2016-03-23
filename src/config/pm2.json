@@ -2,8 +2,8 @@
   "apps" : [{
     "name": "simbo.ninja",
     "script": "app/index.js",
-    "cwd": "/vagrant",
     "watch": false,
+    "cwd": "/vagrant/src",
     "log_date_format": "YYYY-MM-DD HH:mm Z",
     "env": {
       "NODE_ENV": "development"
