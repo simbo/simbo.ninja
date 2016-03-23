@@ -23,7 +23,8 @@ var paths = require('../paths');
  * @type {Array}
  */
 var routes = [
-  "status"
+  'api/status',
+  'api/log'
 ];
 
 /**
