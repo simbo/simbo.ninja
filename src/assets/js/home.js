@@ -1,6 +1,6 @@
 'use strict';
 
-global.$ = require('components/cash');
+global.$ = require('cash-dom');
 global.jQuery = $;
 
 $(document).ready(function() {
