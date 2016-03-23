@@ -23,6 +23,7 @@
   "dependencies": {
     "arrayify": "^1.0.0",
     "async": "^2.0.0-rc.1",
+    "cradle": "^0.7.1",
     "express": "^4.13.4",
     "highlight.js": "^9.2.0",
     "jade": "^1.11.0",
