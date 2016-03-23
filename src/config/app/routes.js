@@ -16,7 +16,9 @@ var paths = require('../paths');
  *       module: 'bar' // requires module "./app/routes/bar"
  *     }
  *     ```
- *   - a string, used to generate the object described before
+ *   - an array, containing a path and an optional module, used to generate
+ *     described object
+ *   - a string, used to generate described object
  *
  * @type {Array}
  */
@@ -33,6 +35,9 @@ var routes = [
 module.exports = routes.reduce(function(appRoutes, route) {
   if (typeof route === 'string') {
     route = {path: route};
+  }
+  if (Array.isArray(route) && route.length === 2) {
+    route = {path: route[0], module: route[1]};
   }
   if (typeof route === 'object' && route.path && route.path.length) {
     appRoutes.push({
