@@ -1,7 +1,6 @@
 {
   "secret": "SESSION_SECRET",
   "sid": "sid",
-  "collection": "sessions",
   "cookie": {
     "path": "/",
     "httpOnly": true,

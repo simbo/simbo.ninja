@@ -3,8 +3,10 @@
 var router = require('express').Router();
 
 router.get('/', function(req, res) {
+  if (!req.session.date) req.session.date = new Date();
   res.send({
-    status: 'OK'
+    status: 'OK',
+    session: req.session
   });
 });
 
