@@ -1,13 +1,16 @@
 extends /layouts/base.jade
 
-block head
+block head_title
   title= error.message
 
+block head_styles
+  +style('error')
+
 block body
-  h1 Error #{error.status}
-  if error.status === 404
-    p= error.message
-    p #[code= error.url]
-  else
-    p= error.message
-    pre= error.stack
+  .error
+    h1.error_headline Error #{error.status}
+    p.error_message= error.message
+    if error.status === 404
+      p.error_url= error.url
+    else if error.stack
+      pre.error_stack= error.stack
