@@ -8,13 +8,36 @@ var async = require('async'),
 var config = require('config'),
     logger = require('app/modules/logger');
 
+/**
+ * app routes
+ * reduce routes array to an array containing only valid route objects
+ *
+ * @type {Array}
+ */
+var routes = config.app.routes.reduce(function(routes, route) {
+  if (typeof route === 'string') {
+    route = {path: route};
+  }
+  if (Array.isArray(route) && route.length === 2) {
+    route = {path: route[0], module: route[1]};
+  }
+  if (typeof route === 'object' && route.path && route.path.length) {
+    routes.push({
+      path: String(route.path).replace(/^([^\/])/i, '/$1'),
+      module: String(route.module || route.path)
+    });
+  }
+  return routes;
+}, []);
+
+
 module.exports = setupRoutes;
 
 function setupRoutes(app) {
 
   var deferred = Q.defer();
 
-  async.each(config.app.routes, function(route, cb) {
+  async.each(routes, function(route, cb) {
 
     var routeRequirePath = '../../' + path.join('routes', route.module);
     app.use(route.path, require(routeRequirePath));
