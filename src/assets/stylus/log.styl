@@ -1,0 +1,62 @@
+@require 'base'
+
+body
+  background: black
+  color: ivory
+
+.log
+  margin: 1em
+
+  &_clear
+    position: fixed
+    top: 1em
+    right: 1em
+    padding: .4em .6em
+    border-radius: .1em
+    background: ivory
+    color: black
+    letter-spacing: .05em
+    font-family: $font-family.primary
+    font-size: $font-size.small
+    text-transform: uppercase
+    opacity: .2
+    transition: opacity .2s ease
+
+    &:hover,
+    &:focus
+      opacity: .8
+
+  &-entry
+    white-space: pre-line
+    font-family: $font-family.monospace
+    font-size: 15px
+    line-height: 1.5
+
+    &.has-level
+      &--error
+        .log-entry_level
+          color: red
+      &--warn
+        .log-entry_level
+          color: yellow
+      &--info
+        .log-entry_level
+          color: blue
+      &--verbose
+        .log-entry_level
+          color: white
+      &--debug
+        .log-entry_level
+          color: green
+      &--silly
+        .log-entry_level
+          color: gray
+
+    &_date,
+    &_level
+
+      &::after
+        content: ' '
+
+    &_date
+      color: gray

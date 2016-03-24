@@ -1,15 +1,17 @@
 'use strict';
 
-var router = require('express').Router();
+var async = require('async'),
+    router = require('express').Router();
 
 var couch = require('app/modules/couch');
 
+var db = couch.database('log');
+
 router.get('/', function(req, res, next) {
 
-  var db = couch.database('log'),
-      viewOptions = {
-        descending: true
-      };
+  var viewOptions = {
+    descending: true
+  };
 
   if (req.query.hasOwnProperty('after')) {
     viewOptions.endkey = req.query.after;
@@ -19,11 +21,30 @@ router.get('/', function(req, res, next) {
       parseInt(req.query.limit, 10) : 50;
   }
 
-  db.view('log/byTimestamp', viewOptions, function(err, results) {
+  db.view('log/paramsByTimestamp', viewOptions, function(err, results) {
     if (err) return next(err);
     res.send({
       entries: results
     });
+  });
+
+});
+
+router.get('/clear', function(req, res, next) {
+
+  db.view('log/byId', function(err, results) {
+    if (err) next(err);
+    else {
+      async.each(results, function(doc, cb) {
+        db.remove(doc.id, doc.value._rev, function(err, doc) {
+          console.log(doc);
+          cb();
+        });
+      }, function(err) {
+        if (err) next(err);
+        else res.send(true);
+      });
+    }
   });
 
 });

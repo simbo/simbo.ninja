@@ -1,0 +1,16 @@
+extends /layouts/base.jade
+
+block head_styles
+  +style('log')
+
+block head_scripts
+  +script('log')
+
+block body_contents
+  .log
+    button#log_clear.log_clear clear log
+    script#log-entry-template(type="text/html")
+      .log-entry(id="log-entry_{%= id %}", class="has-level--{%= level %}")
+        span.log-entry_date {%= date %}
+        span.log-entry_level {%= level %}
+        span.log-entry_message {%= message %}

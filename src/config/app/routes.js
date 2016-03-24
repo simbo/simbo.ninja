@@ -24,6 +24,7 @@ var paths = require('../paths');
  */
 var routes = [
   'api/status',
+  'log',
   'api/log'
 ];
 
