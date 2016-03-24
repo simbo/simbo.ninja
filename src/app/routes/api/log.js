@@ -37,7 +37,7 @@ router.get('/clear', function(req, res, next) {
     else {
       async.each(results, function(doc, cb) {
         db.remove(doc.id, doc.value._rev, function(err, doc) {
-          console.log(doc);
+          if (err) cb(err);
           cb();
         });
       }, function(err) {
