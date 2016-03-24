@@ -1,10 +1,14 @@
 'use strict';
 
-var path = require('path');
+var Q = require('q');
 
-var ReqMapper = require('requirements-mapper');
+module.exports = setup;
 
-var setupMapper = new ReqMapper('./');
-setupMapper.globOptions.ignore = path.basename(__filename);
-
-module.exports = setupMapper.map();
+function setup(app) {
+  return Q(app)
+    .then(require('./databases'))
+    .then(require('./views'))
+    .then(require('./routes'))
+    .then(require('./errorhandling'))
+    .done(require('./server'));
+}

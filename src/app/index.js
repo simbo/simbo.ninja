@@ -1,13 +1,7 @@
 'use strict';
 
-var express = require('express'),
-    Q = require('q');
+var express = require('express');
 
 var setup = require('app/modules/setup');
 
-Q(express())
-  .then(setup.databases)
-  .then(setup.views)
-  .then(setup.routes)
-  .then(setup.errorhandling)
-  .done(setup.server);
+setup(express());
