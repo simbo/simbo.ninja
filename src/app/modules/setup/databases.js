@@ -22,10 +22,12 @@ function setupDatabase(design, name, cb) {
   db.exists(function(err, exists) {
     if (err) cb(err);
     else if (exists) applyDesign(db, design, cb);
-    else db.create(function(err) {
-      if (err) cb(err);
-      else applyDesign(db, design, cb);
-    })
+    else {
+      db.create(function(err) {
+        if (err) cb(err);
+        else applyDesign(db, design, cb);
+      });
+    }
   });
 }
 
@@ -33,5 +35,5 @@ function applyDesign(db, design, cb) {
   db.save('_design/' + db.name, design, function(err) {
     if (err) cb(err);
     else cb();
-  })
+  });
 }
