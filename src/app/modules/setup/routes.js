@@ -5,8 +5,8 @@ var path = require('path');
 var async = require('async'),
     Q = require('q');
 
-var config = require('../../../config'),
-    logger = require('../logger');
+var config = require('config'),
+    logger = require('app/modules/logger');
 
 module.exports = setupRoutes;
 

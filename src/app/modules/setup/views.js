@@ -6,9 +6,9 @@ var merge = require('merge'),
     Q = require('q'),
     ReqMapper = require('requirements-mapper');
 
-var config = require('../../../config'),
-    jade = require('../jade'),
-    renderJade = require('../../functions/render-jade');
+var config = require('config'),
+    jade = require('app/modules/jade'),
+    renderJade = require('app/functions/render-jade');
 
 var data = new ReqMapper(config.paths.data),
     templateCache = {};
