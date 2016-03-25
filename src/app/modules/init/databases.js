@@ -6,9 +6,9 @@ var async = require('async'),
 var config = require('config'),
     couch = require('app/modules/couch');
 
-module.exports = setupDatabases;
+module.exports = initDatabases;
 
-function setupDatabases(app) {
+function initDatabases(app) {
   return Q.Promise(function(resolve, reject) {
     async.forEachOf(config.app.databases, setupDatabase, function(err) {
       if (err) reject(err);

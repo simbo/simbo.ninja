@@ -2,9 +2,9 @@
 
 var logger = require('app/modules/logger');
 
-module.exports = setupErrorhandling;
+module.exports = initErrorhandling;
 
-function setupErrorhandling(app) {
+function initErrorhandling(app) {
   app.use(error404);
   app.use(errorhandler);
   return app;

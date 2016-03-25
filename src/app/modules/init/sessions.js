@@ -6,9 +6,9 @@ var uuid = require('uuid'),
 
 var config = require('config');
 
-module.exports = setupSessions;
+module.exports = initSessions;
 
-function setupSessions(app) {
+function initSessions(app) {
 
   var store = sessionstore.createSessionStore({
     type: 'couchdb',

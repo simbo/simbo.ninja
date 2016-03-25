@@ -3,9 +3,9 @@
 var config = require('config'),
     logger = require('app/modules/logger');
 
-module.exports = setupServer;
+module.exports = initServer;
 
-function setupServer(app) {
+function initServer(app) {
   var server = app.listen(
     config.app.server.port,
     config.app.server.host,

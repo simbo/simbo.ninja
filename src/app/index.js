@@ -2,6 +2,6 @@
 
 var express = require('express');
 
-var setup = require('app/modules/setup');
+var init = require('app/modules/init');
 
-setup(express());
+init(express());

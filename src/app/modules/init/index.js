@@ -2,9 +2,9 @@
 
 var Q = require('q');
 
-module.exports = setup;
+module.exports = init;
 
-function setup(app) {
+function init(app) {
   return Q(app)
     .then(require('./databases'))
     .then(require('./sessions'))

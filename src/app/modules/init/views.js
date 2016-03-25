@@ -15,9 +15,9 @@ var data = new ReqMapper(config.paths.data),
 
 jade.__express = render;
 
-module.exports = setupViews;
+module.exports = initViews;
 
-function setupViews(app) {
+function initViews(app) {
   app.locals = merge({}, app.locals, data.map());
   app.engine('jade', jade.__express);
   app.set('views', config.paths.views);
@@ -30,7 +30,7 @@ function render(templatePath, options, cb) {
     .done(function(template) {
       options.filename = template.path;
       options.basedir = config.paths.site.src;
-      options.pretty = process.env.NODE_ENV === 'development';
+      // options.pretty = process.env.NODE_ENV === 'development';
       cb(null, renderJade(template.contents, options));
     });
 }
