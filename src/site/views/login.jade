@@ -1,0 +1,12 @@
+extends /layouts/base.jade
+
+block body_contents
+  h2 Login
+  form.login-form(action="/login", method="post")
+    fieldset
+      label(for="username") Username
+      input(id="username", type="text", name="username")
+      label(for="password") Password
+      input(id="password", type="password", name="password")
+    input(type="submit", value="Log in")
+

@@ -10,6 +10,7 @@ function init(app) {
     .then(require('./server'))
     .then(require('./parsers'))
     .then(require('./sessions'))
+    .then(require('./auth'))
     .then(require('./views'))
     .then(require('./routes'))
     .then(require('./errorhandling'))

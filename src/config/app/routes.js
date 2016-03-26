@@ -19,6 +19,8 @@
  * @type {Array}
  */
 var routes = [
+  ['/', 'login'],
+  'account',
   'api/status',
   'log',
   'api/log'
