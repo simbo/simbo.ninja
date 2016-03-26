@@ -8,6 +8,7 @@ function init(app) {
   return Q(app)
     .then(require('./databases'))
     .then(require('./server'))
+    .then(require('./parsers'))
     .then(require('./sessions'))
     .then(require('./views'))
     .then(require('./routes'))

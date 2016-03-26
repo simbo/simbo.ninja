@@ -60,6 +60,8 @@
   "dependencies": {
     "arrayify": "^1.0.0",
     "async": "^2.0.0-rc.1",
+    "body-parser": "^1.15.0",
+    "cookie-parser": "^1.4.1",
     "cradle": "^0.7.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
