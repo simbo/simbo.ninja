@@ -2,8 +2,16 @@
   "apps" : [{
     "name": "simbo.ninja",
     "script": "app/index.js",
-    "watch": false,
     "cwd": "/vagrant/src",
+    "watch": [
+      "./app/**/*.js",
+      "./config/**/*.js?(on)",
+      "./site/views/**/*.jade"
+    ],
+    "watch_options": {
+      "followSymlinks": false,
+      "usePolling": true
+    },
     "log_date_format": "YYYY-MM-DD HH:mm Z",
     "env": {
       "NODE_ENV": "development",
