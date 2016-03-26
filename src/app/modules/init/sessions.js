@@ -14,7 +14,12 @@ function initSessions(app) {
     type: 'couchdb',
     host: 'http://' + config.app.couchdb.host,
     port: config.app.couchdb.port,
-    options: config.app.couchdb.connectionOptions,
+    options: {
+      auth: {
+        username: config.app.couchdb.username,
+        password: config.app.couchdb.password
+      }
+    },
     dbName: 'sessions',
     collectionName: 'sessions',
     timeout: 10000

@@ -1,11 +1,6 @@
 {
   "host": "127.0.0.1",
   "port": 52324,
-  "connectionOptions": {
-    "auth": {
-      "username": "dev",
-      "password": "dev"
-    },
-    "secure": false
-  }
+  "username": "dev",
+  "password": "dev"
 }

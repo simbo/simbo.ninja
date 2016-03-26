@@ -60,7 +60,10 @@ logger = new winston.Logger({
       host: config.app.couchdb.host,
       port: config.app.couchdb.port,
       db: 'log',
-      auth: config.app.couchdb.connectionOptions.auth,
+      auth: {
+        username: config.app.couchdb.username,
+        password: config.app.couchdb.password
+      },
       handleExceptions: true
     })
 
