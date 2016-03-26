@@ -4,10 +4,10 @@ module.exports = {
 
   views: {
 
-    paramsByTimestamp: {
+    byTimestamp: {
       map: function(doc) {
         if (doc.resource === 'log') {
-          emit(doc.params.timestamp, doc.params);
+          emit(doc.params.timestamp, doc);
         }
       }
     },
@@ -15,7 +15,7 @@ module.exports = {
     byId: {
       map: function(doc) {
         if (doc.resource === 'log') {
-          emit(doc.id, doc);
+          emit(doc._id, doc);
         }
       }
     }

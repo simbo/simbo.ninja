@@ -7,7 +7,7 @@ var couch = require('app/modules/couch');
 
 var db = couch.database('log');
 
-router.get('/', function(req, res, next) {
+router.get('/latest', function(req, res, next) {
 
   var viewOptions = {
     descending: true
@@ -21,10 +21,10 @@ router.get('/', function(req, res, next) {
       parseInt(req.query.limit, 10) : 50;
   }
 
-  db.view('log/paramsByTimestamp', viewOptions, function(err, results) {
+  db.view('log/byTimestamp', viewOptions, function(err, results) {
     if (err) return next(err);
     res.send({
-      entries: results
+      entries: results.map(getEntryFromDoc)
     });
   });
 
@@ -35,8 +35,8 @@ router.get('/clear', function(req, res, next) {
   db.view('log/byId', function(err, results) {
     if (err) next(err);
     else {
-      async.each(results, function(doc, cb) {
-        db.remove(doc.id, doc.value._rev, function(err, doc) {
+      async.each(results, function(row, cb) {
+        db.remove(row.key, row.value._rev, function(err) {
           if (err) cb(err);
           cb();
         });
@@ -50,3 +50,9 @@ router.get('/clear', function(req, res, next) {
 });
 
 module.exports = router;
+
+function getEntryFromDoc(docValue) {
+  var entry = docValue.params;
+  entry.id = docValue._id;
+  return entry;
+}

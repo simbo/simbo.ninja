@@ -29,18 +29,19 @@ function queryEntries() {
   if (entries.length > 0) data.after = entries[entries.length - 1].timestamp;
   else data.limit = 100;
   reqwest({
-    url: '/api/log',
+    url: '/api/log/latest',
     type: 'json',
     data: data
   })
     .then(function(result) {
       if (result.entries && result.entries.length > 0) {
         result.entries.reverse().forEach(function(entry) {
-          var data = entry.value;
-          data.id = entry.id;
-          data.date = moment(data.timestamp).format('DD.MM.YYYY HH:mm:ss');
-          entries.push(data);
-          $container.append(renderTemplate(entryTemplate, data));
+          var $entry;
+          entry.date = moment(entry.timestamp).format('DD.MM.YYYY HH:mm:ss');
+          entries.push(entry);
+          $entry = $(renderTemplate(entryTemplate, entry));
+          $entry.data('entry', entry);
+          $container.append($entry);
         });
         $body[0].scrollTop = $body.height();
       }
