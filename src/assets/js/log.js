@@ -8,7 +8,6 @@ var renderTemplate = require('functions/render-template');
 
 var $container,
     $body,
-    entries = [],
     entryTemplate,
     updateTimeout;
 
@@ -23,10 +22,12 @@ $(document).ready(function() {
   queryEntries();
 });
 
+
 function queryEntries() {
-  var data = {};
-  stopInterval();
-  if (entries.length > 0) data.after = entries[entries.length - 1].timestamp;
+  var $entries = $container.find('.log-entry'),
+      data = {};
+  stopAutoUpdate();
+  if ($entries.length > 0) data.after = $($entries[$entries.length - 1]).data('entry').timestamp;
   else data.limit = 100;
   reqwest({
     url: '/api/log/latest',
@@ -38,7 +39,6 @@ function queryEntries() {
         result.entries.reverse().forEach(function(entry) {
           var $entry;
           entry.date = moment(entry.timestamp).format('DD.MM.YYYY HH:mm:ss');
-          entries.push(entry);
           $entry = $(renderTemplate(entryTemplate, entry));
           $entry.data('entry', entry);
           $container.append($entry);
@@ -46,19 +46,19 @@ function queryEntries() {
         $body[0].scrollTop = $body.height();
       }
     })
-    .always(startInterval);
+    .always(startAutoUpdate);
 }
 
-function startInterval() {
-  updateTimeout = window.setTimeout(queryEntries, 1000);
+function startAutoUpdate() {
+  updateTimeout = window.setTimeout(queryEntries, 2000);
 }
 
-function stopInterval() {
+function stopAutoUpdate() {
   if (updateTimeout) clearTimeout(updateTimeout);
 }
 
 function clearLog() {
-  stopInterval();
+  stopAutoUpdate();
   reqwest({
     url: '/api/log/clear',
     type: 'json'
@@ -66,5 +66,5 @@ function clearLog() {
     .then(function(result) {
       if (result === true) $container.find('.log-entry').remove();
     })
-    .always(startInterval);
+    .always(startAutoUpdate);
 }
