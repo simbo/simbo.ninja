@@ -18,13 +18,16 @@ function error404(req, res, next) {
 
 function errorhandler(err, req, res, next) {
 
+  // populate error object
   err.status = err.status || 500;
   err.url = req.url;
 
-  logger.log('error', '%s %s %s', err.status, err.message, err.url, err);
+  // log error
+  if (err.status === 404) logger.log('error', String(err.status), err.message, err.url);
+  else logger.log('error', String(err.status), err.message, err.url, err);
 
+  // output error
   res.status(err.status);
-
   if (req.accepts('html')) res.render('error', {error: err});
   else if (req.accepts('json')) res.send({error: err});
   else res.type('txt').send('ERROR: ' + err.message);
