@@ -14,10 +14,8 @@ router.get('/login', function(req, res) {
 router.post('/login', passport.authenticate('local', {
   failureFlash: true,
   failureRedirect: '/login',
-  successReturnToOrRedirect: '/'
-}), function(req, res) {
-  res.redirect('/');
-});
+  successReturnToOrRedirect: '/account/profile'
+}));
 
 router.get('/logout', function(req, res) {
   req.logout();
