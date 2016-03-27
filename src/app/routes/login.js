@@ -6,11 +6,13 @@ var passport = require('app/modules/passport');
 
 router.get('/login', function(req, res) {
   res.render('login', {
-    title: 'Login'
+    title: 'Login',
+    errors: req.flash('error')
   });
 });
 
 router.post('/login', passport.authenticate('local', {
+  failureFlash: true,
   failureRedirect: '/login',
   successReturnToOrRedirect: '/'
 }), function(req, res) {

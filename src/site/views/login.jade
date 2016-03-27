@@ -2,6 +2,9 @@ extends /layouts/base.jade
 
 block body_contents
   h2 Login
+  if errors
+    for error in errors
+      p= error
   form.login-form(action="/login", method="post")
     fieldset
       label(for="username") Username
