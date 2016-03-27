@@ -9,122 +9,128 @@ var couch = require('app/modules/couch');
 
 var db = couch.database('users');
 
-function User(options) {
-
-  var self = this,
-      user;
-
-  options = typeof options === 'string' ? {username: options} : options;
-
-  user = {
-    uuid: options.uuid || null,
-    username: options.username || null,
-    passwordHash: options.passwordHash || null
-  };
-
-  self.getId = function() {
-    return user.uuid;
-  };
-
-  self.getUsername = function() {
-    return user.username;
-  };
-
-  self.setUsername = function(username) {
-    return Q.Promise(function(resolve, reject) {
-      if (User.isValidUsername(username)) reject(new Error('invalid username'));
-      else resolve(username);
-    })
-      .then(function(name) {
-        user.username = name;
-        return self;
-      });
-  };
-
-  self.getPasswordHash = function() {
-    return user.passwordHash;
-  };
-
-  self.setPassword = function(password) {
-    return Q.Promise(function(resolve, reject) {
-      if (!User.isValidPassword(password)) reject(new Error('invalid password'));
-      else resolve(password);
-    })
-      .then(User.hashPassword)
-      .then(function(passwordHash) {
-        user.passwordHash = passwordHash;
-        return self;
-      });
-  };
-
-  self.toPlainObject = function() {
-    return user;
-  };
-
-  self.toJSON = self.toPlainObject;
-
-  self.toString = function() {
-    return user.username;
-  };
-
-  self.save = function() {
-    return Q.Promise(function(resolve, reject) {
-      if (!User.isValidUsername(user.username)) reject(new Error('invalid username'));
-      else {
-        db.save(user.uuid, user, function(err, resp) {
-          if (err) reject(err);
-          else resolve(self);
-        });
-      }
-    });
-  };
-
-  self.comparePassword = function(password) {
-    return Q.Promise(function(resolve, reject) {
-      bcrypt.compare(password, user.passwordHash, function(err, res) {
-        if (err) reject(err);
-        else if (!res) reject(new Error('wrong password'));
-        else resolve(self);
-      });
-    });
-  };
-
-  if (!User.isValidId(user.uuid)) user.uuid = User.generateId();
-
+function User(user) {
+  user = user || {};
+  this.uuid = user.hasOwnProperty('uuid') ? user.uuid : User.generateUuid();
+  this.username = user.hasOwnProperty('username') ? user.username : null;
+  this.passwordHash = user.hasOwnProperty('passwordHash') ? user.passwordHash : null;
 }
 
-User.getById = function(id) {
+User.prototype.toString = function() {
+  return this.name;
+};
+
+User.prototype.setUsername = function(username) {
+  return Q(username)
+    .then(User.validateUsername)
+    .then(function(username) {
+      return User.usernameNotTaken(username, this.uuid);
+    }.bind(this))
+    .then(function(name) {
+      this.username = name;
+      return this;
+    }.bind(this));
+};
+
+User.prototype.setPassword = function(password) {
+  return Q(password)
+    .then(User.validatePassword)
+    .then(User.hashPassword)
+    .then(function(passwordHash) {
+      this.passwordHash = passwordHash;
+      return this;
+    }.bind(this));
+};
+
+User.prototype.save = function() {
   return Q.Promise(function(resolve, reject) {
-    if (!User.isValidId(id)) reject(new Error('invalid user id'));
-    else {
-      db.get(id, function(err, resp) {
-        if (err) reject(new Error('unknown user id'));
-        else resolve(new User(resp.json));
+    db.save(this.uuid, this, function(err, resp) {
+      if (err) reject(err);
+      else resolve(this);
+    }.bind(this));
+  }.bind(this));
+};
+
+User.prototype.validatePassword = function(password) {
+  return Q.Promise(function(resolve, reject) {
+    bcrypt.compare(password, this.passwordHash, function(err, res) {
+      if (err) reject(err);
+      else if (!res) reject(new Error('wrong password'));
+      else resolve(this);
+    }.bind(this));
+  }.bind(this));
+};
+
+User.getByUuid = function(id) {
+  return Q(id)
+    .then(User.validateId)
+    .then(function(id) {
+      return Q.Promise(function(resolve, reject) {
+        db.get(id, function(err, resp) {
+          if (err) {
+            if (err.reason === 'missing') reject(new Error('unknown user uuid'));
+            else reject(err);
+          } else resolve(new User(resp.json));
+        });
       });
-    }
-  });
+    });
 };
 
 User.getByUsername = function(username) {
-  return Q.Promise(function(resolve, reject) {
-    if (!User.isValidUsername(username)) reject(new Error('invalid username'));
-    else {
-      db.view('users/byUsername', {
-        key: username,
-        limit: 1
-      }, function(err, resp) {
-        if (err || resp.json.rows.length < 1) reject(new Error('unknown username'));
-        else resolve(new User(resp.json.rows[0].value));
+  return Q(username)
+    .then(User.validateUsername)
+    .then(function(username) {
+      return Q.Promise(function(resolve, reject) {
+        db.view('users/byUsername', {
+          key: username,
+          limit: 1
+        }, function(err, resp) {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1) reject(new Error('unknown username'));
+          else resolve(new User(resp.json.rows[0].value));
+        });
       });
-    }
-  });
+    });
 };
 
-User.validate = function(username, password) {
-  return User.getByUsername(username)
-    .then(function(user) {
-      return user.comparePassword(password);
+User.usernameNotTaken = function(username, excludeId) {
+  return Q(username)
+    .then(User.validateUsername)
+    .then(function(username) {
+      return Q.Promise(function(resolve, reject) {
+        db.view('users/byUsername', {
+          key: username,
+          limit: 1
+        }, function(err, resp) {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1 || excludeId && resp.json.rows[0].value.uuid === excludeId) resolve(username);
+          else reject(new Error('username already taken'));
+        });
+      });
     });
+};
+
+User.validateUsernamePassword = function(username, password) {
+  return User.getByUsername(username)
+    .then(User.q.validatePassword(password));
+};
+
+User.isValidUsername = function(username) {
+  return typeof username === 'string' && (/^[a-z0-9_-]{1,32}$/i).test(username);
+};
+
+User.validateUsername = function(username) {
+  if (!User.isValidUsername(username)) throw new Error('invalid username');
+  return username;
+};
+
+User.isValidPassword = function(password) {
+  return typeof password === 'string' && password.length >= 10;
+};
+
+User.validatePassword = function(password) {
+  if (!User.isValidPassword(password)) throw new Error('invalid password');
+  return password;
 };
 
 User.hashPassword = function(password) {
@@ -136,20 +142,32 @@ User.hashPassword = function(password) {
   });
 };
 
-User.isValidUsername = function(username) {
-  return typeof username === 'string' && (/^[a-z0-9_-]{1,32}$/i).test(username);
+User.isValidUuid = function(id) {
+  return uuidValidate(id, 4);
 };
 
-User.isValidPassword = function(password) {
-  return typeof password === 'string' && password.length >= 10;
+User.validateUuid = function(id) {
+  if (!User.isValidUuid(id)) throw new Error('invalid uuid');
+  return id;
 };
 
-User.generateId = function() {
+User.generateUuid = function() {
   return uuid.v4();
 };
 
-User.isValidId = function(id) {
-  return uuidValidate(id, 4);
-};
+User.q = [
+  'setUsername',
+  'setPassword',
+  'save',
+  'validatePassword'
+].reduce(function(methods, method) {
+  methods[method] = function() {
+    var args = Array.prototype.slice.call(arguments);
+    return function(user) {
+      return user[method].apply(user, args);
+    };
+  };
+  return methods;
+}, {});
 
 module.exports = User;

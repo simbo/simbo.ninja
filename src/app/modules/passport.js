@@ -6,7 +6,7 @@ var passport = require('passport'),
 var User = require('app/modules/user');
 
 passport.use(new LocalStrategy(function(username, password, cb) {
-  User.validate(username, password)
+  User.validateUsernamePassword(username, password)
     .then(function(user) {
       cb(null, user);
     }, function(err) {
@@ -15,11 +15,11 @@ passport.use(new LocalStrategy(function(username, password, cb) {
 }));
 
 passport.serializeUser(function(user, cb) {
-  cb(null, user.getId());
+  cb(null, user.uuid);
 });
 
-passport.deserializeUser(function(userId, cb) {
-  User.getById(userId)
+passport.deserializeUser(function(id, cb) {
+  User.getByUuid(id)
     .then(function(user) {
       cb(null, user);
     }, function(err) {
@@ -31,8 +31,7 @@ module.exports = passport;
 module.exports.ensureLoggedIn = ensureLoggedIn;
 
 function ensureLoggedIn(options) {
-  var url,
-      setReturnTo;
+  var url, setReturnTo;
   if (typeof options == 'string') options = {redirectTo: options};
   options = options || {};
   url = options.redirectTo || '/login';
