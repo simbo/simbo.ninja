@@ -3,21 +3,28 @@
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
-var couch = require('app/modules/couch');
-
-var db = couch.database('users');
+var User = require('app/modules/user');
 
 passport.use(new LocalStrategy(function(username, password, cb) {
-  var user = {id: 1, username: 'simbo', password: '12345'};
-  return cb(null, user);
+  User.validate(username, password)
+    .then(function(user) {
+      cb(null, user);
+    }, function(err) {
+      cb(null, false, {message: err.message});
+    });
 }));
 
 passport.serializeUser(function(user, cb) {
-  cb(null, JSON.stringify(user));
+  cb(null, user.getId());
 });
 
-passport.deserializeUser(function(user, cb) {
-  cb(null, JSON.parse(user));
+passport.deserializeUser(function(userId, cb) {
+  User.getById(userId)
+    .then(function(user) {
+      cb(null, user);
+    }, function(err) {
+      cb(err);
+    });
 });
 
 module.exports = passport;
