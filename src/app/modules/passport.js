@@ -6,7 +6,7 @@ var passport = require('passport'),
 var User = require('app/modules/user');
 
 passport.use(new LocalStrategy(function(username, password, cb) {
-  User.validateUsernamePassword(username, password)
+  User.verifyUsernamePassword(username, password)
     .then(function(user) {
       cb(null, user);
     }, function(err) {

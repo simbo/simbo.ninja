@@ -51,7 +51,7 @@ User.prototype.save = function() {
   }.bind(this));
 };
 
-User.prototype.validatePassword = function(password) {
+User.prototype.verifyPassword = function(password) {
   return Q.Promise(function(resolve, reject) {
     bcrypt.compare(password, this.passwordHash, function(err, res) {
       if (err) reject(err);
@@ -110,9 +110,9 @@ User.usernameNotTaken = function(username, excludeId) {
     });
 };
 
-User.validateUsernamePassword = function(username, password) {
+User.verifyUsernamePassword = function(username, password) {
   return User.getByUsername(username)
-    .then(User.q.validatePassword(password));
+    .then(User.q.verifyPassword(password));
 };
 
 User.isValidUsername = function(username) {
@@ -159,7 +159,7 @@ User.q = [
   'setUsername',
   'setPassword',
   'save',
-  'validatePassword'
+  'verifyPassword'
 ].reduce(function(methods, method) {
   methods[method] = function() {
     var args = Array.prototype.slice.call(arguments);
