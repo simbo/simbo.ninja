@@ -31,6 +31,7 @@ passport.deserializeUser(function(id, cb) {
 module.exports = passport;
 module.exports.ensureLoggedIn = ensureLoggedIn;
 module.exports.ensureUserHasFlag = ensureUserHasFlag;
+module.exports.addUserToLocals = addUserToLocals;
 
 function ensureLoggedIn(options) {
   return function(req, res, next) {
@@ -52,5 +53,12 @@ function ensureUserHasFlag(flag) {
         err.status = 401;
         next(err);
       });
+  };
+}
+
+function addUserToLocals() {
+  return function(req, res, next) {
+    res.locals.user = req.isAuthenticated() ? req.user : null;
+    next();
   };
 }

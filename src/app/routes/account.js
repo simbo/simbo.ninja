@@ -7,18 +7,14 @@ var auth = require('app/modules/auth');
 router.get('/',
   auth.ensureLoggedIn(),
   function(req, res) {
-    res.render('account/home', {
-      user: req.user
-    });
+    res.render('account/home');
   }
 );
 
 router.get('/profile',
   auth.ensureLoggedIn(),
   function(req, res) {
-    res.render('account/profile', {
-      user: req.user
-    });
+    res.render('account/profile');
   }
 );
 
