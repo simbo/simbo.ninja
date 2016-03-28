@@ -80,13 +80,17 @@ User.prototype.hasFlag = function(flag) {
 };
 
 User.prototype.verifyFlag = function(flag) {
-  if (!this.hasFlag(flag)) throw new Error('user is not flagged with \'' + flag + '\'');
-  return this;
+  return Q.Promise(function(resolve, reject) {
+    if (!this.hasFlag(flag)) reject(new Error('user is not flagged with \'' + flag + '\''));
+    else resolve(this);
+  }.bind(this));
 };
 
 User.prototype.unverifyFlag = function(flag) {
-  if (this.hasFlag(flag)) throw new Error('user is flagged with \'' + flag + '\'');
-  return this;
+  return Q.Promise(function(resolve, reject) {
+    if (this.hasFlag(flag)) reject(new Error('user is flagged with \'' + flag + '\''));
+    else resolve(this);
+  }.bind(this));
 };
 
 User.prototype.verifyPassword = function(password) {
