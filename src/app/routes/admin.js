@@ -2,12 +2,12 @@
 
 var router = require('express').Router();
 
-var passport = require('app/modules/passport'),
+var auth = require('app/modules/auth'),
     User = require('app/modules/user');
 
 router.get('/users',
-  passport.ensureLoggedIn(),
-  passport.ensureUserHasFlag('admin'),
+  auth.ensureLoggedIn(),
+  auth.ensureUserHasFlag('admin'),
   function(req, res) {
     User.getAll()
       .then(function(users) {

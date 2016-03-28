@@ -1,7 +1,7 @@
 'use strict';
 
-var passport = require('passport'),
-    Q = require('q'),
+var Q = require('q'),
+    passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
 var User = require('app/modules/user');

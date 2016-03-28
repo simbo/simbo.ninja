@@ -2,10 +2,10 @@
 
 var router = require('express').Router();
 
-var passport = require('app/modules/passport');
+var auth = require('app/modules/auth');
 
 router.get('/',
-  passport.ensureLoggedIn(),
+  auth.ensureLoggedIn(),
   function(req, res) {
     res.render('account/home', {
       user: req.user
@@ -14,7 +14,7 @@ router.get('/',
 );
 
 router.get('/profile',
-  passport.ensureLoggedIn(),
+  auth.ensureLoggedIn(),
   function(req, res) {
     res.render('account/profile', {
       user: req.user

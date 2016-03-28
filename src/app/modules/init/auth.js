@@ -1,13 +1,14 @@
 'use strict';
 
-var passport = require('app/modules/passport');
+var auth = require('app/modules/auth');
 
 module.exports = initAuth;
 
 function initAuth(app) {
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(auth.initialize());
+  app.use(auth.session());
+  app.use(auth.addUserToLocals());
 
   return app;
 

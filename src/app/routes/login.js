@@ -2,7 +2,7 @@
 
 var router = require('express').Router();
 
-var passport = require('app/modules/passport');
+var auth = require('app/modules/auth');
 
 router.get('/login', function(req, res) {
   res.render('login', {
@@ -11,7 +11,7 @@ router.get('/login', function(req, res) {
   });
 });
 
-router.post('/login', passport.authenticate('local', {
+router.post('/login', auth.authenticate('local', {
   failureFlash: true,
   failureRedirect: '/login',
   successReturnToOrRedirect: '/account'
