@@ -6,8 +6,7 @@ var auth = require('app/modules/auth'),
     User = require('app/modules/user');
 
 router.get('/users',
-  auth.ensureLoggedIn(),
-  auth.ensureUserHasFlag('admin'),
+  auth.ensureAuth('admin'),
   function(req, res) {
     User.getAll()
       .then(function(users) {

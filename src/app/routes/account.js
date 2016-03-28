@@ -5,14 +5,14 @@ var router = require('express').Router();
 var auth = require('app/modules/auth');
 
 router.get('/',
-  auth.ensureLoggedIn(),
+  auth.ensureAuth(),
   function(req, res) {
     res.render('account/home');
   }
 );
 
 router.get('/profile',
-  auth.ensureLoggedIn(),
+  auth.ensureAuth(),
   function(req, res) {
     res.render('account/profile');
   }

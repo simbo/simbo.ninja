@@ -29,30 +29,24 @@ passport.deserializeUser(function(id, cb) {
 });
 
 module.exports = passport;
-module.exports.ensureLoggedIn = ensureLoggedIn;
-module.exports.ensureUserHasFlag = ensureUserHasFlag;
+module.exports.ensureAuth = ensureAuth;
 module.exports.addUserToLocals = addUserToLocals;
 
-function ensureLoggedIn(options) {
+function ensureAuth(flags) {
   return function(req, res, next) {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
       if (req.session) req.session.returnTo = req.originalUrl || req.url;
       return res.redirect('/login');
-    }
-    next();
-  };
-}
-
-function ensureUserHasFlag(flag) {
-  return function(req, res, next) {
-    Q(req.user)
-      .then(User.q.verifyFlag(flag))
-      .then(function() {
+    } else if (flags) {
+      (Array.isArray(flags) ? flags : [flags]).reduce(function(queue, flag) {
+        return queue.then(User.q.verifyFlag(flag));
+      }, Q(req.user)).then(function() {
         next();
       }, function(err) {
         err.status = 401;
         next(err);
       });
+    } else next();
   };
 }
 
