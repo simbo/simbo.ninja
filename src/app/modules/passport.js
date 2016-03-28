@@ -1,6 +1,7 @@
 'use strict';
 
 var passport = require('passport'),
+    Q = require('q'),
     LocalStrategy = require('passport-local').Strategy;
 
 var User = require('app/modules/user');
@@ -29,6 +30,7 @@ passport.deserializeUser(function(id, cb) {
 
 module.exports = passport;
 module.exports.ensureLoggedIn = ensureLoggedIn;
+module.exports.ensureUserHasFlag = ensureUserHasFlag;
 
 function ensureLoggedIn(options) {
   return function(req, res, next) {
@@ -37,5 +39,18 @@ function ensureLoggedIn(options) {
       return res.redirect('/login');
     }
     next();
+  };
+}
+
+function ensureUserHasFlag(flag) {
+  return function(req, res, next) {
+    Q(req.user)
+      .then(User.q.verifyFlag(flag))
+      .then(function() {
+        next();
+      }, function(err) {
+        err.status = 401;
+        next(err);
+      });
   };
 }
