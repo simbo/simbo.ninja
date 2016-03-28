@@ -143,6 +143,26 @@ User.usernameNotTaken = function(username, excludeId) {
     });
 };
 
+User.getAll = function(view, viewOptions) {
+  var views = {
+    id: 'byId',
+    username: 'byUsername',
+    flag: 'byFlag'
+  };
+  viewOptions = viewOptions || {};
+  view = 'users/' + (views.hasOwnProperty(view) ? views[view] : views.username);
+  return Q.Promise(function(resolve, reject) {
+    db.view(view, viewOptions, function(err, resp) {
+      if (err) reject(err);
+      else {
+        resolve(resp.json.rows.map(function(row) {
+          return new User(row.value);
+        }));
+      }
+    });
+  });
+};
+
 User.verifyUsernamePassword = function(username, password) {
   return User.getByUsername(username)
     .then(User.q.verifyPassword(password));

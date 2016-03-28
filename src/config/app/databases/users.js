@@ -14,6 +14,14 @@ module.exports = {
       map: function(doc) {
         emit(doc.uuid, doc);
       }
+    },
+
+    byFlag: {
+      map: function(doc) {
+        doc.flags.forEach(function(flag) {
+          emit(flag, doc);
+        });
+      }
     }
 
   }
