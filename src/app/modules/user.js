@@ -61,6 +61,11 @@ User.prototype.removeFlag = function(flag) {
     });
 };
 
+User.prototype.removeAllFlags = function() {
+  this.flags = [];
+  return Q(this);
+};
+
 User.prototype.save = function() {
   return Q.Promise(function(resolve, reject) {
     db.save(this.uuid, this, function(err, resp) {
@@ -222,6 +227,7 @@ User.q = [
   'setPassword',
   'addFlag',
   'removeFlag',
+  'removeAllFlags',
   'save',
   'verifyFlag',
   'unverifyFlag',
