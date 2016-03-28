@@ -68,7 +68,7 @@ User.getByUuid = function(id) {
       return Q.Promise(function(resolve, reject) {
         db.get(id, function(err, resp) {
           if (err) {
-            if (err.reason === 'missing') reject(new Error('unknown user uuid'));
+            if (err.reason === 'missing') reject(new Error('unknown user uuid \'' + id + '\''));
             else reject(err);
           } else resolve(new User(resp.json));
         });
@@ -86,7 +86,7 @@ User.getByUsername = function(username) {
           limit: 1
         }, function(err, resp) {
           if (err) reject(err);
-          else if (resp.json.rows.length < 1) reject(new Error('unknown username'));
+          else if (resp.json.rows.length < 1) reject(new Error('unknown username \'' + username + '\''));
           else resolve(new User(resp.json.rows[0].value));
         });
       });
@@ -120,7 +120,7 @@ User.isValidUsername = function(username) {
 };
 
 User.validateUsername = function(username) {
-  if (!User.isValidUsername(username)) throw new Error('invalid username');
+  if (!User.isValidUsername(username)) throw new Error('invalid username \'' + username + '\'');
   return username;
 };
 
@@ -129,7 +129,7 @@ User.isValidPassword = function(password) {
 };
 
 User.validatePassword = function(password) {
-  if (!User.isValidPassword(password)) throw new Error('invalid password');
+  if (!User.isValidPassword(password)) throw new Error('invalid password \'' + password + '\'');
   return password;
 };
 
@@ -147,7 +147,7 @@ User.isValidUuid = function(id) {
 };
 
 User.validateUuid = function(id) {
-  if (!User.isValidUuid(id)) throw new Error('invalid uuid');
+  if (!User.isValidUuid(id)) throw new Error('invalid uuid \'' + id + '\'');
   return id;
 };
 
