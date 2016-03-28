@@ -1,0 +1,17 @@
+extends /layouts/base.jade
+
+block body_contents
+  h2 Users
+
+  table
+    thead
+      tr
+        th ID
+        th Name
+        th Flags
+    tbody
+      for user in users
+        tr
+          td= user.uuid
+          td= user.username
+          td= user.flags.join(', ')

@@ -21,6 +21,7 @@
 var routes = [
   ['/', 'login'],
   'account',
+  'admin',
   'api/status',
   'log',
   'api/log'
