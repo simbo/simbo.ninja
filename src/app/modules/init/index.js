@@ -7,8 +7,7 @@ module.exports = init;
 function init(app) {
   return Q(app)
     .then(require('./databases'))
-    .then(require('./server'))
-    .then(require('./parsers'))
+    .then(require('./preparations'))
     .then(require('./sessions'))
     .then(require('./auth'))
     .then(require('./views'))
