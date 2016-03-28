@@ -214,7 +214,7 @@ User.validateFlag = function(flag) {
 };
 
 User.isValidFlag = function(flag) {
-  return (/^[a-z0-9_-]+$/i).test(flag);
+  return (/^[a-z0-9_-]+$/).test(flag);
 };
 
 User.q = [
