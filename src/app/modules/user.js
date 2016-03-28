@@ -14,6 +14,7 @@ function User(user) {
   this.uuid = user.hasOwnProperty('uuid') ? user.uuid : User.generateUuid();
   this.username = user.hasOwnProperty('username') ? user.username : null;
   this.passwordHash = user.hasOwnProperty('passwordHash') ? user.passwordHash : null;
+  this.flags = user.hasOwnProperty('flags') ? user.flags : [];
 }
 
 User.prototype.toString = function() {
@@ -42,6 +43,24 @@ User.prototype.setPassword = function(password) {
     }.bind(this));
 };
 
+User.prototype.addFlag = function(flag) {
+  return Q(this)
+    .then(User.q.unverifyFlag(flag))
+    .then(function(user) {
+      if (User.validateFlag(flag)) user.flags.push(flag);
+      return user;
+    });
+};
+
+User.prototype.removeFlag = function(flag) {
+  return Q(this)
+    .then(User.q.verifyFlag(flag))
+    .then(function(user) {
+      user.flags.splice(user.flags.indexOf(flag), 1);
+      return user;
+    });
+};
+
 User.prototype.save = function() {
   return Q.Promise(function(resolve, reject) {
     db.save(this.uuid, this, function(err, resp) {
@@ -49,6 +68,20 @@ User.prototype.save = function() {
       else resolve(this);
     }.bind(this));
   }.bind(this));
+};
+
+User.prototype.hasFlag = function(flag) {
+  return this.flags.indexOf(flag) >= 0;
+};
+
+User.prototype.verifyFlag = function(flag) {
+  if (!this.hasFlag(flag)) throw new Error('user is not flagged with \'' + flag + '\'');
+  return this;
+};
+
+User.prototype.unverifyFlag = function(flag) {
+  if (this.hasFlag(flag)) throw new Error('user is flagged with \'' + flag + '\'');
+  return this;
 };
 
 User.prototype.verifyPassword = function(password) {
@@ -155,16 +188,29 @@ User.generateUuid = function() {
   return uuid.v4();
 };
 
+User.validateFlag = function(flag) {
+  if (!User.isValidFlag(flag)) throw new Error('invalid flag \'' + flag + '\'');
+  return flag;
+};
+
+User.isValidFlag = function(flag) {
+  return (/^[a-z0-9_-]+$/i).test(flag);
+};
+
 User.q = [
   'setUsername',
   'setPassword',
+  'addFlag',
+  'removeFlag',
   'save',
+  'verifyFlag',
+  'unverifyFlag',
   'verifyPassword'
 ].reduce(function(methods, method) {
   methods[method] = function() {
     var args = Array.prototype.slice.call(arguments);
-    return function(user) {
-      return user[method].apply(user, args);
+    return function(obj) {
+      return obj[method].apply(obj, args);
     };
   };
   return methods;
