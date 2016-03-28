@@ -20,9 +20,7 @@ function initSessions(app) {
         password: config.app.couchdb.password
       }
     },
-    dbName: 'sessions',
-    collectionName: 'sessions',
-    timeout: 10000
+    dbName: 'sessions'
   });
 
   app.use(session({
@@ -35,7 +33,7 @@ function initSessions(app) {
       path: config.app.sessions.cookie.path,
       httpOnly: config.app.sessions.cookie.httpOnly,
       secure: config.app.sessions.cookie.secure,
-      maxAge: parseInt(config.app.sessions.cookie.maxAge, 2) * 60000
+      maxAge: parseInt(config.app.sessions.cookie.maxAge, 10) * 60000
     },
     store: store,
     resave: false,
