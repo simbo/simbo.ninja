@@ -9,6 +9,12 @@ var couch = require('app/modules/couch');
 
 var db = couch.database('users');
 
+/**
+ * User
+ * should only be instanciated without params to create a new user.
+ * params are used by static methods to create existing users from db objects.
+ * @param {Object} user  data to restore a user
+ */
 function User(user) {
   user = user || {};
   this.uuid = user.hasOwnProperty('uuid') ? user.uuid : User.generateUuid();
@@ -17,10 +23,19 @@ function User(user) {
   this.flags = user.hasOwnProperty('flags') ? user.flags : [];
 }
 
+/**
+ * returns string representation of a user
+ * @return {String} username
+ */
 User.prototype.toString = function() {
   return this.name;
 };
 
+/**
+ * set username
+ * @param  {String}  username new username value
+ * @return {Promise}          this
+ */
 User.prototype.setUsername = function(username) {
   return Q(username)
     .then(User.validateUsername)
@@ -33,6 +48,11 @@ User.prototype.setUsername = function(username) {
     }.bind(this));
 };
 
+/**
+ * set password hash from given password
+ * @param  {String}  password new password value
+ * @return {Promise}          this
+ */
 User.prototype.setPassword = function(password) {
   return Q(password)
     .then(User.validatePassword)
@@ -43,6 +63,11 @@ User.prototype.setPassword = function(password) {
     }.bind(this));
 };
 
+/**
+ * add a flag
+ * @param {String}   flag new flag to add
+ * @return {Promise}      this
+ */
 User.prototype.addFlag = function(flag) {
   return Q(this)
     .then(User.q.verifyFlag(flag, true))
@@ -52,6 +77,11 @@ User.prototype.addFlag = function(flag) {
     });
 };
 
+/**
+ * remove a flag
+ * @param  {String}  flag existing flag to remove
+ * @return {Promise}      this
+ */
 User.prototype.removeFlag = function(flag) {
   return Q(this)
     .then(User.q.verifyFlag(flag))
@@ -61,11 +91,19 @@ User.prototype.removeFlag = function(flag) {
     });
 };
 
+/**
+ * remove all flags
+ * @return {Promise} this
+ */
 User.prototype.removeAllFlags = function() {
   this.flags = [];
   return Q(this);
 };
 
+/**
+ * save user to database
+ * @return {Promise} this
+ */
 User.prototype.save = function() {
   return Q.Promise(function(resolve, reject) {
     db.save(this.uuid, this, function(err, resp) {
@@ -75,10 +113,21 @@ User.prototype.save = function() {
   }.bind(this));
 };
 
+/**
+ * test if user has a flag
+ * @param  {String}  flag flag to test
+ * @return {Boolean}      result
+ */
 User.prototype.hasFlag = function(flag) {
   return this.flags.indexOf(flag) >= 0;
 };
 
+/**
+ * verify that user has a flag (or not, if invert is true)
+ * @param  {String}  flag   flag to test
+ * @param  {Boolean} invert if true, verifies that user does NOT has a flag
+ * @return {Promise}        this
+ */
 User.prototype.verifyFlag = function(flag, invert) {
   return Q.Promise(function(resolve, reject) {
     if (!this.hasFlag(flag) && !invert) reject(new Error('user is not flagged with \'' + flag + '\''));
@@ -87,6 +136,11 @@ User.prototype.verifyFlag = function(flag, invert) {
   }.bind(this));
 };
 
+/**
+ * verify that given password's hash matches password hash
+ * @param  {String}  password password to test
+ * @return {Promise}          this
+ */
 User.prototype.verifyPassword = function(password) {
   return Q.Promise(function(resolve, reject) {
     bcrypt.compare(password, this.passwordHash, function(err, res) {
@@ -97,6 +151,11 @@ User.prototype.verifyPassword = function(password) {
   }.bind(this));
 };
 
+/**
+ * find matching user in database by given id
+ * @param  {String}  id uuid to lookup
+ * @return {Promise}    user instance
+ */
 User.getByUuid = function(id) {
   return Q(id)
     .then(User.validateId)
@@ -112,6 +171,11 @@ User.getByUuid = function(id) {
     });
 };
 
+/**
+ * find matching user in database by given username
+ * @param  {String}  username username to lookup
+ * @return {Promise}          user instance
+ */
 User.getByUsername = function(username) {
   return Q(username)
     .then(User.validateUsername)
@@ -129,6 +193,13 @@ User.getByUsername = function(username) {
     });
 };
 
+/**
+ * test if a username is NOT already taken by any user; optionally exclude a
+ * specific user by uuid
+ * @param  {String}  username  username to test
+ * @param  {String}  excludeId uuid to exclude
+ * @return {Promise}           username
+ */
 User.usernameNotTaken = function(username, excludeId) {
   return Q(username)
     .then(User.validateUsername)
@@ -146,6 +217,12 @@ User.usernameNotTaken = function(username, excludeId) {
     });
 };
 
+/**
+ * get all users from database; optionally define a view and options
+ * @param  {String}  view        order by id, username or flag (default: id)
+ * @param  {Object}  viewOptions view options
+ * @return {Promise}             array of user instances
+ */
 User.getAll = function(view, viewOptions) {
   var views = {
     id: 'byId',
@@ -166,29 +243,60 @@ User.getAll = function(view, viewOptions) {
   });
 };
 
+/**
+ * verify that a user with given username has the given password
+ * @param  {String}  username username to test
+ * @param  {String}  password password to test
+ * @return {Promise}          user instance
+ */
 User.verifyUsernamePassword = function(username, password) {
   return User.getByUsername(username)
     .then(User.q.verifyPassword(password));
 };
 
+/**
+ * test if given username is a valid username
+ * @param  {String}  username username to test
+ * @return {Boolean}          result
+ */
 User.isValidUsername = function(username) {
   return typeof username === 'string' && (/^[a-z0-9_-]{1,32}$/i).test(username);
 };
 
+/**
+ * validate given username by isValidUsername
+ * @param  {String}  username username to validate
+ * @return {Promise}          username
+ */
 User.validateUsername = function(username) {
   if (!User.isValidUsername(username)) throw new Error('invalid username \'' + username + '\'');
   return username;
 };
 
+/**
+ * test it given password is a valid password
+ * @param  {String}  password password to test
+ * @return {Boolean}          result
+ */
 User.isValidPassword = function(password) {
   return typeof password === 'string' && password.length >= 10;
 };
 
+/**
+ * validate given password by isValidPassword
+ * @param  {String}  password password to validate
+ * @return {Promise}          password
+ */
 User.validatePassword = function(password) {
   if (!User.isValidPassword(password)) throw new Error('invalid password \'' + password + '\'');
   return password;
 };
 
+/**
+ * generate hash of a given password
+ * @param  {String}  password password to hash
+ * @return {Promise}          hash
+ */
 User.hashPassword = function(password) {
   return Q.Promise(function(resolve, reject) {
     bcrypt.hash(password, 10, function(err, hash) {
@@ -198,28 +306,58 @@ User.hashPassword = function(password) {
   });
 };
 
+/**
+ * test if given id is a valid uuid
+ * @param  {String}  id id to test
+ * @return {Boolean}    result
+ */
 User.isValidUuid = function(id) {
   return uuidValidate(id, 4);
 };
 
+/**
+ * validate given id by isValidUuid
+ * @param  {String}  id id to validate
+ * @return {Promise}    id
+ */
 User.validateUuid = function(id) {
   if (!User.isValidUuid(id)) throw new Error('invalid uuid \'' + id + '\'');
   return id;
 };
 
+/**
+ * generate a uuid
+ * @return {String} uuid
+ */
 User.generateUuid = function() {
   return uuid.v4();
 };
 
-User.validateFlag = function(flag) {
-  if (!User.isValidFlag(flag)) throw new Error('invalid flag \'' + flag + '\'');
-  return flag;
-};
-
+/**
+ * test if given flag is a valid flag
+ * @param  {String}  flag flag to test
+ * @return {Boolean}      result
+ */
 User.isValidFlag = function(flag) {
   return (/^[a-z0-9_-]+$/).test(flag);
 };
 
+/**
+ * validate given flag by isValidFlag
+ * @param  {String}  flag flag to validate
+ * @return {Promise}      flag
+ */
+User.validateFlag = function(flag) {
+  return Q.Promise(function(resolve, reject) {
+    if (!User.isValidFlag(flag)) reject(new Error('invalid flag \'' + flag + '\''));
+    else resolve(flag);
+  });
+};
+
+/**
+ * create promise fullfilment handlers for class methods for easier chaining
+ * @type {Object}
+ */
 User.q = [
   'setUsername',
   'setPassword',
@@ -239,4 +377,8 @@ User.q = [
   return methods;
 }, {});
 
+/**
+ * export User class
+ * @type {Function}
+ */
 module.exports = User;

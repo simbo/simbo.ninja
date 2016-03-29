@@ -1,11 +1,19 @@
 'use strict';
 
+/**
+ * auth module
+ * - exports passport with auth strategies and session handlers
+ * - exports middleware for ensuring authentication
+ * - exports middleware for adding current user to locals
+ */
+
 var Q = require('q'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy;
 
 var User = require('app/modules/user');
 
+// create local authentication strategy
 passport.use(new LocalStrategy(function(username, password, cb) {
   User.verifyUsernamePassword(username, password)
     .then(function(user) {
@@ -15,10 +23,12 @@ passport.use(new LocalStrategy(function(username, password, cb) {
     });
 }));
 
+// serialize user object for saving into session
 passport.serializeUser(function(user, cb) {
   cb(null, user.uuid);
 });
 
+// deserialize user object when restoring from session
 passport.deserializeUser(function(id, cb) {
   User.getByUuid(id)
     .then(function(user) {
@@ -32,6 +42,11 @@ module.exports = passport;
 module.exports.ensureAuth = ensureAuth;
 module.exports.addUserToLocals = addUserToLocals;
 
+/**
+ * middleware to ensure authenticated access, optionally requiring one or more user flags
+ * @param  {mixed}    flags single flag string or array of flags
+ * @return {Function}       request handler
+ */
 function ensureAuth(flags) {
   return function(req, res, next) {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
@@ -50,6 +65,10 @@ function ensureAuth(flags) {
   };
 }
 
+/**
+ * middleware to add current user object to template locals (or null if not authenticated)
+ * @return {Function} request handler
+ */
 function addUserToLocals() {
   return function(req, res, next) {
     res.locals.user = req.isAuthenticated() ? req.user : null;
