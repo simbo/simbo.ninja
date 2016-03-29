@@ -2,6 +2,7 @@
   "extends": "simbo/default/node",
   "rules": {
     "callback-return": 0,
+    "complexity": [1, 7],
     "id-length": [2, {
       "min": 2,
       "properties": "never",
@@ -16,6 +17,7 @@
       "args": "none"
     }],
     "sort-vars": 0,
+    "valid-jsdoc": 0,
     "vars-on-top": 1
   }
 }
