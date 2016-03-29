@@ -96,8 +96,11 @@ User.prototype.removeFlag = function(flag) {
  * @return {Promise} this
  */
 User.prototype.removeAllFlags = function() {
-  this.flags = [];
-  return Q(this);
+  return Q(this)
+    .then(function(user) {
+      user.flags = [];
+      return user;
+    });
 };
 
 /**
@@ -269,8 +272,10 @@ User.isValidUsername = function(username) {
  * @return {Promise}          username
  */
 User.validateUsername = function(username) {
-  if (!User.isValidUsername(username)) throw new Error('invalid username \'' + username + '\'');
-  return username;
+  return Q.Promise(function(resolve, reject) {
+    if (!User.isValidUsername(username)) reject(new Error('invalid username \'' + username + '\''));
+    else resolve(username);
+  });
 };
 
 /**
@@ -288,8 +293,10 @@ User.isValidPassword = function(password) {
  * @return {Promise}          password
  */
 User.validatePassword = function(password) {
-  if (!User.isValidPassword(password)) throw new Error('invalid password \'' + password + '\'');
-  return password;
+  return Q.Promise(function(resolve, reject) {
+    if (!User.isValidPassword(password)) reject(new Error('invalid password \'' + password + '\''));
+    else resolve(password);
+  });
 };
 
 /**
@@ -321,8 +328,10 @@ User.isValidUuid = function(id) {
  * @return {Promise}    id
  */
 User.validateUuid = function(id) {
-  if (!User.isValidUuid(id)) throw new Error('invalid uuid \'' + id + '\'');
-  return id;
+  return Q.Promise(function(resolve, reject) {
+    if (!User.isValidUuid(id)) reject(new Error('invalid uuid \'' + id + '\''));
+    else resolve(id);
+  });
 };
 
 /**
