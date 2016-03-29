@@ -45,7 +45,7 @@ User.prototype.setPassword = function(password) {
 
 User.prototype.addFlag = function(flag) {
   return Q(this)
-    .then(User.q.unverifyFlag(flag))
+    .then(User.q.verifyFlag(flag, true))
     .then(function(user) {
       if (User.validateFlag(flag)) user.flags.push(flag);
       return user;
@@ -79,16 +79,10 @@ User.prototype.hasFlag = function(flag) {
   return this.flags.indexOf(flag) >= 0;
 };
 
-User.prototype.verifyFlag = function(flag) {
+User.prototype.verifyFlag = function(flag, invert) {
   return Q.Promise(function(resolve, reject) {
-    if (!this.hasFlag(flag)) reject(new Error('user is not flagged with \'' + flag + '\''));
-    else resolve(this);
-  }.bind(this));
-};
-
-User.prototype.unverifyFlag = function(flag) {
-  return Q.Promise(function(resolve, reject) {
-    if (this.hasFlag(flag)) reject(new Error('user is flagged with \'' + flag + '\''));
+    if (!this.hasFlag(flag) && !invert) reject(new Error('user is not flagged with \'' + flag + '\''));
+    else if (invert) reject(new Error('user is flagged with \'' + flag + '\''));
     else resolve(this);
   }.bind(this));
 };
@@ -234,7 +228,6 @@ User.q = [
   'removeAllFlags',
   'save',
   'verifyFlag',
-  'unverifyFlag',
   'verifyPassword'
 ].reduce(function(methods, method) {
   methods[method] = function() {
