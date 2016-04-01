@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * init/sessions
+ * =============
+ */
+
 var uuid = require('uuid'),
     session = require('express-session'),
     sessionstore = require('sessionstore');

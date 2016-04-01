@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * init/errorhandling
+ * ==================
+ */
+
 var logger = require('app/modules/logger');
 
 module.exports = initErrorhandling;

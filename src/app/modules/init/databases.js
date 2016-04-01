@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * init/databases
+ * ==============
+ * exports function to setup/update databases and database layouts
+ */
+
 var async = require('async'),
     Q = require('q');
 
@@ -8,6 +14,11 @@ var config = require('config'),
 
 module.exports = initDatabases;
 
+/**
+ * asynchronously setup configured databases
+ * @param  {[type]} app [description]
+ * @return {[type]}     [description]
+ */
 function initDatabases(app) {
   return Q.Promise(function(resolve, reject) {
     async.forEachOf(config.app.databases, setupDatabase, function(err) {
@@ -17,6 +28,13 @@ function initDatabases(app) {
   });
 }
 
+/**
+ * [setupDatabase description]
+ * @param  {[type]}   design [description]
+ * @param  {[type]}   name   [description]
+ * @param  {Function} cb     [description]
+ * @return {[type]}          [description]
+ */
 function setupDatabase(design, name, cb) {
   var db = couch.database(name);
   db.exists(function(err, exists) {

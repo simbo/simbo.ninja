@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * init/routes
+ * ===========
+ * exports initialization function for routes
+ */
+
 var path = require('path');
 
 var async = require('async'),
@@ -11,7 +17,6 @@ var config = require('config'),
 /**
  * app routes
  * reduce routes array to an array containing only valid route objects
- *
  * @type {Array}
  */
 var routes = config.app.routes.reduce(function(routes, route) {
@@ -28,6 +33,11 @@ var routes = config.app.routes.reduce(function(routes, route) {
 
 module.exports = initRoutes;
 
+/**
+ * require and use the configured route modules at respective paths
+ * @param  {Object}  app express app
+ * @return {Promise}     app
+ */
 function initRoutes(app) {
   return Q.Promise(function(resolve, reject) {
     async.each(routes, function(route, cb) {

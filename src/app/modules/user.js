@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * user
+ * ====
+ * exports user class
+ */
+
 var bcrypt = require('bcrypt'),
     Q = require('q'),
     uuid = require('uuid'),
@@ -16,7 +22,7 @@ var db = couch.database('users');
  * @param {Object} user  data to restore a user
  */
 function User(user) {
-  user = user || {};
+  user = typeof user === 'object' ? user : {};
   this.uuid = user.hasOwnProperty('uuid') ? user.uuid : User.generateUuid();
   this.username = user.hasOwnProperty('username') ? user.username : null;
   this.passwordHash = user.hasOwnProperty('passwordHash') ? user.passwordHash : null;
@@ -65,7 +71,7 @@ User.prototype.setPassword = function(password) {
 
 /**
  * add a flag
- * @param {String}   flag new flag to add
+ * @param  {String}  flag new flag to add
  * @return {Promise}      this
  */
 User.prototype.addFlag = function(flag) {

@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * couch
+ * =====
+ * exports cradle couchdb connection
+ */
+
 var cradle = require('cradle');
 
 var config = require('config');
@@ -12,4 +18,8 @@ var couch = new cradle.Connection(config.app.couchdb.host, config.app.couchdb.po
   }
 });
 
+/**
+ * export couch
+ * @type {Object}
+ */
 module.exports = couch;

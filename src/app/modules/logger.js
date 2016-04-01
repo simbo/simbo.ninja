@@ -1,5 +1,12 @@
 'use strict';
 
+/**
+ * logger
+ * ======
+ * - exports winston logger with defined transports and settings
+ * - exports loglevels object
+ */
+
 var path = require('path');
 
 var moment = require('moment'),
@@ -12,6 +19,10 @@ var logger, loglevels;
 winston.transports.DailyRotateFile = require('winston-daily-rotate-file');
 winston.transports.Couchdb = require('winston-couchdb').Couchdb;
 
+/**
+ * loglevels: {name: [id, color], ...}
+ * @type {Object}
+ */
 loglevels = {
   error:   [0, 'red'],
   warn:    [1, 'yellow'],
@@ -21,6 +32,10 @@ loglevels = {
   silly:   [5, 'gray']
 };
 
+/**
+ * create winston logger instance
+ * @type {Object}
+ */
 logger = new winston.Logger({
 
   levels: Object.keys(loglevels).reduce(function(levels, level) {
@@ -32,6 +47,7 @@ logger = new winston.Logger({
 
   transports: [
 
+    // console transport options
     new winston.transports.Console({
       silent: false,
       colorize: true,
@@ -46,6 +62,7 @@ logger = new winston.Logger({
       }
     }),
 
+    // file transport options
     new winston.transports.DailyRotateFile({
       silent: true,
       level: 'info',
@@ -54,6 +71,7 @@ logger = new winston.Logger({
       handleExceptions: true
     }),
 
+    // couchdb transport options
     new winston.transports.Couchdb({
       silent: false,
       level: 'info',
@@ -71,6 +89,7 @@ logger = new winston.Logger({
 
 });
 
+// set colors for loglevels
 winston.addColors(
   Object.keys(loglevels).reduce(function(levels, level) {
     levels[level] = loglevels[level][1];

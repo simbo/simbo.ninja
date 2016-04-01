@@ -1,7 +1,8 @@
 'use strict';
 
 /**
- * auth module
+ * auth
+ * ====
  * - exports passport with auth strategies and session handlers
  * - exports middleware for ensuring authentication
  * - exports middleware for adding current user to locals
@@ -23,12 +24,12 @@ passport.use(new LocalStrategy(function(username, password, cb) {
     });
 }));
 
-// serialize user object for saving into session
+// set handler to serialize user object for saving into session
 passport.serializeUser(function(user, cb) {
   cb(null, user.uuid);
 });
 
-// deserialize user object when restoring from session
+// set handler to deserialize user object when restoring from session
 passport.deserializeUser(function(id, cb) {
   User.getByUuid(id)
     .then(function(user) {

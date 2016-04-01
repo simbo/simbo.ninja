@@ -16,15 +16,14 @@ var config = require('config'),
     logger = require('app/modules/logger'),
     pug = require('app/modules/pug');
 
-// pipe app through setup steps
 var staticData = new ReqMapper(config.paths.data);
 
+// pipe app through initialization steps
 Q(express())
 
-  // setup database layouts
+  // setup databases and layouts
   .then(require('app/modules/init/databases'))
 
-  // setup common
   .then(function(app) {
 
     app.server = http.Server(app);
@@ -41,33 +40,36 @@ Q(express())
 
   })
 
-  // setup sessions
+  // init sessions
   .then(require('app/modules/init/sessions'))
 
-  // setup authentication
   .then(function(app) {
 
+    // init authentication
     app.use(auth.initialize());
     app.use(auth.session());
     app.use(auth.addUserToLocals());
+    logger.log('verbose', 'auth set up');
 
+    // init views
     app.locals = merge({}, app.locals, staticData.map());
     app.engine('pug', pug.renderView);
     app.set('views', config.paths.views);
     app.set('view engine', 'pug');
+    logger.log('verbose', 'view engine set up');
 
     return app;
   })
 
-  // setup routes
+  // init routes
   .then(require('app/modules/init/routes'))
 
-  // setup errorhandling
+  // init errorhandling
   .then(require('app/modules/init/errorhandling'))
 
-  // start listening
   .done(function(app) {
 
+    // start listening
     app.server.listen(
       config.app.server.port,
       config.app.server.host,
