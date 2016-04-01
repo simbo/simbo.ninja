@@ -80,4 +80,9 @@ Q(express())
     );
 
     return app;
+  },
+
+  // catch errors
+  function(err) {
+    logger.log('error', err);
   });
