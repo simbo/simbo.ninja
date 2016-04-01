@@ -7,13 +7,18 @@ var bodyParser = require('body-parser'),
     express = require('express'),
     flash = require('connect-flash'),
     io = require('socket.io'),
-    Q = require('q');
+    merge = require('merge'),
+    Q = require('q'),
+    ReqMapper = require('requirements-mapper');
 
 var config = require('config'),
     auth = require('app/modules/auth'),
-    logger = require('app/modules/logger');
+    logger = require('app/modules/logger'),
+    pug = require('app/modules/pug');
 
 // pipe app through setup steps
+var staticData = new ReqMapper(config.paths.data);
+
 Q(express())
 
   // setup database layouts
@@ -21,14 +26,19 @@ Q(express())
 
   // setup common
   .then(function(app) {
+
     app.server = http.Server(app);
     app.io = io(app.server);
+
     app.use(cookieParser());
     app.use(bodyParser.urlencoded({
       extended: true
     }));
+
     app.use(flash());
+
     return app;
+
   })
 
   // setup sessions
@@ -36,14 +46,18 @@ Q(express())
 
   // setup authentication
   .then(function(app) {
+
     app.use(auth.initialize());
     app.use(auth.session());
     app.use(auth.addUserToLocals());
+
+    app.locals = merge({}, app.locals, staticData.map());
+    app.engine('pug', pug.renderView);
+    app.set('views', config.paths.views);
+    app.set('view engine', 'pug');
+
     return app;
   })
-
-  // setup views
-  .then(require('app/modules/init/views'))
 
   // setup routes
   .then(require('app/modules/init/routes'))
@@ -52,7 +66,8 @@ Q(express())
   .then(require('app/modules/init/errorhandling'))
 
   // start listening
-  .then(function(app) {
+  .done(function(app) {
+
     app.server.listen(
       config.app.server.port,
       config.app.server.host,
@@ -61,5 +76,6 @@ Q(express())
         logger.log('info', 'server started (listening on %s:%s)', address.address, address.port);
       }
     );
+
     return app;
   });

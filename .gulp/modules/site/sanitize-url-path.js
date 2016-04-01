@@ -27,7 +27,7 @@ function sanitizeUrlPath(filepath) {
   filepath.basename = slug(filepath.basename, slugOptions);
 
   // rename content to html
-  if ((/\.(md|jade)$/i).test(filepath.extname)) filepath.extname = '.html';
+  if ((/\.(md|pug)$/i).test(filepath.extname)) filepath.extname = '.html';
 
   // apply "pretty urls"
   if (filepath.basename !== 'index') {

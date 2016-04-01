@@ -17,12 +17,12 @@ module.exports = ['generate static site', buildSite];
 function buildSite() {
 
   var options = {
-        jade: {
+        pug: {
           basedir: this.paths.site.src,
           pretty: this.env === 'development'
         },
         layout: {
-          default: 'base.jade',
+          default: 'base.pug',
           path: this.paths.layouts
         }
       },
@@ -31,7 +31,7 @@ function buildSite() {
       };
 
   return this.gulp
-    .src(path.join(this.paths.content, '**/*.@(md|markdown|jade|html)'))
+    .src(path.join(this.paths.content, '**/*.@(md|markdown|pug|html)'))
     .pipe(this.plugins.plumber())
     .pipe(this.plugins.data(this.data.map()))
     .pipe(this.plugins.grayMatter())

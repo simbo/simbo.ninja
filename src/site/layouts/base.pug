@@ -1,4 +1,4 @@
-include /partials/mixins/assets.jade
+include /partials/mixins/assets.pug
 
 doctype html
 html
@@ -19,4 +19,4 @@ html
         | !{contents}
       block body_scripts
         if environment == "production"
-          include /partials/piwik.jade
+          include /partials/piwik.pug

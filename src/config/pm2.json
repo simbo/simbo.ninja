@@ -6,7 +6,7 @@
     "watch": [
       "./app/**/*.js",
       "./config/**/*.js?(on)",
-      "./site/views/**/*.jade"
+      "./site/views/**/*.pug"
     ],
     "watch_options": {
       "followSymlinks": false,

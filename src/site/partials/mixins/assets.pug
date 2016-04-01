@@ -1,0 +1,13 @@
+mixin style(name)
+  link(
+    href="/assets/css/" + name + ".css",
+    rel="stylesheet",
+    type="text/css",
+    id="style-" + name
+  )
+
+mixin script(name)
+  script(
+    src="/assets/js/" + name + ".js",
+    id="script-" + name
+  )

@@ -3,11 +3,12 @@
 var fs = require('fs'),
     path = require('path');
 
-var Q = require('q'),
+var merge = require('merge'),
+    Q = require('q'),
     through = require('through2');
 
-var renderJade = require('../../../src/app/functions/render-jade'),
-    renderMarkdown = require('../../../src/app/functions/render-markdown');
+var pug = require('app/modules/pug'),
+    marked = require('app/modules/marked');
 
 var layoutCache = {};
 
@@ -18,11 +19,11 @@ function renderSite(options) {
   return through.obj(transform);
 
   function transform(file, enc, done) {
-    if ((/\.jade$/i).test(file.history[0])) {
-      options.jade.filename = file.history[0];
-      file.contents = new Buffer(renderJade(String(file.contents), options.jade, file.data));
+    if ((/\.pug$/i).test(file.history[0])) {
+      options.pug.filename = file.history[0];
+      file.contents = new Buffer(pug.render(String(file.contents), merge({}, options.pug, file.data)));
     } else if ((/\.(md|markdown)$/i).test(file.history[0])) {
-      file.contents = new Buffer(renderMarkdown(String(file.contents)));
+      file.contents = new Buffer(marked(String(file.contents)));
     }
     if (!file.data.hasOwnProperty('layout')) {
       file.data.layout = options.layout.default;
@@ -35,8 +36,8 @@ function renderSite(options) {
     getLayout(file.data.layout).done(function(layout) {
       if (layout) {
         file.data.contents = String(file.contents);
-        options.jade.filename = layout.path;
-        file.contents = new Buffer(renderJade(layout.contents, options.jade, file.data));
+        options.pug.filename = layout.path;
+        file.contents = new Buffer(pug.render(layout.contents, merge({}, options.pug, file.data)));
       }
       done(null, file);
     }, done);
