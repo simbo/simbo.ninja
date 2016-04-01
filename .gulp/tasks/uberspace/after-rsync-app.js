@@ -4,7 +4,7 @@ var path = require('path');
 
 var ssh = require('../../modules/ssh');
 
-var paths = require('../../../src/config/paths');
+var config = require('config');
 
 module.exports = [
 
@@ -13,8 +13,8 @@ module.exports = [
   function(done) {
     ssh([
       'source ~/.bash_profile &> /dev/null',
-      'cp -fa ' + paths.remote.config.src + '/* ' + paths.remote.config.dest,
-      'cd ' + path.join(paths.remote.root, 'src'),
+      'cp -fa ' + config.paths.remote.config.src + '/* ' + config.paths.remote.config.dest,
+      'cd ' + path.join(config.paths.remote.root, 'src'),
       'npm install --production'
     ], done);
   }
