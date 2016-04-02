@@ -41,13 +41,13 @@ module.exports = initRoutes;
 function initRoutes(app) {
   return Q.Promise(function(resolve, reject) {
     async.each(routes, function(route, cb) {
-      var routeRequirePath = path.join(config.paths.app, 'routes', route.module);
+      var routeRequirePath = path.join(config.paths.app, 'routers', route.module);
       try {
         app.use(route.path, require(routeRequirePath));
       } catch (err) {
         cb(err);
       }
-      logger.log('verbose', 'created route %s using module %s', route.path, route.module);
+      logger.log('verbose', 'applied router module %s to %s', route.module, route.path);
       cb();
     }, function(err) {
       if (err) reject(err);
