@@ -25,6 +25,7 @@ function User(user) {
   user = typeof user === 'object' ? user : {};
   this.uuid = user.hasOwnProperty('uuid') ? user.uuid : User.generateUuid();
   this.username = user.hasOwnProperty('username') ? user.username : null;
+  this.email = user.hasOwnProperty('email') ? user.email : null;
   this.passwordHash = user.hasOwnProperty('passwordHash') ? user.passwordHash : null;
   this.flags = user.hasOwnProperty('flags') ? user.flags : [];
 }
@@ -50,6 +51,23 @@ User.prototype.setUsername = function(username) {
     }.bind(this))
     .then(function(name) {
       this.username = name;
+      return this;
+    }.bind(this));
+};
+
+/**
+ * set email address
+ * @param  {String}  email new email value
+ * @return {Promise}       this
+ */
+User.prototype.setEmail = function(email) {
+  return Q(email)
+    .then(User.validateEmail)
+    .then(function(email) {
+      return User.emailNotTaken(email, this.uuid);
+    }.bind(this))
+    .then(function(email) {
+      this.email = email;
       return this;
     }.bind(this));
 };
@@ -227,6 +245,52 @@ User.usernameNotTaken = function(username, excludeId) {
 };
 
 /**
+ * find matching user in database by given email
+ * @param  {String}  email email to lookup
+ * @return {Promise}       user instance
+ */
+User.getByEmail = function(email) {
+  return Q(email)
+    .then(User.validateEmail)
+    .then(function(email) {
+      return Q.Promise(function(resolve, reject) {
+        db.view('users/byEmail', {
+          key: email,
+          limit: 1
+        }, function(err, resp) {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1) reject(new Error('unknown email \'' + email + '\''));
+          else resolve(new User(resp.json.rows[0].value));
+        });
+      });
+    });
+};
+
+/**
+ * test if a email is NOT already taken by any user; optionally exclude a
+ * specific user by uuid
+ * @param  {String}  email     email to test
+ * @param  {String}  excludeId uuid to exclude
+ * @return {Promise}           email
+ */
+User.emailNotTaken = function(email, excludeId) {
+  return Q(email)
+    .then(User.validateEmail)
+    .then(function(email) {
+      return Q.Promise(function(resolve, reject) {
+        db.view('users/byEmail', {
+          key: email,
+          limit: 1
+        }, function(err, resp) {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1 || excludeId && resp.json.rows[0].value.uuid === excludeId) resolve(email);
+          else reject(new Error('email already taken'));
+        });
+      });
+    });
+};
+
+/**
  * get all users from database; optionally define a view and options
  * @param  {String}  view        order by id, username or flag (default: id)
  * @param  {Object}  viewOptions view options
@@ -281,6 +345,27 @@ User.validateUsername = function(username) {
   return Q.Promise(function(resolve, reject) {
     if (!User.isValidUsername(username)) reject(new Error('invalid username \'' + username + '\''));
     else resolve(username);
+  });
+};
+
+/**
+ * test if given email is a valid email address
+ * @param  {String}  email email to test
+ * @return {Boolean}       result
+ */
+User.isValidEmail = function(email) {
+  return validator.isEmail(email);
+};
+
+/**
+ * validate given email by isValidEmail
+ * @param  {String}  email email to validate
+ * @return {Promise}       email
+ */
+User.validateEmail = function(email) {
+  return Q.Promise(function(resolve, reject) {
+    if (!User.isValidEmail(email)) reject(new Error('invalid email \'' + email + '\''));
+    else resolve(email);
   });
 };
 
@@ -375,6 +460,7 @@ User.validateFlag = function(flag) {
  */
 User.q = [
   'setUsername',
+  'setEmail',
   'setPassword',
   'addFlag',
   'removeFlag',
