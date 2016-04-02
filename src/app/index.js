@@ -26,14 +26,17 @@ Q(express())
 
   .then(function(app) {
 
+    // add references to server and sockets
     app.server = http.Server(app);
     app.io = io(app.server);
 
+    // add parsers
     app.use(cookieParser());
     app.use(bodyParser.urlencoded({
       extended: true
     }));
 
+    // add flash messages support
     app.use(flash());
 
     return app;
