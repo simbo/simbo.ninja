@@ -17,8 +17,8 @@ module.exports = initDatabases;
 
 /**
  * asynchronously setup configured databases
- * @param  {[type]} app [description]
- * @return {[type]}     [description]
+ * @param  {Object} app express app
+ * @return {Object}     app
  */
 function initDatabases(app) {
   return Q.Promise(function(resolve, reject) {
@@ -30,11 +30,10 @@ function initDatabases(app) {
 }
 
 /**
- * [setupDatabase description]
- * @param  {[type]}   design [description]
- * @param  {[type]}   name   [description]
- * @param  {Function} cb     [description]
- * @return {[type]}          [description]
+ * create a database and if it does not exist
+ * @param  {Object}   design database design object
+ * @param  {String}   name   database name
+ * @param  {Function} cb     callback
  */
 function setupDatabase(design, name, cb) {
   var db = couch.database(name);
@@ -53,6 +52,12 @@ function setupDatabase(design, name, cb) {
   });
 }
 
+/**
+ * apply design object to a database
+ * @param  {Object}   db     cradle database object
+ * @param  {Object}   design database design object
+ * @param  {Function} cb     callback
+ */
 function applyDesign(db, design, cb) {
   db.save('_design/' + db.name, design, function(err) {
     if (err) cb(err);

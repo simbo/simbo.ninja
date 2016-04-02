@@ -3,6 +3,7 @@
 /**
  * init/sessions
  * =============
+ * exports function to setup sessions
  */
 
 var session = require('express-session'),
@@ -14,8 +15,14 @@ var config = require('config'),
 
 module.exports = initSessions;
 
+/**
+ * intialize sessions
+ * @param  {Object} app express app
+ * @return {Object}     app
+ */
 function initSessions(app) {
 
+  // create session store
   var store = sessionstore.createSessionStore({
     type: 'couchdb',
     host: 'http://' + config.app.couchdb.host,
@@ -29,6 +36,7 @@ function initSessions(app) {
     dbName: 'sessions'
   });
 
+  // init session handling
   app.use(session({
     secret: config.app.sessions.secret,
     genid: function() {
@@ -46,7 +54,8 @@ function initSessions(app) {
     saveUninitialized: false
   }));
 
-  logger.log('verbose', 'set up sessions')
+  // log
+  logger.log('verbose', 'set up sessions');
 
   return app;
 

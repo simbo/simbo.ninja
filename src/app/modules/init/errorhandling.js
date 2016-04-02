@@ -3,12 +3,18 @@
 /**
  * init/errorhandling
  * ==================
+ * exports function to setup errorhandling
  */
 
 var logger = require('app/modules/logger');
 
 module.exports = initErrorhandling;
 
+/**
+ * initialize errorhandling
+ * @param  {Object}  app express app
+ * @return {Object}  app
+ */
 function initErrorhandling(app) {
   app.use(error404);
   app.use(errorhandler);
@@ -16,12 +22,25 @@ function initErrorhandling(app) {
   return app;
 }
 
+/**
+ * request handler if no route handler found
+ * @param  {Object}   req  request
+ * @param  {Object}   res  response
+ * @param  {Function} next callback
+ */
 function error404(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 }
 
+/**
+ * request error handler
+ * @param  {Object}   err  error
+ * @param  {Object}   req  request
+ * @param  {Object}   res  response
+ * @param  {Function} next callback
+ */
 function errorhandler(err, req, res, next) {
 
   // populate error object
