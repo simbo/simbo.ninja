@@ -4,9 +4,8 @@
     "script": "app/index.js",
     "cwd": "/vagrant/src",
     "watch": [
-      "./app/**/*.js",
-      "./config/**/*.js?(on)",
-      "./site/views/**/*.pug"
+      "./app/**/*.@(js|pug)",
+      "./config/**/*.js?(on)"
     ],
     "watch_options": {
       "followSymlinks": false,

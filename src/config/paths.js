@@ -15,6 +15,7 @@ paths.data = path.join(paths.src, 'data');
 
 // node app
 paths.app = path.join(paths.src, 'app');
+paths.views = path.join(paths.app, 'views');
 
 // site contains everything to generate static content, assets and app views
 paths.site = {
@@ -24,7 +25,6 @@ paths.site = {
 paths.content = path.join(paths.site.src, 'content');
 paths.layouts = path.join(paths.site.src, 'layouts');
 paths.static = path.join(paths.site.src, 'static');
-paths.views = path.join(paths.site.src, 'views');
 
 // assets root path
 paths.assets = {
