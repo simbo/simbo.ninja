@@ -80,7 +80,7 @@
     "socket.io": "^1.4.5",
     "uglify-js": "^2.6.2",
     "uuid": "^2.0.1",
-    "uuid-validate": "0.0.2",
+    "validator": "^5.1.0",
     "winston": "^2.2.0",
     "winston-couchdb": "^0.6.3",
     "winston-daily-rotate-file": "^1.0.1"

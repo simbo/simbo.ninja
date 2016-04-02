@@ -9,7 +9,7 @@
 var bcrypt = require('bcrypt'),
     Q = require('q'),
     uuid = require('uuid'),
-    uuidValidate = require('uuid-validate');
+    validator = require('validator');
 
 var couch = require('app/modules/couch');
 
@@ -325,7 +325,7 @@ User.hashPassword = function(password) {
  * @return {Boolean}    result
  */
 User.isValidUuid = function(id) {
-  return uuidValidate(id, 4);
+  return validator.isUUID(id, 4);
 };
 
 /**
