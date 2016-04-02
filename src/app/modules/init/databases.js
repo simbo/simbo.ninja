@@ -10,7 +10,8 @@ var async = require('async'),
     Q = require('q');
 
 var config = require('config'),
-    couch = require('app/modules/couch');
+    couch = require('app/modules/couch'),
+    logger = require('app/modules/logger');
 
 module.exports = initDatabases;
 
@@ -43,7 +44,10 @@ function setupDatabase(design, name, cb) {
     else {
       db.create(function(err) {
         if (err) cb(err);
-        else applyDesign(db, design, cb);
+        else {
+          logger.log('verbose', 'created database ' + name);
+          applyDesign(db, design, cb);
+        }
       });
     }
   });
@@ -52,6 +56,9 @@ function setupDatabase(design, name, cb) {
 function applyDesign(db, design, cb) {
   db.save('_design/' + db.name, design, function(err) {
     if (err) cb(err);
-    else cb();
+    else {
+      logger.log('verbose', 'applied database layout for ' + db.name);
+      cb();
+    }
   });
 }

@@ -49,14 +49,14 @@ Q(express())
     app.use(auth.initialize());
     app.use(auth.session());
     app.use(auth.addUserToLocals());
-    logger.log('verbose', 'auth set up');
+    logger.log('verbose', 'set up auth');
 
     // init views
     app.locals = merge({}, app.locals, staticData.map());
     app.engine('pug', pug.renderView);
     app.set('views', config.paths.views);
     app.set('view engine', 'pug');
-    logger.log('verbose', 'view engine set up');
+    logger.log('verbose', 'set up view engine');
 
     return app;
   })

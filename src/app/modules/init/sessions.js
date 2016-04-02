@@ -5,11 +5,12 @@
  * =============
  */
 
-var uuid = require('uuid'),
-    session = require('express-session'),
-    sessionstore = require('sessionstore');
+var session = require('express-session'),
+    sessionstore = require('sessionstore'),
+    uuid = require('uuid');
 
-var config = require('config');
+var config = require('config'),
+    logger = require('app/modules/logger');
 
 module.exports = initSessions;
 
@@ -44,6 +45,8 @@ function initSessions(app) {
     resave: false,
     saveUninitialized: false
   }));
+
+  logger.log('verbose', 'set up sessions')
 
   return app;
 

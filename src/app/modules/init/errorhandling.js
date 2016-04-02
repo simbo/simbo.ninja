@@ -12,6 +12,7 @@ module.exports = initErrorhandling;
 function initErrorhandling(app) {
   app.use(error404);
   app.use(errorhandler);
+  logger.log('verbose', 'set up errorhandling');
   return app;
 }
 
