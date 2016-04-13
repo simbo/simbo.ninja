@@ -12,6 +12,8 @@ var pug = require('pug'),
 var config = require('config'),
     marked = require('app/modules/marked');
 
+pug.filters = pug.filters || {};
+
 /**
  * render markdown using marked
  * @param  {String} markdown markdown content
