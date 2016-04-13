@@ -60,10 +60,11 @@ block body_contents
       span(data-pause=500)
       for key in ["email", "gpgkey", "twitter", "github", "npm"]
         - var item = personal.contacts[key]
+        //- TODO: change string concatenation to template string when using es6
         a(
           href=item.url,
           title=item.description,
-          class="typed-icon icon-#{item.icon}"
+          class="typed-icon icon-" + item.icon
         )= " "
         |  #[span(data-pause=500)]
       br
