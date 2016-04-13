@@ -6,7 +6,7 @@ module.exports = [
 
   function() {
     this.browserSync({
-      server: this.paths.site.dest,
+      proxy: '10.0.0.5:52323',
       notify: false,
       open: false,
       ghostMode: {
