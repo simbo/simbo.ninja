@@ -1,9 +1,9 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
-var moment = require('moment'),
-    through = require('through2');
+const moment = require('moment'),
+      through = require('through2');
 
 module.exports = function() {
   return through.obj(transformDate);
@@ -29,9 +29,9 @@ function transformDate(file, enc, done) {
  * @return {undefined}
  */
 function dateFromFilename(file) {
-  var fileName = path.basename(file.relative),
-      regexpDateFilename = /^([0-9]{4}\-[0-9]{2}\-[0-9]{2})\-(.+)/i,
-      regexpResult = regexpDateFilename.exec(fileName);
+  const fileName = path.basename(file.relative),
+        regexpDateFilename = /^([0-9]{4}\-[0-9]{2}\-[0-9]{2})\-(.+)/i,
+        regexpResult = regexpDateFilename.exec(fileName);
   if (regexpResult) {
     file.data.date = regexpResult[1];
     file.path = path.join(path.dirname(file.path), regexpResult[2]);

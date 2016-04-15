@@ -1,12 +1,12 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
-var filter = require('../../modules/filter'),
-    render = require('../../modules/site/render'),
-    sanitizeUrlPath = require('../../modules/site/sanitize-url-path'),
-    transformDate = require('../../modules/site/transform-date'),
-    transformBlog = require('../../modules/site/transform-blog');
+const filter = require('../../modules/filter'),
+      render = require('../../modules/site/render'),
+      sanitizeUrlPath = require('../../modules/site/sanitize-url-path'),
+      transformDate = require('../../modules/site/transform-date'),
+      transformBlog = require('../../modules/site/transform-blog');
 
 module.exports = ['generate static site', buildSite];
 
@@ -16,19 +16,19 @@ module.exports = ['generate static site', buildSite];
  */
 function buildSite() {
 
-  var options = {
-        pug: {
-          basedir: this.paths.site.src,
-          pretty: this.env === 'development'
+  const options = {
+          pug: {
+            basedir: this.paths.site.src,
+            pretty: this.env === 'development'
+          },
+          layout: {
+            default: 'base.pug',
+            path: this.paths.layouts
+          }
         },
-        layout: {
-          default: 'base.pug',
-          path: this.paths.layouts
-        }
-      },
-      filters = {
-        blog: filter(path.join(this.paths.content, 'blog/**/*'))
-      };
+        filters = {
+          blog: filter(path.join(this.paths.content, 'blog/**/*'))
+        };
 
   return this.gulp
     .src(path.join(this.paths.content, '**/*.@(md|markdown|pug|html)'))

@@ -1,6 +1,6 @@
 'use strict';
 
-var clean = require('../modules/clean');
+const clean = require('../modules/clean');
 
 module.exports = [
 

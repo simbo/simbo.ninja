@@ -1,6 +1,8 @@
 'use strict';
 
-var environments = ['production', 'development'];
+const environments = ['production', 'development'];
+
+let env;
 
 module.exports = envStatus;
 
@@ -8,13 +10,13 @@ function envStatus(plug) {
 
   // setter/getter for environment
   Object.defineProperty(plug, 'env', {
-    get: function() {
-      return process.env.NODE_ENV;
+    get() {
+      return env;
     },
-    set: function(val) {
+    set(val) {
       if (environments.indexOf(val) !== -1) {
-        process.env.NODE_ENV = val;
-        plug.util.log('Environment: ' + plug.util.colors.yellow(plug.env));
+        env = val;
+        plug.util.log(`Environment: ${plug.util.colors.yellow(plug.env)}`);
       }
     }
   });
@@ -22,12 +24,12 @@ function envStatus(plug) {
   plug.env = process.env.NODE_ENV;
 
   // add plain gulp task to set env to prod
-  plug.gulp.task('env:prod', function() {
+  plug.gulp.task('env:prod', () => {
     plug.env = 'production';
   });
 
   // add plain gulp task to set env to dev
-  plug.gulp.task('env:dev', function() {
+  plug.gulp.task('env:dev', () => {
     plug.env = 'development';
   });
 

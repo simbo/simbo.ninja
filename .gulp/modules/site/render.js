@@ -1,16 +1,16 @@
 'use strict';
 
-var fs = require('fs'),
-    path = require('path');
+const fs = require('fs'),
+      path = require('path');
 
-var merge = require('merge'),
-    Q = require('q'),
-    through = require('through2');
+const merge = require('merge'),
+      q = require('q'),
+      through = require('through2');
 
-var pug = require('app/modules/pug'),
-    marked = require('app/modules/marked');
+const pug = require('app/modules/pug'),
+      marked = require('app/modules/marked');
 
-var layoutCache = {};
+const layoutCache = {};
 
 module.exports = renderSite;
 
@@ -33,7 +33,7 @@ function renderSite(options) {
   }
 
   function applyLayout(file, done) {
-    getLayout(file.data.layout).done(function(layout) {
+    getLayout(file.data.layout).done((layout) => {
       if (layout) {
         file.data.contents = String(file.contents);
         options.pug.filename = layout.path;
@@ -44,12 +44,12 @@ function renderSite(options) {
   }
 
   function getLayout(layout) {
-    return Q.Promise(function(resolve, reject) {
-      var layoutPath = path.join(options.layout.path, layout);
+    return q.Promise((resolve, reject) => {
+      const layoutPath = path.join(options.layout.path, layout);
       if (layoutCache[layoutPath]) {
         resolve(layoutCache[layoutPath]);
       } else {
-        Q.nfapply(fs.readFile, [layoutPath, 'utf8']).done(function(layoutContents) {
+        q.nfapply(fs.readFile, [layoutPath, 'utf8']).done((layoutContents) => {
           if (typeof layoutContents === 'string' && layoutContents.length > 0) {
             layoutCache[layoutPath] = {
               contents: layoutContents,

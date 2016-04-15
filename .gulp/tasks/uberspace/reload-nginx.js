@@ -1,6 +1,6 @@
 'use strict';
 
-var ssh = require('../../modules/ssh');
+const ssh = require('../../modules/ssh');
 
 module.exports = [
 

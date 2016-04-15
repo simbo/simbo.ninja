@@ -1,10 +1,10 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
-var browserifyShim = require('browserify-shim'),
-    eslintify = require('eslintify'),
-    uglifyify = require('uglifyify');
+const browserifyShim = require('browserify-shim'),
+      eslintify = require('eslintify'),
+      uglifyify = require('uglifyify');
 
 module.exports = ['bundle javascripts using watchify+browserify', buildJs];
 
@@ -15,7 +15,7 @@ module.exports = ['bundle javascripts using watchify+browserify', buildJs];
  */
 function buildJs(done) {
 
-  var options = {
+  const options = {
     watch: this.watchify,
     cwd: this.paths.js.src,
     browserify: {
@@ -30,14 +30,11 @@ function buildJs(done) {
     }
   };
 
-  this.plugins.watchifyBrowserify('*.js', options, streamHandler.bind(this), done);
-
-  function streamHandler(stream) {
-    return stream
-      .pipe(this.plugins.plumber())
-      .pipe(this.plugins.sourcemaps.init({loadMaps: true}))
-      .pipe(this.plugins.sourcemaps.write('.', {includeContent: true, sourceRoot: '.'}))
-      .pipe(this.gulp.dest(this.paths.js.dest))
-      .on('end', this.reload);
-  }
+  this.plugins.watchifyBrowserify('*.js', options, (stream) => stream
+    .pipe(this.plugins.plumber())
+    .pipe(this.plugins.sourcemaps.init({loadMaps: true}))
+    .pipe(this.plugins.sourcemaps.write('.', {includeContent: true, sourceRoot: '.'}))
+    .pipe(this.gulp.dest(this.paths.js.dest))
+    .on('end', this.reload)
+  , done);
 }

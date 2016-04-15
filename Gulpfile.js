@@ -1,20 +1,20 @@
 'use strict';
 
 // module requires
-var browserSync = require('browser-sync'),
-    gulp = require('gulp'),
-    gulpplug = require('gulpplug'),
-    ReqMapper = require('requirements-mapper');
+const browserSync = require('browser-sync'),
+      gulp = require('gulp'),
+      gulpplug = require('gulpplug'),
+      ReqMapper = require('requirements-mapper');
 
 // get config
-var config = require('./src/config'),
-    envSetup = require('./.gulp/modules/env-setup.js');
+const config = require('./src/config'),
+      envSetup = require('./.gulp/modules/env-setup.js');
 
 // initialize gulpplug
-var plug = new gulpplug.Plug(gulp, {tasksDir: '.gulp/tasks'});
+const plug = new gulpplug.Plug(gulp, {tasksDir: '.gulp/tasks'});
 
 // apply config properties to plug instance
-Object.keys(config).forEach(function(prop) {
+Object.keys(config).forEach((prop) => {
   if (!plug.hasOwnProperty(prop)) plug[prop] = config[prop];
 });
 

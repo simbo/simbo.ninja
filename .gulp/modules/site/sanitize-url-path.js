@@ -1,10 +1,10 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
-var slug = require('slug');
+const slug = require('slug');
 
-var slugOptions = {
+const slugOptions = {
   mode: 'rfc3986'
 };
 
@@ -19,9 +19,7 @@ function sanitizeUrlPath(filepath) {
 
   // sanitize all folder names in path
   filepath.dirname = path.relative('.', filepath.dirname)
-    .split('/').map(function(part) {
-      return slug(part, slugOptions);
-    }).join('/');
+    .split('/').map((part) => slug(part, slugOptions)).join('/');
 
   // sanitize file name
   filepath.basename = slug(filepath.basename, slugOptions);
