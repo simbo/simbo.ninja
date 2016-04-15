@@ -1,0 +1,9 @@
+{
+  "extends": "simbo/default/node",
+  "globals": {
+    "emit": false
+  },
+  "rules": {
+    "no-underscore-dangle": 0
+  }
+}

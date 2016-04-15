@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * database layout for 'users'
+ * @type {Object}
+ */
 module.exports = {
 
   views: {
