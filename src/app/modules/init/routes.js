@@ -6,20 +6,20 @@
  * exports initialization function for routes
  */
 
-var path = require('path');
+const path = require('path');
 
-var async = require('async'),
-    Q = require('q');
+const async = require('async'),
+      q = require('q');
 
-var config = require('config'),
-    logger = require('app/modules/logger');
+const config = require('config'),
+      logger = require('app/modules/logger');
 
 /**
  * app routes
  * reduce routes array to an array containing only valid route objects
  * @type {Array}
  */
-var routes = config.app.routes.reduce(function(routes, route) {
+const routes = config.app.routes.reduce((routes, route) => {
   if (typeof route === 'string') route = [route];
   if (Array.isArray(route)) route = {path: route[0], module: route[1] || route[0]};
   if (typeof route === 'object' && route.path && route.path.length) {
@@ -31,7 +31,10 @@ var routes = config.app.routes.reduce(function(routes, route) {
   return routes;
 }, []);
 
-module.exports = initRoutes;
+module.exports = {
+  routes,
+  initRoutes
+};
 
 /**
  * require and use the configured route modules at respective paths
@@ -39,21 +42,19 @@ module.exports = initRoutes;
  * @return {Promise}     app
  */
 function initRoutes(app) {
-  return Q.Promise(function(resolve, reject) {
-    async.each(routes, function(route, cb) {
-      var routeRequirePath = path.join(config.paths.app, 'routers', route.module);
+  return q.Promise((resolve, reject) => {
+    async.each(routes, (route, cb) => {
+      const routeRequirePath = path.join(config.paths.app, 'routers', route.module);
       try {
         app.use(route.path, require(routeRequirePath));
+        logger.log('verbose', 'applied router module %s to %s', route.module, route.path);
+        cb();
       } catch (err) {
         cb(err);
       }
-      logger.log('verbose', 'applied router module %s to %s', route.module, route.path);
-      cb();
-    }, function(err) {
+    }, (err) => {
       if (err) reject(err);
       else resolve(app);
     });
   });
 }
-
-

@@ -7,14 +7,12 @@
  * - exports loglevels object
  */
 
-var path = require('path');
+const path = require('path');
 
-var moment = require('moment'),
-    winston = require('winston');
+const moment = require('moment'),
+      winston = require('winston');
 
-var config = require('config');
-
-var logger, loglevels;
+const config = require('config');
 
 winston.transports.DailyRotateFile = require('winston-daily-rotate-file');
 winston.transports.Couchdb = require('winston-couchdb').Couchdb;
@@ -23,7 +21,7 @@ winston.transports.Couchdb = require('winston-couchdb').Couchdb;
  * loglevels: {name: [id, color], ...}
  * @type {Object}
  */
-loglevels = {
+const loglevels = {
   error:   [0, 'red'],
   warn:    [1, 'yellow'],
   info:    [2, 'blue'],
@@ -36,9 +34,9 @@ loglevels = {
  * create winston logger instance
  * @type {Object}
  */
-logger = new winston.Logger({
+const logger = new winston.Logger({
 
-  levels: Object.keys(loglevels).reduce(function(levels, level) {
+  levels: Object.keys(loglevels).reduce((levels, level) => {
     levels[level] = loglevels[level][0];
     return levels;
   }, {}),
@@ -53,13 +51,8 @@ logger = new winston.Logger({
       colorize: true,
       level: 'silly',
       handleExceptions: true,
-      timestamp: function() {
-        return moment(new Date()).format('hh:mm:ss');
-      },
-      prettyPrint: function(meta) {
-        var stack = meta.stack;
-        return '\n' + (Array.isArray(stack) ? stack.join('\n') : stack);
-      }
+      timestamp: () => moment(new Date()).format('hh:mm:ss'),
+      prettyPrint: (meta) => `\n${ Array.isArray(meta.stack) ? meta.stack.join('\n') : meta.stack }`
     }),
 
     // file transport options
@@ -91,7 +84,7 @@ logger = new winston.Logger({
 
 // set colors for loglevels
 winston.addColors(
-  Object.keys(loglevels).reduce(function(levels, level) {
+  Object.keys(loglevels).reduce((levels, level) => {
     levels[level] = loglevels[level][1];
     return levels;
   }, {})

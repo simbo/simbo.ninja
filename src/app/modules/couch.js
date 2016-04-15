@@ -6,12 +6,12 @@
  * exports cradle couchdb connection
  */
 
-var cradle = require('cradle');
+const cradle = require('cradle');
 
-var config = require('config');
+const config = require('config');
 
 // create couchdb connection using cradle
-var couch = new cradle.Connection(config.app.couchdb.host, config.app.couchdb.port, {
+const couch = new cradle.Connection(config.app.couchdb.host, config.app.couchdb.port, {
   auth: {
     username: config.app.couchdb.username,
     password: config.app.couchdb.password

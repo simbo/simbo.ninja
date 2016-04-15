@@ -6,10 +6,10 @@
  * exports marked with highlight.js as code renderer
  */
 
-var marked = require('marked'),
-    highlightjs = require('highlight.js');
+const highlightjs = require('highlight.js'),
+      marked = require('marked');
 
-var markedOptions = {
+const markedOptions = {
   renderer: new marked.Renderer()
 };
 
@@ -19,10 +19,10 @@ var markedOptions = {
  * @param  {String} lang language key
  * @return {String}      rendered html
  */
-markedOptions.renderer.code = function(code, lang) {
+markedOptions.renderer.code = (code, lang) => {
   lang = typeof lang === 'string' && highlightjs.getLanguage(lang) ? lang : false;
   code = lang ? highlightjs.highlight(lang, code).value : highlightjs.highlightAuto(code).value;
-  return '<pre><code class="hljs' + (lang ? ' lang-' + lang : '') + '">' + code + '</code></pre>';
+  return `<pre><code class="hljs${ lang ? ` lang-${lang}` : '' }">${code}</code></pre>`;
 };
 
 marked.setOptions(markedOptions);

@@ -6,7 +6,7 @@
  * exports function to setup errorhandling
  */
 
-var logger = require('app/modules/logger');
+const logger = require('app/modules/logger');
 
 module.exports = initErrorhandling;
 
@@ -29,7 +29,7 @@ function initErrorhandling(app) {
  * @param  {Function} next callback
  */
 function error404(req, res, next) {
-  var err = new Error('Not Found');
+  const err = new Error('Not Found');
   err.status = 404;
   next(err);
 }
@@ -39,7 +39,7 @@ function error404(req, res, next) {
  * @param  {Object}   err  error
  * @param  {Object}   req  request
  * @param  {Object}   res  response
- * @param  {Function} next callback
+ * @param  {Object}   next callback
  */
 function errorhandler(err, req, res, next) {
 
@@ -55,6 +55,6 @@ function errorhandler(err, req, res, next) {
   res.status(err.status);
   if (req.accepts('html')) res.render('error', {error: err});
   else if (req.accepts('json')) res.send({error: err});
-  else res.type('txt').send('ERROR: ' + err.message);
+  else res.type('txt').send(`ERROR: ${err.message}`);
 
 }

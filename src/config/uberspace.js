@@ -1,8 +1,8 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
-var uberspace = {
+const uberspace = {
   host: 'libra.uberspace.de',
   user: 'simbo',
   paths: {

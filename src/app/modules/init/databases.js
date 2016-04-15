@@ -6,12 +6,12 @@
  * exports function to setup/update databases and database layouts
  */
 
-var async = require('async'),
-    Q = require('q');
+const async = require('async'),
+      q = require('q');
 
-var config = require('config'),
-    couch = require('app/modules/couch'),
-    logger = require('app/modules/logger');
+const config = require('config'),
+      couch = require('app/modules/couch'),
+      logger = require('app/modules/logger');
 
 module.exports = initDatabases;
 
@@ -21,8 +21,8 @@ module.exports = initDatabases;
  * @return {Object}     app
  */
 function initDatabases(app) {
-  return Q.Promise(function(resolve, reject) {
-    async.forEachOf(config.app.databases, setupDatabase, function(err) {
+  return q.Promise((resolve, reject) => {
+    async.forEachOf(config.app.databases, setupDatabase, (err) => {
       if (err) reject(err);
       else resolve(app);
     });
@@ -36,15 +36,15 @@ function initDatabases(app) {
  * @param  {Function} cb     callback
  */
 function setupDatabase(design, name, cb) {
-  var db = couch.database(name);
-  db.exists(function(err, exists) {
+  const db = couch.database(name);
+  db.exists((err, exists) => {
     if (err) cb(err);
     else if (exists) applyDesign(db, design, cb);
     else {
-      db.create(function(err) {
+      db.create((err) => {
         if (err) cb(err);
         else {
-          logger.log('verbose', 'created database ' + name);
+          logger.log('verbose', `created database ${name}`);
           applyDesign(db, design, cb);
         }
       });
@@ -59,10 +59,10 @@ function setupDatabase(design, name, cb) {
  * @param  {Function} cb     callback
  */
 function applyDesign(db, design, cb) {
-  db.save('_design/' + db.name, design, function(err) {
+  db.save(`_design/${db.name}`, design, (err) => {
     if (err) cb(err);
     else {
-      logger.log('verbose', 'applied database layout for ' + db.name);
+      logger.log('verbose', `applied database layout for ${db.name}`);
       cb();
     }
   });

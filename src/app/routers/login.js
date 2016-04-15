@@ -1,12 +1,12 @@
 'use strict';
 
-var router = require('express').Router();
+const router = require('express').Router();
 
-var auth = require('app/modules/auth');
+const passport = require('app/modules/auth').passport;
 
-var defaultRedirectAfterLogin = '/account';
+const defaultRedirectAfterLogin = '/account';
 
-router.get('/login', function(req, res) {
+router.get('/login', (req, res) => {
   if (req.isAuthenticated()) {
     res.redirect(defaultRedirectAfterLogin);
   } else {
@@ -17,13 +17,13 @@ router.get('/login', function(req, res) {
   }
 });
 
-router.post('/login', auth.authenticate('local', {
+router.post('/login', passport.authenticate('local', {
   failureFlash: true,
   failureRedirect: '/login',
   successReturnToOrRedirect: defaultRedirectAfterLogin
 }));
 
-router.get('/logout', function(req, res) {
+router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/login');
 });

@@ -8,40 +8,42 @@
  * - exports middleware for adding current user to locals
  */
 
-var Q = require('q'),
-    passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy,
+      q = require('q'),
+      passport = require('passport');
 
-var User = require('app/modules/user');
+const User = require('app/modules/user');
 
 // create local authentication strategy
-passport.use(new LocalStrategy(function(username, password, cb) {
+passport.use(new LocalStrategy((username, password, cb) => {
   User.verifyUsernamePassword(username, password)
-    .then(function(user) {
+    .then((user) => {
       cb(null, user);
-    }, function(err) {
+    }, (err) => {
       cb(null, false, {message: err.message});
     });
 }));
 
 // set handler to serialize user object for saving into session
-passport.serializeUser(function(user, cb) {
+passport.serializeUser((user, cb) => {
   cb(null, user.uuid);
 });
 
 // set handler to deserialize user object when restoring from session
-passport.deserializeUser(function(id, cb) {
+passport.deserializeUser((id, cb) => {
   User.getByUuid(id)
-    .then(function(user) {
+    .then((user) => {
       cb(null, user);
-    }, function(err) {
+    }, (err) => {
       cb(err);
     });
 });
 
-module.exports = passport;
-module.exports.ensureAuth = ensureAuth;
-module.exports.addUserToLocals = addUserToLocals;
+module.exports = {
+  passport,
+  ensureAuth,
+  addUserToLocals
+};
 
 /**
  * middleware to ensure authenticated access, optionally requiring one or more user flags
@@ -49,16 +51,16 @@ module.exports.addUserToLocals = addUserToLocals;
  * @return {Function}       request handler
  */
 function ensureAuth(flags) {
-  return function(req, res, next) {
+  return (req, res, next) => {
     if (!req.isAuthenticated || !req.isAuthenticated()) {
       if (req.session) req.session.returnTo = req.originalUrl || req.url;
       return res.redirect('/login');
     } else if (flags) {
-      (Array.isArray(flags) ? flags : [flags]).reduce(function(queue, flag) {
+      (Array.isArray(flags) ? flags : [flags]).reduce((queue, flag) => {
         return queue.then(User.q.verifyFlag(flag));
-      }, Q(req.user)).then(function() {
+      }, q(req.user)).then(() => {
         next();
-      }, function(err) {
+      }, (err) => {
         err.status = 401;
         next(err);
       });
@@ -71,7 +73,7 @@ function ensureAuth(flags) {
  * @return {Function} request handler
  */
 function addUserToLocals() {
-  return function(req, res, next) {
+  return (req, res, next) => {
     res.locals.user = req.isAuthenticated() ? req.user : null;
     next();
   };

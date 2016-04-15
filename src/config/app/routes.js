@@ -18,7 +18,7 @@
  *
  * @type {Array}
  */
-var routes = [
+const routes = [
   ['/', 'login'],
   'account',
   'admin',

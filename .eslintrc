@@ -1,12 +1,13 @@
 {
-  "extends": "simbo/default/node",
+  "extends": "simbo/default/node/es6",
   "rules": {
     "callback-return": 0,
+    "camelcase": 1,
     "complexity": [1, 7],
     "id-length": [2, {
       "min": 2,
       "properties": "never",
-      "exceptions": ["i", "Q"]
+      "exceptions": ["i", "q"]
     }],
     "max-params": [1, 5],
     "max-statements": [1, 12],
@@ -16,6 +17,8 @@
       "vars": "local",
       "args": "none"
     }],
+    "prefer-reflect": 0,
+    "prefer-spread": 0,
     "sort-vars": 0,
     "valid-jsdoc": 0,
     "vars-on-top": 1

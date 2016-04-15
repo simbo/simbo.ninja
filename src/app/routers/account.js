@@ -1,19 +1,19 @@
 'use strict';
 
-var router = require('express').Router();
+const router = require('express').Router();
 
-var auth = require('app/modules/auth');
+const ensureAuth = require('app/modules/auth').ensureAuth;
 
 router.get('/',
-  auth.ensureAuth(),
-  function(req, res) {
+  ensureAuth(),
+  (req, res) => {
     res.render('account/home');
   }
 );
 
 router.get('/profile',
-  auth.ensureAuth(),
-  function(req, res) {
+  ensureAuth(),
+  (req, res) => {
     res.render('account/profile');
   }
 );

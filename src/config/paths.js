@@ -1,8 +1,8 @@
 'use strict';
 
-var path = require('path');
+const path = require('path');
 
-var paths = {};
+const paths = {};
 
 // base folders
 paths.cwd = path.dirname(path.dirname(__dirname));

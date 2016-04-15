@@ -6,11 +6,11 @@
  * exports pug with custom filters
  */
 
-var pug = require('pug'),
-    uglify = require('uglify-js');
+const pug = require('pug'),
+      uglify = require('uglify-js');
 
-var config = require('config'),
-    marked = require('app/modules/marked');
+const config = require('config'),
+      marked = require('app/modules/marked');
 
 pug.filters = pug.filters || {};
 
@@ -19,18 +19,14 @@ pug.filters = pug.filters || {};
  * @param  {String} markdown markdown content
  * @return {String}          rendered html
  */
-pug.filters.marked = function(markdown) {
-  return marked(markdown);
-};
+pug.filters.marked = (markdown) => marked(markdown);
 
 /**
  * minify javascript using uglify-js
  * @param  {String} str javascript code
  * @return {String}     rendered html
  */
-pug.filters.uglify = function uglifyJs(str) {
-  return uglify.minify(str, {fromString: true}).code;
-};
+pug.filters.uglify = (str) => uglify.minify(str, {fromString: true}).code;
 
 module.exports = pug;
 module.exports.renderView = renderView;

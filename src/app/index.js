@@ -1,30 +1,33 @@
 'use strict';
 
-var http = require('http');
+Error.stackTraceLimit = Infinity;
 
-var bodyParser = require('body-parser'),
-    cookieParser = require('cookie-parser'),
-    express = require('express'),
-    flash = require('connect-flash'),
-    io = require('socket.io'),
-    merge = require('merge'),
-    Q = require('q'),
-    ReqMapper = require('requirements-mapper');
+const http = require('http');
 
-var config = require('config'),
-    auth = require('app/modules/auth'),
-    logger = require('app/modules/logger'),
-    pug = require('app/modules/pug');
+const bodyParser = require('body-parser'),
+      cookieParser = require('cookie-parser'),
+      express = require('express'),
+      flash = require('connect-flash'),
+      io = require('socket.io'),
+      merge = require('merge'),
+      q = require('q'),
+      ReqMapper = require('requirements-mapper');
 
-var staticData = new ReqMapper(config.paths.data);
+const auth = require('app/modules/auth'),
+      config = require('config'),
+      initRoutes = require('app/modules/init/routes').initRoutes,
+      logger = require('app/modules/logger'),
+      pug = require('app/modules/pug');
+
+const staticData = new ReqMapper(config.paths.data);
 
 // pipe app through initialization steps
-Q(express())
+q(express())
 
   // setup databases and layouts
   .then(require('app/modules/init/databases'))
 
-  .then(function(app) {
+  .then((app) => {
 
     // add references to server and sockets
     app.server = http.Server(app);
@@ -46,11 +49,11 @@ Q(express())
   // init sessions
   .then(require('app/modules/init/sessions'))
 
-  .then(function(app) {
+  .then((app) => {
 
     // init authentication
-    app.use(auth.initialize());
-    app.use(auth.session());
+    app.use(auth.passport.initialize());
+    app.use(auth.passport.session());
     app.use(auth.addUserToLocals());
     logger.log('verbose', 'set up auth');
 
@@ -65,19 +68,19 @@ Q(express())
   })
 
   // init routes
-  .then(require('app/modules/init/routes'))
+  .then(initRoutes)
 
   // init errorhandling
   .then(require('app/modules/init/errorhandling'))
 
-  .done(function(app) {
+  .done((app) => {
 
     // start listening
     app.server.listen(
       config.app.server.port,
       config.app.server.host,
-      function() {
-        var address = app.server.address();
+      () => {
+        const address = app.server.address();
         logger.log('info', 'server started (listening on %s:%s)', address.address, address.port);
       }
     );
@@ -86,6 +89,6 @@ Q(express())
   },
 
   // catch errors
-  function(err) {
+  (err) => {
     logger.log('error', err);
   });
