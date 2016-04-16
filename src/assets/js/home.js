@@ -3,7 +3,7 @@
 global.$ = require('cash-dom');
 global.jQuery = $;
 
-$(document).ready(function() {
+$(document).ready(() => {
 
   if ('ontouchstart' in document.documentElement) {
     $('html').addClass('is-touch');

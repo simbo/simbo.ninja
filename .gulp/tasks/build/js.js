@@ -2,7 +2,8 @@
 
 const path = require('path');
 
-const eslintify = require('eslintify'),
+const babelify = require('babelify'),
+      eslintify = require('eslintify'),
       uglifyify = require('uglifyify');
 
 module.exports = ['bundle javascripts using watchify+browserify', buildJs];
@@ -24,6 +25,7 @@ function buildJs(done) {
       ],
       debug: this.env !== 'development',
       transform: (this.env !== 'production' ? [eslintify] : [])
+        .concat([[babelify, {presets: 'es2015'}]])
         .concat(this.env !== 'development' ? [[uglifyify, {global: true}]] : [])
     }
   };

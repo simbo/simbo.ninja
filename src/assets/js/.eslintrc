@@ -1,5 +1,5 @@
 {
-  "extends": "simbo/default/browser",
+  "extends": "simbo/default/browser/es6",
   "env": {
     "commonjs": true
   },

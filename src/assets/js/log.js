@@ -1,21 +1,21 @@
 'use strict';
 
-var $ = require('cash-dom'),
-    moment = require('moment'),
-    reqwest = require('reqwest');
+const $ = require('cash-dom'),
+      moment = require('moment'),
+      reqwest = require('reqwest');
 
-var renderTemplate = require('functions/render-template');
+const renderTemplate = require('functions/render-template');
 
-var $container,
+let $container,
     $body,
     entryTemplate,
     updateTimeout;
 
-$(document).ready(function() {
+$(document).ready(() => {
   $container = $('.log');
   $body = $('body');
   entryTemplate = $('#log-entry-template').html();
-  $('#log_clear').on('click', function(ev) {
+  $('#log_clear').on('click', (ev) => {
     ev.preventDefault();
     clearLog();
   });
@@ -24,22 +24,21 @@ $(document).ready(function() {
 
 
 function queryEntries() {
-  var $entries = $container.find('.log-entry'),
-      data = {};
+  const $entries = $container.find('.log-entry'),
+        data = {};
   stopAutoUpdate();
   if ($entries.length > 0) data.after = $($entries[$entries.length - 1]).data('entry').timestamp;
   else data.limit = 100;
   reqwest({
     url: '/api/log/latest',
     type: 'json',
-    data: data
+    data
   })
-    .then(function(result) {
+    .then((result) => {
       if (result.entries && result.entries.length > 0) {
-        result.entries.reverse().forEach(function(entry) {
-          var $entry;
+        result.entries.reverse().forEach((entry) => {
           entry.date = moment(entry.timestamp).format('DD.MM.YYYY HH:mm:ss');
-          $entry = $(renderTemplate(entryTemplate, entry));
+          const $entry = $(renderTemplate(entryTemplate, entry));
           $entry.data('entry', entry);
           $container.append($entry);
         });
@@ -63,7 +62,7 @@ function clearLog() {
     url: '/api/log/clear',
     type: 'json'
   })
-    .then(function(result) {
+    .then((result) => {
       if (result === true) $container.find('.log-entry').remove();
     })
     .always(startAutoUpdate);
