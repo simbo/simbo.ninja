@@ -25,7 +25,6 @@
   "devDependencies": {
     "autoprefixer": "^6.3.6",
     "browser-sync": "^2.12.1",
-    "browserify-shim": "^3.8.12",
     "cash-dom": "github:kenwheeler/cash",
     "css-mqpacker": "^4.0.1",
     "css-reset-and-normalize": "^0.3.0",
@@ -84,7 +83,5 @@
     "winston": "^2.2.0",
     "winston-couchdb": "^0.6.3",
     "winston-daily-rotate-file": "^1.0.1"
-  },
-  "browser": {},
-  "browserify-shim": {}
+  }
 }

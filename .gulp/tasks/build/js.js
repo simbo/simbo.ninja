@@ -2,8 +2,7 @@
 
 const path = require('path');
 
-const browserifyShim = require('browserify-shim'),
-      eslintify = require('eslintify'),
+const eslintify = require('eslintify'),
       uglifyify = require('uglifyify');
 
 module.exports = ['bundle javascripts using watchify+browserify', buildJs];
@@ -25,7 +24,6 @@ function buildJs(done) {
       ],
       debug: this.env !== 'development',
       transform: (this.env !== 'development' ? [eslintify] : [])
-        .concat([browserifyShim])
         .concat(this.env !== 'development' ? [[uglifyify, {global: true}]] : [])
     }
   };
