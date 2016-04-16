@@ -23,7 +23,7 @@ function buildJs(done) {
         path.join(this.paths.cwd, 'node_modules')
       ],
       debug: this.env !== 'development',
-      transform: (this.env !== 'development' ? [eslintify] : [])
+      transform: (this.env !== 'production' ? [eslintify] : [])
         .concat(this.env !== 'development' ? [[uglifyify, {global: true}]] : [])
     }
   };

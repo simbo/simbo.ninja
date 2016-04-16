@@ -58,8 +58,8 @@ function buildCss() {
     .pipe(this.plugins.plumber())
     .pipe(this.plugins.sourcemaps.init())
     .pipe(this.plugins.stylint(options.stylint))
-    .pipe(this.plugins.stylint.reporter())
-    .pipe(this.env === 'development' ? this.util.noop : this.plugins.stylint.reporter('fail'))
+    .pipe(this.env !== 'production' ? this.plugins.stylint.reporter() : this.util.noop)
+    .pipe(this.env !== 'production' ? this.plugins.stylint.reporter('fail') : this.util.noop)
     .pipe(this.plugins.stylus(options.stylus))
     .pipe(this.plugins.postcss([
       lost(),
