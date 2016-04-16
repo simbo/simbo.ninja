@@ -45,8 +45,8 @@ npm i -g pm2@1.0.2 gulp@3.9.1
 # install project dependencies
 echo_c "Installing local node.js packages..."
 cd /vagrant
-npm i
-cd src
+rm -rf node_modules
+npm i --production
 npm i
 
 # setup pm2 and start app
