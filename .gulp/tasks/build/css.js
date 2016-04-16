@@ -34,9 +34,7 @@ function buildCss() {
               limit: false
             },
             use: glob.sync(path.join(this.paths.css.src, 'functions', '**/*.js'))
-              .map(function(fn) {
-                return require(path.relative(__dirname, fn))();
-              })
+              .map((fn) => require(path.relative(__dirname, fn))())
           },
           autoprefixer: {
             browsers: [
