@@ -8,6 +8,7 @@
     "$": true
   },
   "rules": {
+    "prefer-reflect": 0,
     "require-jsdoc": 0,
     "vars-on-top": 0
   }
