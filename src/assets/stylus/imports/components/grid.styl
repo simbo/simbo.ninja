@@ -1,0 +1,41 @@
+/**
+ * Extendable, responsive grid
+ */
+
+@require 'mixins/mediaqueries'
+@require 'extendable-mixins'
+
+$grid = {
+  columns: 12,
+  columnClasses: {
+    xs: 6,
+    s:  4 6,
+    m:  3 4 6,
+    l:  3 4 6,
+    xl: 3 4 6
+  },
+  gutter: {
+    xs: 16px,
+    s:  16px,
+    m:  24px,
+    l:  32px,
+    xl: 40px
+  }
+}
+
+.row
+  @extend $clearfix
+  for $breakpoint in keys($breakpoints)
+    +mq-bp($breakpoint, min)
+      margin-right: $grid.gutter[$breakpoint]
+      margin-left:  $grid.gutter[$breakpoint]
+
+for $breakpoint in keys($breakpoints)
+  $appendix = $breakpoint == 'xs' ? '' : '-' + $breakpoint
+  for $col in 1..$grid.columns
+    +mq-bp($breakpoint, min)
+      $col-{$col}of{$grid.columns}{$appendix}
+        lost-column: s('%s/%s', $col, $grid.columns) ($grid.columns / $col) $grid.gutter[$breakpoint]
+  for $col in $grid.columnClasses[$breakpoint]
+    .col-{$col}of{$grid.columns}{$appendix}
+      @extend $col-{$col}of{$grid.columns}{$appendix}
