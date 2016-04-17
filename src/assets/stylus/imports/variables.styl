@@ -1,3 +1,13 @@
+/**
+ * Constants
+ */
+
+$phi = 1.6180339887
+
+
+/**
+ * Colors
+ */
 
 $colorValues = {
   blue: rgb(68, 138, 255)
@@ -12,20 +22,45 @@ $colorUseCases = {
 
 $colors = merge($colorValues, $colorUseCases)
 
+
+/**
+ * Typo
+ */
+
 $font-family = {
   sans: "Helvetica Neue"\, Helvetica\, Arial\, NimbusSansL\, LiberationSans\, FreeSans\, Clean\, sans-serif,
-  mono: Consolas\, "Liberation Mono"\, Menlo\, Courier\, monospace
+  mono: Consolas\, "Liberation Mono"\, Menlo\, Courier\, monospace,
+  icons: "simbo.ninja icons"
 }
 
-$font-size = {
-  normal: 16px,
-  large: 20px,
-  small: 12px
+$root-font-size = {
+  xs: 16px,
+  s:  16px,
+  m:  18px,
+  l:  20px,
+  xl: 22px
 }
+
+$font-size-multipliers = {
+  small: .75,
+  normal: 1,
+  large: 1.45
+}
+
+$font-size = {}
+for $key, $multiplier in $font-size-multipliers
+  $font-size[$key] = unit($multiplier, 'rem')
 
 $line-height = {
-  normal: 1.42857 // 20/14
+  small:  1.666666667, // 20/12
+  normal: 1.428571429, // 20/14
+  large:  1.333333333 // 22/18
 }
+
+
+/**
+ * Spacings
+ */
 
 $spacing = {
   normal: $font-size.normal * $line-height.normal
@@ -33,55 +68,11 @@ $spacing = {
 $spacing.small = $spacing.normal * .75
 $spacing.large = $spacing.normal * 1.5
 
+
+/**
+ * Root level z-index overview
+ */
+
 $z-index = {
   nav: 1000
 }
-
-$nav = {
-  width: 240px,
-  item-padding: {
-    v: .75em
-    h: .75em
-  },
-  transition-duration: .4s
-}
-
-$hamburger-size = ($font-size.normal * (1 + $nav.item-padding.v * 2))
-$hamburger = {
-  width: $hamburger-size,
-  height: $hamburger-size,
-  bar-thickness: round($hamburger-size * .075),
-  bar-color: $colors.text,
-  pad: round($hamburger-size * .2),
-  bar-space: round($hamburger-size * .15),
-  transition-duration: $nav.transition-duration
-}
-
-/**
- * Mediaquery breakpoints
- */
-
-$breakpoints = {
-  xs: {
-    min: 0,
-    max: 479px
-  },
-  s: {
-    min: 480,
-    max: 1023px
-  },
-  m: {
-    min: 1024px,
-    max: 1199px
-  },
-  l: {
-    min: 1200px,
-    max: 1599px
-  },
-  xl: {
-    min: 1600px,
-    max: 0
-  }
-}
-
-

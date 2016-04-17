@@ -1,4 +1,8 @@
-aspect-ratio(width, height)
+/**
+ * Keep aspect ratio for a container
+ */
+
+aspect-ratio($width, $height)
   position: relative
   overflow: hidden
 
@@ -6,4 +10,4 @@ aspect-ratio(width, height)
     content: ''
     display: block
     width: 100%
-    padding-top: (height / width) * 100%
+    padding-bottom: unit($height / $width * 100, '%')

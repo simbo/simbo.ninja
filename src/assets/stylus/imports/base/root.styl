@@ -1,6 +1,18 @@
+/**
+ * Root elements
+ */
+
+@require 'variables'
+@require 'mixins/mediaqueries'
+
+html
+  for $bp, $size in $root-font-size
+    +mq-bp($bp, min)
+      font-size: $size
+
 body
   background: $colors.background
   color: $colors.text
   font-family: $font-family.sans
-  font-size: $font-size.normal
+  font-size: 1rem
   text-rendering: optimizeLegibility

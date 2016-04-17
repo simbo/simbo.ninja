@@ -1,0 +1,30 @@
+/**
+ * Material design transitions
+ */
+
+$transitions = {
+  timing-functions: {
+    fast-out-slow-in: cubic-bezier(.4, 0, .2, 1),
+    linear-out-slow-in: cubic-bezier(0, 0, .2, 1),
+    fast-out-linear-in: cubic-bezier(.4, 0, 1, 1)
+  },
+  durations: {
+    fast: .2s
+  }
+}
+
+$transitions.timing-functions.default = $transitions.timing-functions.fast-out-slow-in
+$transitions.durations.default = $transitions.durations.fast
+
+transition-default($duration = $transitions.durations.default, $timing-function = $transitions.timing-functions.default)
+  transition-duration: $duration
+  transition-timing-function: $timing-function
+
+transition-fast-out-slow-in($duration = $transitions.durations.default)
+  transition-default($duration, 'fast-out-slow-in')
+
+transition-linear-out-slow-in($duration = $transitions.durations.default)
+  transition-default($duration, 'linear-out-slow-in')
+
+transition-fast-out-linear-in($duration = $transitions.durations.default)
+  transition-default($duration, 'fast-out-linear-in')

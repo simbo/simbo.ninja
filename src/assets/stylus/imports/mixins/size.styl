@@ -1,7 +1,11 @@
-size()
-  if length(arguments) == 1
-    width: arguments[0]
-    height: arguments[0]
+/**
+ * Shorthand for setting width and height
+ */
+
+size($size...)
+  if length($size) == 1
+    width: $size[0]
+    height: @width
   else
-    width: arguments[0]
-    height: arguments[1]
+    width: $size[0]
+    height: $size[1]

@@ -1,0 +1,66 @@
+/**
+ * Offer extendable placeholders for mixins with common params
+ */
+
+@require 'variables'
+
+
+@require 'mixins/aspect-ratio'
+$ratio-phi-landscape
+  aspect-ratio($phi, 1)
+$ratio-phi-portrait
+  aspect-ratio(1, $phi)
+$ratio-16to9
+  aspect-ratio(16, 9)
+$ratio-4to3
+  aspect-ratio(4, 3)
+
+
+@require 'mixins/clearfix'
+$clearfix
+  clearfix()
+
+
+@require 'mixins/ellipsis'
+$ellipsis
+  ellipsis()
+
+
+@require 'mixins/momentum'
+$momentum
+  momentum()
+$momentum-x
+  momentum-x()
+$momentum-y
+  momentum-y()
+
+
+@require 'mixins/shadow'
+for $depth in 1..length($shadow.depths)
+  $shadow-{$depth}dp
+    shadow($depth)
+$shadow-none
+  shadow(none)
+
+
+@require 'mixins/size'
+$fullsize
+  size(100%)
+$halfsize
+  size(50%)
+
+
+@require 'mixins/transitions'
+for $key in keys($transitions.timing-functions)
+  $appendix = $key == 'default' ? '' : '--' + $key
+  $transition{$appendix}
+    transition-default($transitions.durations.default, $transitions.timing-functions[$key])
+
+
+@require 'mixins/vh-center'
+$v-center
+  v-center()
+$h-center
+  h-center()
+$vh-center
+  vh-center()
