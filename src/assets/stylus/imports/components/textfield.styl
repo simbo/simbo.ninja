@@ -1,0 +1,93 @@
+/**
+ * Material design textfield
+ */
+
+@require 'variables'
+@require 'extendable-mixins'
+
+$textfield = {
+  width: 300px,
+  border-color: rgba(0, 0, 0, .12),
+  border-width: 1px,
+  focus: {
+    border-color: dodgerblue,
+    border-width: 2px
+  },
+  label: {
+    padding: .2rem .6rem
+    font-size: .8rem,
+    line-height: $line-height.small
+  },
+  input: {
+    padding: .4rem .6rem
+    font-size: 1rem,
+    line-height: $line-height.normal
+  }
+}
+
+$textfield.label.height = ($textfield.label.padding[0] * 2 + $textfield.label.font-size * $textfield.label.line-height)
+$textfield.input.height = ($textfield.input.padding[0] * 2 + $textfield.input.font-size * $textfield.input.line-height)
+
+.textfield
+  position: relative
+  display: inline-block
+  max-width: 100%
+  width: $textfield.width
+
+
+  &_label
+    @extend $ellipsis, $transition
+    position: absolute
+    top: 0
+    left: 0
+    z-index: 1
+    display: block
+
+    // label displayed as placeholder
+    &
+      padding: $textfield.input.padding
+      font-size: $textfield.input.font-size
+      line-height: $textfield.input.line-height
+      transform: translateY($textfield.label.height)
+
+  // label displayed as label
+  &.is-focused &_label,
+  &.is-dirtyy &_label
+    padding: $textfield.label.padding
+    font-size: $textfield.label.font-size
+    line-height: $textfield.label.line-height
+    transform: translateY(0)
+
+  &_input
+    position: relative
+    z-index: 2
+    display: block
+    width: 100%
+    margin-top: $textfield.label.height
+    padding: $textfield.input.padding
+    border: none
+    border-bottom: $textfield.border-width solid $textfield.border-color
+    background: transparent
+    font-size: $textfield.input.font-size
+    line-height: $textfield.input.line-height
+
+    &:focus
+      outline: none
+
+    &::placeholder
+      opacity: 0
+
+  // textfield border
+  &::before
+    @extend $transition, $h-center
+    content: ''
+    top: ($textfield.label.height + $textfield.input.height)
+    z-index: 3
+    display: block
+    width: 0%
+    height: $textfield.focus.border-width
+    margin-top: -1px
+    background: $textfield.focus.border-color
+
+    .is-focused&
+      width: 100%
