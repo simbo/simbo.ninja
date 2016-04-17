@@ -34,7 +34,7 @@ cd /vagrant
 EOF
 ZSHRC_SEARCH=`grep "${ZSHRC_APPEND}" ~/.zshrc`
 if ! [ "${ZSHRC_SEARCH}" = "${ZSHRC_APPEND}" ]; then
-  echo ${ZSHRC_APPEND} >> ~/.zshrc
+  echo $ZSHRC_APPEND >> ~/.zshrc
   source ~/.zshrc
 fi
 
