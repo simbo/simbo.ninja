@@ -14,12 +14,12 @@ $textfield = {
     border-width: 2px
   },
   label: {
-    padding: .2rem .6rem
+    padding: .15rem .3rem
     font-size: .8rem,
     line-height: $line-height.small
   },
   input: {
-    padding: .4rem .6rem
+    padding: .15rem .3rem
     font-size: 1rem,
     line-height: $line-height.normal
   }
@@ -52,7 +52,7 @@ $textfield.input.height = ($textfield.input.padding[0] * 2 + $textfield.input.fo
 
   // label displayed as label
   &.is-focused &_label,
-  &.is-dirtyy &_label
+  &.is-dirty &_label
     padding: $textfield.label.padding
     font-size: $textfield.label.font-size
     line-height: $textfield.label.line-height
@@ -63,7 +63,7 @@ $textfield.input.height = ($textfield.input.padding[0] * 2 + $textfield.input.fo
     z-index: 2
     display: block
     width: 100%
-    margin-top: $textfield.label.height
+    margin: $textfield.label.height 0 $textfield.focus.border-width 0
     padding: $textfield.input.padding
     border: none
     border-bottom: $textfield.border-width solid $textfield.border-color
@@ -86,7 +86,6 @@ $textfield.input.height = ($textfield.input.padding[0] * 2 + $textfield.input.fo
     display: block
     width: 0%
     height: $textfield.focus.border-width
-    margin-top: -1px
     background: $textfield.focus.border-color
 
     .is-focused&
