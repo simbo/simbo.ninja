@@ -5,6 +5,8 @@
 @require 'variables'
 @require 'mixins/mediaqueries'
 
+mq-placeholders()
+
 html
   for $bp, $size in $root-font-size
     +mq-bp($bp, min)
