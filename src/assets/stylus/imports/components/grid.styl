@@ -21,6 +21,13 @@ $grid = {
   }
 }
 
+$row-vertical-padding
+  for $bp in keys($breakpoints)
+    +mq-bp($bp, min)
+      padding-top: $grid.gutter[$bp]
+      padding-bottom: $grid.gutter[$bp]
+
+$row,
 .row
   @extend $clearfix
   for $breakpoint in keys($breakpoints)
