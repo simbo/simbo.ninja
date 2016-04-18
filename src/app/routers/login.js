@@ -28,4 +28,15 @@ router.get('/logout', (req, res) => {
   res.redirect('/login');
 });
 
+router.get('/register', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('/account');
+  } else {
+    res.render('register', {
+      title: 'Register',
+      errors: req.flash('error')
+    });
+  }
+});
+
 module.exports = router;

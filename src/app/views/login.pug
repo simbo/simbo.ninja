@@ -1,14 +1,35 @@
 extends /layouts/base.pug
 
+block append head_styles
+  +style("login")
+
+block append head_scripts
+  +script("login")
+
 block body_contents
-  h2 Login
-  if errors
-    for error in errors
-      p= error
-  form.login-form(action="/login", method="post")
-    fieldset
-      label(for="username") Username
-      input(id="username", type="text", name="username")
-      label(for="password") Password
-      input(id="password", type="password", name="password")
-    input(type="submit", value="Log in")
+  .section
+    .row
+      form.login-form.login-form--login(action="/login", method="post")
+        .card
+          .card_header
+            .card_header-title= title
+          .card_content
+            .row
+              .login-form_errors
+                if errors
+                  for error in errors
+                    p= error
+            .row
+              .col-6of12-s
+                .textfield
+                  input.textfield_input(id="username", type="text", name="username", placeholder="Username")
+                  label.textfield_label(for="username") Username
+              .col-6of12-s
+                .textfield
+                  input.textfield_input(id="password", type="password", name="password", placeholder="Password")
+                  label.textfield_label(for="password") Password
+            .row
+              .col-6of12-s
+                input.button(type="submit", value="Log in")
+              .col-6of12-s
+                a.button(href="/register") Register
