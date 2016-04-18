@@ -1,0 +1,19 @@
+/**
+ * Background image
+ */
+
+bg-img($name)
+  $bg-img--{$name},
+  .bg-img--{$name}
+    background-color: transparent
+    background-position: center center
+    background-repeat: no-repeat
+    background-size: cover
+    background-image: url(s('/assets/img/bg/%s.jpg', $name))
+    +mq-retina()
+      background-image: url(s('/assets/img/bg/%s@2x.jpg', $name))
+
+bg-img(andromeda)
+bg-img(landscape)
+bg-img(mountain-balloons)
+bg-img(mountains-china)
