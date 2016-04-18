@@ -1,0 +1,35 @@
+/**
+ * Card
+ */
+
+@require 'mixins/mediaqueries'
+@require 'extendable-mixins'
+@require 'components/grid'
+@require 'components/bg-img'
+
+$card = {
+  background: white,
+  border-radius: 2px
+}
+
+.card
+  @extend $shadow-6dp
+  position: relative
+  max-width: 100%
+  width: 480px
+  overflow: hidden
+  margin: 0 auto
+  border-radius: $card.border-radius
+  background: $card.background
+
+  &_header
+    @extend $ratio-phi-landscape, $bg-img--landscape
+
+    &-title
+      @extend $row, $row-vertical-padding
+      position: absolute
+      bottom: 0
+      left: 0
+
+  &_content
+    @extend $row-vertical-padding
