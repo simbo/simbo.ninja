@@ -18,13 +18,18 @@ const cache = {};
 function renderTemplate(str, data) {
   const dom = document.implementation.createHTMLDocument();
   if (!cache.hasOwnProperty(str)) {
-    const tpl = str.replace(/[\r\t\n]/g, ' ')
-      .split('{%').join('\t')
+    const tpl = str
+      .replace(/[\r\t\n]/g, ' ')
+      .split('{%')
+      .join('\t')
       .replace(/((^|%\})[^\t]*)"/g, '$1\r')
       .replace(/\t=(.*?)%\}/g, '\',$1,\'')
-      .split('\t').join('\');')
-      .split('%}').join('p.push(\'')
-      .split('\r').join('"');
+      .split('\t')
+      .join('\');')
+      .split('%}')
+      .join('p.push(\'')
+      .split('\r')
+      .join('"');
     cache[str] = new Function('obj', // eslint-disable-line no-new-func
       `var p=[],print=function(){p.push.apply(p,arguments);};with(obj){p.push('${tpl}');}return p.join("");`
     );

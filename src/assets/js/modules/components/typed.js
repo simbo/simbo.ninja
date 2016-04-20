@@ -27,13 +27,16 @@ function initTyped(selector) {
     // remove linebreaks, find br tags and replace them tih linebreaks
     $contentViews.each((el) => {
       const $el = $(el),
-            html = $el.html().replace(/[\n\r]/g, '').trim();
+            html = $el.html()
+              .replace(/[\n\r]/g, '')
+              .trim();
       $el.html(html);
-    }).find('br').each((el) => {
-      const $el = $(el),
-            html = $.parseHTML('\n');
-      $el.after(html).remove();
-    });
+    }).find('br')
+      .each((el) => {
+        const $el = $(el),
+              html = $.parseHTML('\n');
+        $el.after(html).remove();
+      });
 
     // push content
     $contentViews.each((el) => {
