@@ -17,7 +17,7 @@ const auth = require('app/modules/auth'),
       config = require('config'),
       initRoutes = require('app/modules/init/routes').initRoutes,
       logger = require('app/modules/logger'),
-      pug = require('app/modules/pug');
+      renderer = require('app/modules/renderer');
 
 const staticData = new ReqMapper(config.paths.data);
 
@@ -59,7 +59,7 @@ q(express())
 
     // init views
     app.locals = merge({}, app.locals, staticData.map());
-    app.engine('pug', pug.renderView);
+    app.engine('pug', renderer.pug.renderView);
     app.set('views', config.paths.views);
     app.set('view engine', 'pug');
     logger.log('verbose', 'set up view engine');
