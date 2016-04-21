@@ -10,9 +10,8 @@ module.exports = [
 
   function(done) {
     clean.apply(this, [[
-      path.join(this.paths.site.dest, '**/*'),
-      `!${path.join(this.paths.site.dest, '@(assets|files)/**/*')}`,
-      `!${path.join(this.paths.site.dest, '@(assets|files)')}`
+      path.join(this.paths.site.dest, 'files'),
+      path.join(this.paths.site.dest, 'assets/fonts')
     ], done]);
   }
 

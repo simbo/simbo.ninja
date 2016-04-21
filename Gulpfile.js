@@ -35,8 +35,11 @@ plug
   .addHelpTask()
 
   // add task sequences
+  .addSequence('clean:all', [
+    ['clean:site', 'clean:css', 'clean:js', 'clean:files']
+  ])
   .addSequence('build', [
-    ['clean'],
+    'clean:all',
     ['copy', 'build:css', 'build:js', 'build:site']
   ])
   .addSequence('dev', [
