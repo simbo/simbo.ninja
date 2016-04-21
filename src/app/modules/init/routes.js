@@ -19,16 +19,16 @@ const config = require('config'),
  * reduce routes array to an array containing only valid route objects
  * @type {Array}
  */
-const routes = config.app.routes.reduce((routes, route) => {
+const routes = config.app.routes.reduce((routesArr, route) => {
   if (typeof route === 'string') route = [route];
   if (Array.isArray(route)) route = {path: route[0], module: route[1] || route[0]};
   if (typeof route === 'object' && route.path && route.path.length) {
-    routes.push({
+    routesArr.push({
       path: String(route.path).replace(/^([^\/])/i, '/$1'),
       module: String(route.module || route.path)
     });
   }
-  return routes;
+  return routesArr;
 }, []);
 
 module.exports = {

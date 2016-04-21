@@ -56,14 +56,14 @@ function ensureAuth(flags) {
       if (req.session) req.session.returnTo = req.originalUrl || req.url;
       return res.redirect('/login');
     } else if (flags) {
-      (Array.isArray(flags) ? flags : [flags]).reduce((queue, flag) => {
-        return queue.then(User.q.verifyFlag(flag));
-      }, q(req.user)).then(() => {
-        next();
-      }, (err) => {
-        err.status = 401;
-        next(err);
-      });
+      (Array.isArray(flags) ? flags : [flags])
+        .reduce((queue, flag) => queue.then(User.q.verifyFlag(flag)), q(req.user))
+        .then(() => {
+          next();
+        }, (err) => {
+          err.status = 401;
+          next(err);
+        });
     } else next();
   };
 }

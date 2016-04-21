@@ -41,8 +41,8 @@ function setupDatabase(design, name, cb) {
     if (err) cb(err);
     else if (exists) applyDesign(db, design, cb);
     else {
-      db.create((err) => {
-        if (err) cb(err);
+      db.create((error) => {
+        if (err) cb(error);
         else {
           logger.log('verbose', `created database ${name}`);
           applyDesign(db, design, cb);
