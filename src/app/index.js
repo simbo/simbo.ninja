@@ -59,7 +59,7 @@ q(express())
 
     // init views
     app.locals = merge({}, app.locals, staticData.map());
-    app.engine('pug', renderer.pug.renderView);
+    app.engine('pug', renderer.renderView);
     app.set('views', config.paths.views);
     app.set('view engine', 'pug');
     logger.log('verbose', 'set up view engine');
