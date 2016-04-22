@@ -184,16 +184,14 @@ class User {
   static getByUuid(id) {
     return q(id)
       .then(User.validateId)
-      .then((id) => {
-        return q.Promise((resolve, reject) => {
-          db.get(id, (err, resp) => {
-            if (err) {
-              if (err.reason === 'missing') reject(new Error(`unknown user uuid '${id}'`));
-              else reject(err);
-            } else resolve(new User(resp.json));
-          });
+      .then((id) => q.Promise((resolve, reject) => {
+        db.get(id, (err, resp) => {
+          if (err) {
+            if (err.reason === 'missing') reject(new Error(`unknown user uuid '${id}'`));
+            else reject(err);
+          } else resolve(new User(resp.json));
         });
-      });
+      }));
   }
 
   /**
@@ -204,18 +202,16 @@ class User {
   static getByUsername(username) {
     return q(username)
       .then(User.validateUsername)
-      .then((username) => {
-        return q.Promise((resolve, reject) => {
-          db.view('users/byUsername', {
-            key: username,
-            limit: 1
-          }, (err, resp) => {
-            if (err) reject(err);
-            else if (resp.json.rows.length < 1) reject(new Error(`unknown username '${username}'`));
-            else resolve(new User(resp.json.rows[0].value));
-          });
+      .then((username) => q.Promise((resolve, reject) => {
+        db.view('users/byUsername', {
+          key: username,
+          limit: 1
+        }, (err, resp) => {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1) reject(new Error(`unknown username '${username}'`));
+          else resolve(new User(resp.json.rows[0].value));
         });
-      });
+      }));
   }
 
   /**
@@ -228,18 +224,16 @@ class User {
   static usernameNotTaken(username, excludeId) {
     return q(username)
       .then(User.validateUsername)
-      .then((username) => {
-        return q.Promise((resolve, reject) => {
-          db.view('users/byUsername', {
-            key: username,
-            limit: 1
-          }, (err, resp) => {
-            if (err) reject(err);
-            else if (resp.json.rows.length < 1 || excludeId && resp.json.rows[0].value.uuid === excludeId) resolve(username);
-            else reject(new Error('username already taken'));
-          });
+      .then((username) => q.Promise((resolve, reject) => {
+        db.view('users/byUsername', {
+          key: username,
+          limit: 1
+        }, (err, resp) => {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1 || excludeId && resp.json.rows[0].value.uuid === excludeId) resolve(username);
+          else reject(new Error('username already taken'));
         });
-      });
+      }));
   }
 
   /**
@@ -250,18 +244,16 @@ class User {
   static getByEmail(email) {
     return q(email)
       .then(User.validateEmail)
-      .then((email) => {
-        return q.Promise((resolve, reject) => {
-          db.view('users/byEmail', {
-            key: email,
-            limit: 1
-          }, (err, resp) => {
-            if (err) reject(err);
-            else if (resp.json.rows.length < 1) reject(new Error(`unknown email '${email}'`));
-            else resolve(new User(resp.json.rows[0].value));
-          });
+      .then((email) => q.Promise((resolve, reject) => {
+        db.view('users/byEmail', {
+          key: email,
+          limit: 1
+        }, (err, resp) => {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1) reject(new Error(`unknown email '${email}'`));
+          else resolve(new User(resp.json.rows[0].value));
         });
-      });
+      }));
   }
 
   /**
@@ -274,18 +266,16 @@ class User {
   static emailNotTaken(email, excludeId) {
     return q(email)
       .then(User.validateEmail)
-      .then((email) => {
-        return q.Promise((resolve, reject) => {
-          db.view('users/byEmail', {
-            key: email,
-            limit: 1
-          }, (err, resp) => {
-            if (err) reject(err);
-            else if (resp.json.rows.length < 1 || excludeId && resp.json.rows[0].value.uuid === excludeId) resolve(email);
-            else reject(new Error('email already taken'));
-          });
+      .then((email) => q.Promise((resolve, reject) => {
+        db.view('users/byEmail', {
+          key: email,
+          limit: 1
+        }, (err, resp) => {
+          if (err) reject(err);
+          else if (resp.json.rows.length < 1 || excludeId && resp.json.rows[0].value.uuid === excludeId) resolve(email);
+          else reject(new Error('email already taken'));
         });
-      });
+      }));
   }
 
   /**
