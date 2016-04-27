@@ -12,11 +12,14 @@ const LocalStrategy = require('passport-local').Strategy,
       q = require('q'),
       passport = require('passport');
 
-const User = require('app/modules/user');
+const logger = require('app/modules/logger'),
+      userFactory = require('app/factories/user'),
+      userRepo = require('app/repositories/user');
 
 // create local authentication strategy
 passport.use(new LocalStrategy((username, password, cb) => {
-  User.verifyUsernamePassword(username, password)
+  userRepo.oneByUsername(username)
+    .then((obj) => userFactory(obj).verifyPassword(password))
     .then((user) => {
       cb(null, user);
     }, (err) => {
@@ -31,9 +34,9 @@ passport.serializeUser((user, cb) => {
 
 // set handler to deserialize user object when restoring from session
 passport.deserializeUser((id, cb) => {
-  User.getByUuid(id)
+  userRepo.get(id)
     .then((user) => {
-      cb(null, user);
+      cb(null, userFactory(user));
     }, (err) => {
       cb(err);
     });
@@ -58,7 +61,7 @@ function ensureAuth(flags) {
       return res.redirect('/login');
     } else if (flags) {
       (Array.isArray(flags) ? flags : [flags])
-        .reduce((queue, flag) => queue.then(User.q.verifyFlag(flag)), q(req.user))
+        .reduce((queue, flag) => queue.then((user) => user.verifyFlag(flag)), q(req.user))
         .then(() => {
           next();
         }, (err) => {

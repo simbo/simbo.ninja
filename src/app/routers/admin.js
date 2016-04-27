@@ -3,10 +3,12 @@
 const router = require('express').Router();
 
 const ensureAuth = require('app/modules/auth').ensureAuth,
-      User = require('app/modules/user');
+      userFactory = require('app/factories/user'),
+      userRepo = require('app/repositories/user');
 
 router.get('/users', ensureAuth('admin'), (req, res) => {
-  User.getAll()
+  userRepo.view('byId')
+    .then((obj) => userFactory(obj))
     .then((users) => {
       res.render('admin/users', {users});
     });
