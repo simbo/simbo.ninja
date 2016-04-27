@@ -8,7 +8,9 @@
 
 const logger = require('app/modules/logger');
 
-module.exports = initErrorhandling;
+module.exports = {
+  init: initErrorhandling
+};
 
 /**
  * initialize errorhandling

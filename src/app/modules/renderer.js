@@ -12,9 +12,13 @@
 const highlightjs = require('highlight.js'),
       marked = require('marked'),
       pug = require('pug'),
+      ReqMapper = require('requirements-mapper'),
       uglify = require('uglify-js');
 
-const config = require('config');
+const config = require('config'),
+      logger = require('app/modules/logger');
+
+const staticData = new ReqMapper(config.paths.data);
 
 const markedOptions = {
   renderer: new marked.Renderer()
@@ -31,7 +35,8 @@ module.exports = {
   highlightCode,
   marked,
   pug,
-  renderView
+  renderView,
+  init: initViews
 };
 
 /**
@@ -56,4 +61,13 @@ function highlightCode(code, lang) {
   lang = typeof lang === 'string' && highlightjs.getLanguage(lang) ? lang : false;
   code = lang ? highlightjs.highlight(lang, code).value : highlightjs.highlightAuto(code).value;
   return `<pre><code class="hljs${ lang ? ` lang-${lang}` : '' }">${code}</code></pre>`;
+}
+
+function initViews(app) {
+  app.locals = Object.assign({}, app.locals, staticData.map());
+  app.engine('pug', renderView);
+  app.set('views', config.paths.views);
+  app.set('view engine', 'pug');
+  logger.log('verbose', 'set up view engine');
+  return app;
 }

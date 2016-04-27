@@ -3,17 +3,30 @@
 /**
  * init/databases
  * ==============
- * exports function to setup/update databases and database layouts
+ * - exports couchdb connection
+ * - exports function to setup/update databases and database layouts
  */
 
 const async = require('async'),
+      cradle = require('cradle'),
       q = require('q');
 
 const config = require('config'),
-      couch = require('app/modules/couch'),
       logger = require('app/modules/logger');
 
-module.exports = initDatabases;
+
+const couch = new cradle.Connection(config.app.couchdb.host, config.app.couchdb.port, {
+  auth: {
+    username: config.app.couchdb.username,
+    password: config.app.couchdb.password
+  }
+});
+
+
+module.exports = {
+  couch,
+  init: initDatabases
+};
 
 /**
  * asynchronously setup configured databases

@@ -1,9 +1,10 @@
 'use strict';
 
 /**
- * init/sessions
+ * sessions
  * =============
- * exports function to setup sessions
+ * - exports session store
+ * - exports function to setup sessions
  */
 
 const session = require('express-session'),
@@ -25,7 +26,7 @@ const store = sessionstore.createSessionStore({
         },
         dbName: 'sessions'
       }),
-      sessionHandler = session({
+      handler = session({
         secret: config.app.sessions.secret,
         genid: () => uuid.v4(),
         name: config.app.sessions.sid,
@@ -40,15 +41,14 @@ const store = sessionstore.createSessionStore({
         saveUninitialized: false
       });
 
-module.exports = initSessions;
+module.exports = {
+  store,
+  handler,
+  init: initSessions
+};
 
-/**
- * intialize sessions
- * @param  {Object} app express app
- * @return {Object}     app
- */
 function initSessions(app) {
-  app.use(sessionHandler);
+  app.use(handler);
   logger.log('verbose', 'set up sessions');
   return app;
 }

@@ -9,23 +9,15 @@ const bodyParser = require('body-parser'),
       express = require('express'),
       flash = require('connect-flash'),
       io = require('socket.io'),
-      merge = require('merge'),
-      q = require('q'),
-      ReqMapper = require('requirements-mapper');
+      q = require('q');
 
-const auth = require('app/modules/auth'),
-      config = require('config'),
-      initRoutes = require('app/modules/init/routes').initRoutes,
-      logger = require('app/modules/logger'),
-      renderer = require('app/modules/renderer');
-
-const staticData = new ReqMapper(config.paths.data);
+const config = require('config'),
+      logger = require('app/modules/logger');
 
 // pipe app through initialization steps
 q(express())
 
-  // setup databases and layouts
-  .then(require('app/modules/init/databases'))
+  .then(require('app/modules/database').init)
 
   .then((app) => {
 
@@ -46,32 +38,11 @@ q(express())
 
   })
 
-  // init sessions
-  .then(require('app/modules/init/sessions'))
-
-  .then((app) => {
-
-    // init authentication
-    app.use(auth.passport.initialize());
-    app.use(auth.passport.session());
-    app.use(auth.addUserToLocals());
-    logger.log('verbose', 'set up auth');
-
-    // init views
-    app.locals = merge({}, app.locals, staticData.map());
-    app.engine('pug', renderer.renderView);
-    app.set('views', config.paths.views);
-    app.set('view engine', 'pug');
-    logger.log('verbose', 'set up view engine');
-
-    return app;
-  })
-
-  // init routes
-  .then(initRoutes)
-
-  // init errorhandling
-  .then(require('app/modules/init/errorhandling'))
+  .then(require('app/modules/sessions').init)
+  .then(require('app/modules/auth').init)
+  .then(require('app/modules/renderer').init)
+  .then(require('app/routers').init)
+  .then(require('app/modules/errorhandling').init)
 
   .done((app) => {
 

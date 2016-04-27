@@ -33,7 +33,7 @@ const routes = config.app.routes.reduce((routesArr, route) => {
 
 module.exports = {
   routes,
-  initRoutes
+  init: initRoutes
 };
 
 /**

@@ -42,7 +42,8 @@ passport.deserializeUser((id, cb) => {
 module.exports = {
   passport,
   ensureAuth,
-  addUserToLocals
+  addUserToLocals,
+  init: initAuth
 };
 
 /**
@@ -77,4 +78,12 @@ function addUserToLocals() {
     res.locals.user = req.isAuthenticated() ? req.user : null;
     next();
   };
+}
+
+function initAuth(app) {
+  app.use(passport.initialize());
+  app.use(passport.session());
+  app.use(addUserToLocals());
+  logger.log('verbose', 'set up auth');
+  return app;
 }

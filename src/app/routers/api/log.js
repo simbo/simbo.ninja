@@ -3,7 +3,7 @@
 const async = require('async'),
       router = require('express').Router();
 
-const couch = require('app/modules/couch');
+const couch = require('app/modules/database').couch;
 
 const db = couch.database('log');
 
