@@ -13,6 +13,9 @@
     "max-statements": [1, 12],
     "new-cap": 0,
     "no-sync": 0,
+    "no-underscore-dangle": [2, {
+      "allow": ["_id", "_rev"]
+    }],
     "no-unused-vars": [1, {
       "vars": "local",
       "args": "none"
