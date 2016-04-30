@@ -30,6 +30,26 @@ function repositoryFactory(dbName, repo) {
       });
     },
 
+    remove(obj) {
+      return q.Promise((resolve, reject) => {
+        getObjectArguments(obj)
+          .then((args) => {
+            db.remove.apply(db, args.concat([(err, response) => {
+              if (err) reject(err);
+              else resolve(response);
+            }]));
+          }, reject);
+      });
+    },
+
+    clear() {
+      return repo.view('byId')
+        .then((results) => q.Promise((resolve, reject) => {
+          async.each(results, (obj, cb) => {
+            repo.remove(obj).nodeify(cb);
+          }, (err) => {
+            if (err) reject(err);
+            else resolve(true);
           });
         }));
     },
