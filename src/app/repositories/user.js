@@ -7,16 +7,42 @@ const repoFactory = require('app/factories/repository'),
 
 const userRepo = repoFactory('users');
 
-userRepo.oneByUsername = (username) => q(username)
-  .then(validator.validate('username'))
-  .then((name) => userRepo.one('byUsername', name));
+Object.assign(userRepo, {
 
-userRepo.oneByEmail = (email) => q(email)
-  .then(validator.validate('email'))
-  .then((addr) => userRepo.one('byEmail', addr));
+  oneByUsername(str) {
+    return q(str)
+      .then(validator.validate('username'))
+      .then((username) => userRepo.one('byUsername', username));
+  },
 
-userRepo.usernameNotTaken = (username, excludeId) => userRepo.keyNotTaken('byUsername', username, excludeId);
+  oneByEmail(str) {
+    return q(str)
+      .then(validator.validate('email'))
+      .then((email) => userRepo.one('byEmail', email));
+  },
 
-userRepo.emailNotTaken = (email, excludeId) => userRepo.keyNotTaken('byEmail', email, excludeId);
+  viewByFlag(str, options) {
+    return q(str)
+      .then(validator.validate('flag'))
+      .then((flag) => {
+        options = typeof options === 'object' ? options : {};
+        options.key = flag;
+        return userRepo.view('byFlag', options);
+      });
+  },
+
+  usernameNotTaken(str, excludeId) {
+    return q(str)
+      .then(validator.validate('username'))
+      .then((username) => userRepo.keyNotTaken('byUsername', username, excludeId));
+  },
+
+  emailNotTaken(str, excludeId) {
+    return q(str)
+      .then(validator.validate('email'))
+      .then((email) => userRepo.keyNotTaken('byEmail', email, excludeId));
+  }
+
+});
 
 module.exports = userRepo;
