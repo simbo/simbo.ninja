@@ -14,14 +14,12 @@ const async = require('async'),
 const config = require('config'),
       logger = require('app/modules/logger');
 
-
 const couch = new cradle.Connection(config.app.couchdb.host, config.app.couchdb.port, {
   auth: {
     username: config.app.couchdb.username,
     password: config.app.couchdb.password
   }
 });
-
 
 module.exports = {
   couch,
@@ -43,7 +41,7 @@ function initDatabases(app) {
 }
 
 /**
- * create a database and if it does not exist
+ * check if database exists, if not create it, apply design in any case
  * @param  {Object}   design database design object
  * @param  {String}   name   database name
  * @param  {Function} cb     callback
@@ -53,14 +51,22 @@ function setupDatabase(design, name, cb) {
   db.exists((err, exists) => {
     if (err) cb(err);
     else if (exists) applyDesign(db, design, cb);
+    else createDatabase(db, design, cb);
+  });
+}
+
+/**
+ * create database and apply design afterwards
+ * @param  {Object}   db     cradle database object
+ * @param  {Object}   design database design object
+ * @param  {Function} cb     callback
+ */
+function createDatabase(db, design, cb) {
+  db.create((err) => {
+    if (err) cb(err);
     else {
-      db.create((error) => {
-        if (err) cb(error);
-        else {
-          logger.log('verbose', `created database ${name}`);
-          applyDesign(db, design, cb);
-        }
-      });
+      logger.log('verbose', `created database ${db.name}`);
+      applyDesign(db, design, cb);
     }
   });
 }
