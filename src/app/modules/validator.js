@@ -26,7 +26,13 @@ const validator = {
 
   validate(type) {
     return (subject) => q.Promise((resolve, reject) => {
-      if (validator.is(type, subject)) resolve(subject);
+      let result;
+      try {
+        result = validator.is(type, subject);
+      } catch (err) {
+        reject(err);
+      }
+      if (result) resolve(subject);
       else reject(new Error(`invalid ${type} '${subject}'`));
     });
   }
