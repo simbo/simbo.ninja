@@ -14,6 +14,7 @@ simbo.ninja
 - [Development](#development)
   - [Vagrant](#vagrant)
   - [Gulp](#gulp)
+  - [Testing](#testing)
 - [Uberspace](#uberspace)
   - [Setup](#setup)
     - [nginx](#nginx)
@@ -75,6 +76,23 @@ Run `gulp` within project root to list available tasks with descriptions.
 
   - **`release:app`** ➜ `uberspace:rsync-app, uberspace:after-rsync-app`  
     *rsync app and dependencies to uberspace, install production packages, apply production config and restart app via pm2*
+
+
+### Testing
+
+Tests are organized in subfolders and will run recursively when using the 
+default command.
+
+``` bash
+# run all tests
+npm run test
+# with watching enabled
+npm run test-watch
+# only run tests in within subfolder 'app/modules'
+npm run test -- test/app/modules
+# only run tests matching description pattern
+npm run test -- --grep ^app/
+```
 
 
 ## Uberspace

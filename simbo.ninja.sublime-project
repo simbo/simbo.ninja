@@ -8,17 +8,24 @@
 			],
 			"path": "."
 		},
-		{
-			"file_exclude_patterns":
-			[
-				".*"
-			],
-			"folder_exclude_patterns":
-			[
-				"node_modules"
-			],
-			"follow_symlinks": false,
-			"path": "./src"
-		}
+    {
+      "file_exclude_patterns":
+      [
+        ".*"
+      ],
+      "folder_exclude_patterns":
+      [
+        "node_modules"
+      ],
+      "follow_symlinks": false,
+      "path": "./src"
+    },
+    {
+      "file_exclude_patterns":
+      [
+        ".*"
+      ],
+      "path": "./test"
+    }
 	]
 }
