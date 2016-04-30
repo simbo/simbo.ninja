@@ -1,10 +1,11 @@
 'use strict';
 
-const q = require('q'),
-      uuid = require('uuid');
+const async = require('async'),
+      q = require('q');
 
-const couch = require('app/modules/database').couch,
-      validator = require('app/modules/validator');
+const couch = require('app/modules/database').couch;
+
+module.exports = repositoryFactory;
 
 function repositoryFactory(dbName, repo) {
 
@@ -16,57 +17,56 @@ function repositoryFactory(dbName, repo) {
 
     save(obj) {
       return q.Promise((resolve, reject) => {
-        if (!obj.hasOwnProperty('uuid')) obj.uuid = uuid.v4();
-        db.save(obj.uuid, obj.toJSON(), (err) => {
-          if (err) reject(err);
-          else resolve(obj);
-        });
+        getObjectArguments(obj)
+          .then((args) => {
+            db.save.apply(db, args.concat([obj.toJSON(), (err, response) => {
+              if (err) reject(err);
+              else {
+                obj._rev = response.rev;
+                resolve(obj);
+              }
+            }]));
+          }, reject);
       });
     },
 
-    get(str) {
-      return q(str)
-        .then(validator.validate('uuid'))
-        .then((id) => q.Promise((resolve, reject) => {
-          db.get(id, (err, resp) => {
-            if (err) {
-              if (err.reason === 'missing') reject(new Error('unknown id'));
-              else reject(err);
-            } else {
-              // delete resp.json._id;
-              // delete resp.json._rev;
-              resolve(resp.json);
-            }
           });
         }));
     },
 
+    get(id) {
+      return q.Promise((resolve, reject) => {
+        db.get(id, (err, response) => {
+          if (err) {
+            if (err.reason === 'missing') reject(new Error('unknown id'));
+            else reject(err);
+          } else resolve(response.json);
+        });
+      });
+    },
+
     view(viewName, viewOptions) {
-      return q.Promise((resolve, reject) => db.view(`${db.name}/${viewName}`, viewOptions || {}, (err, resp) => {
-        if (err) reject(err);
-        else {
-          resolve(resp.json.rows.reduce((rows, row) => {
-            // delete row.value._id;
-            // delete row.value._rev;
-            return rows.concat([row.value]);
-          }, []));
-        }
-      }));
+      return q.Promise((resolve, reject) => {
+        db.view(`${db.name}/${viewName}`, viewOptions || {}, (err, response) => {
+          if (err) reject(err);
+          else resolve(response.json.rows.reduce((rows, row) => rows.concat([row.value]), []));
+        });
+      });
     },
 
     one(viewName, key) {
-      return q.Promise((resolve, reject) => repo.view(viewName, {key, limit: 1})
-        .then((results) => {
+      return repo.view(viewName, {key, limit: 1})
+        .then((results) => q.Promise((resolve, reject) => {
           if (results.length === 0) reject(new Error('unknown key'));
           else resolve(results[0]);
-        }, reject));
+        }));
     },
 
     keyNotTaken(viewName, key, excludeId) {
       return q.Promise((resolve, reject) => {
         repo.one(viewName, key)
           .then((obj) => {
-            if (excludeId && obj.uuid === obj) resolve(key);
+            if (excludeId && obj._id === excludeId) resolve(key);
             else reject(new Error('key taken'));
           }, (err) => {
             if (err.message === 'unknown key') resolve(key);
@@ -81,4 +81,11 @@ function repositoryFactory(dbName, repo) {
 
 }
 
-module.exports = repositoryFactory;
+function getObjectArguments(obj) {
+  return q.Promise((resolve, reject) => {
+    if (!obj.hasOwnProperty('_id')) reject(new Error('id undefined'));
+    const args = [obj._id];
+    if (obj.hasOwnProperty('_rev')) args.push(obj._rev);
+    resolve(args);
+  });
+}
