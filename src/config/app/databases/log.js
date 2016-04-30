@@ -8,18 +8,19 @@ module.exports = {
 
   views: {
 
-    byTimestamp: {
+    byId: {
       map: function(doc) {
         if (doc.resource === 'log') {
-          emit(doc.params.timestamp, doc);
+          doc.params.id = doc._id;
+          emit(doc._id, doc);
         }
       }
     },
 
-    byId: {
+    byTimestamp: {
       map: function(doc) {
         if (doc.resource === 'log') {
-          emit(doc._id, doc);
+          emit(doc.params.timestamp, doc);
         }
       }
     }

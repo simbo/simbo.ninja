@@ -10,27 +10,29 @@ module.exports = {
 
     byId: {
       map: function(doc) {
-        emit(doc.uuid, doc);
+        if (doc.username) emit(doc._id, doc);
       }
     },
 
     byUsername: {
       map: function(doc) {
-        emit(doc.username, doc);
+        if (doc.username) emit(doc.username, doc);
       }
     },
 
     byEmail: {
       map: function(doc) {
-        emit(doc.email, doc);
+        if (doc.email) emit(doc.email, doc);
       }
     },
 
     byFlag: {
       map: function(doc) {
-        doc.flags.forEach(function(flag) {
-          emit(flag, doc);
-        });
+        if (doc.flags) {
+          doc.flags.forEach(function(flag) {
+            emit(flag, doc);
+          });
+        }
       }
     }
 

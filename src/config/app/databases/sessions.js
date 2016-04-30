@@ -4,4 +4,16 @@
  * database layout for 'sessions'
  * @type {Object}
  */
-module.exports = {};
+module.exports = {
+
+  views: {
+
+    byId: {
+      map: function(doc) {
+        if (doc.collectionName === 'sessions') emit(doc._id, doc);
+      }
+    }
+
+  }
+
+};
