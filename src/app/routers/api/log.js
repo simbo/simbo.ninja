@@ -1,58 +1,33 @@
 'use strict';
 
-const async = require('async'),
-      router = require('express').Router();
+const router = require('express').Router();
 
-const couch = require('app/modules/database').couch;
-
-const db = couch.database('log');
+const logRepo = require('app/repositories/log');
 
 router.get('/latest', (req, res, next) => {
 
-  const viewOptions = {
-    descending: true
-  };
-
-  if (req.query.hasOwnProperty('after')) {
-    viewOptions.endkey = req.query.after;
-    viewOptions.inclusive_end = false;
-  } else {
-    viewOptions.limit = req.query.hasOwnProperty('limit') ?
-      parseInt(req.query.limit, 10) : 50;
-  }
-
-  db.view('log/byTimestamp', viewOptions, (err, results) => {
-    if (err) return next(err);
-    res.send({
-      entries: results.map(getEntryFromDoc)
-    });
-  });
+  (req.query.hasOwnProperty('after') ?
+    logRepo.latestAfter(req.query.after) :
+    logRepo.latest(req.query.limit)
+  )
+    .then((results) => {
+      res.send({
+        entries: results.map((result) => {
+          result.params.id = result._id;
+          return result.params;
+        })
+      });
+    }, next);
 
 });
 
 router.get('/clear', (req, res, next) => {
 
-  db.view('log/byId', (err, results) => {
-    if (err) next(err);
-    else {
-      async.each(results, (row, cb) => {
-        db.remove(row.key, row.value._rev, (err) => {
-          if (err) cb(err);
-          cb();
-        });
-      }, (err) => {
-        if (err) next(err);
-        else res.send(true);
-      });
-    }
-  });
+  logRepo.clear()
+    .then(() => {
+      res.send(true);
+    }, next);
 
 });
 
 module.exports = router;
-
-function getEntryFromDoc(docValue) {
-  const entry = docValue.params;
-  entry.id = docValue._id;
-  return entry;
-}
