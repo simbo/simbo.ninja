@@ -29,7 +29,7 @@ passport.use(new LocalStrategy((username, password, cb) => {
 
 // set handler to serialize user object for saving into session
 passport.serializeUser((user, cb) => {
-  cb(null, user.uuid);
+  cb(null, user._id);
 });
 
 // set handler to deserialize user object when restoring from session
