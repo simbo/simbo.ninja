@@ -82,6 +82,17 @@ describe(testSubject, () => {
         .nodeify(done);
     });
 
+    it('should return an empty array view returns no objects', (done) => {
+      repo.get('foo')
+        .then((obj) => repo.remove(obj))
+        .then((obj) => repo.view('byId'))
+        .then((results) => qAssert(() => {
+          assert.equal(Array.isArray(results), true);
+          assert.equal(results.length === 0, true);
+        }))
+        .nodeify(done);
+    });
+
     it('should pass-through db errors', (done) => {
       repo.view('byFoo')
         .then((obj) => obj, (err) => qAssert(() => {
@@ -95,7 +106,8 @@ describe(testSubject, () => {
   describe('one', () => {
 
     it('should return a single object from a db view', (done) => {
-      repo.one('byId', 'foo')
+      repo.save(objFactory({foo: 'bar', _id: 'foo'}))
+        .then((obj) => repo.one('byId', 'foo'))
         .then((obj) => qAssert(() => {
           assert.deepEqual(Object.keys(obj), ['_id', '_rev', 'foo']);
         }))
@@ -130,7 +142,7 @@ describe(testSubject, () => {
         .nodeify(done);
     });
 
-    it('should accept and excludeId to exlcude an object from test', (done) => {
+    it('should accept and excludeId to exclude an object from test', (done) => {
       repo.keyNotTaken('byId', 'foo', 'foo')
         .then((obj) => qAssert(() => {
           assert.equal(obj, 'foo');
