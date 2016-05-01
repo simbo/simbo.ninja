@@ -28,14 +28,12 @@ sudo sed -i "s/^\(port\s*=\s*\).*$/\1${COUCHDB_PORT}/" /etc/couchdb/default.ini
 curl -X POST http://$COUCHDB_USER:$COUCHDB_PASS@localhost:5984/_restart -H"Content-Type: application/json" &> /dev/null
 
 # edit and reload .zshrc
-read -d '' ZSHRC_APPEND << EOF
+if ! grep -Fxq "# added by provision" ~/.zshrc
+then
+cat <<EOF >> ~/.zshrc
+# added by provision
 export NODE_PATH=/vagrant/src
-cd /vagrant
 EOF
-ZSHRC_SEARCH=`grep "${ZSHRC_APPEND}" ~/.zshrc`
-if ! [ "${ZSHRC_SEARCH}" = "${ZSHRC_APPEND}" ]; then
-  echo $ZSHRC_APPEND >> ~/.zshrc
-  source ~/.zshrc
 fi
 
 # install global node packages
