@@ -38,7 +38,7 @@ fi
 
 # install global node packages
 echo_c "Installing global node.js packages..."
-npm i -g pm2@1.0.2 gulp@3.9.1
+npm i -g pm2@1.1.3 gulp@3.9.1
 
 # install project dependencies
 echo_c "Installing local node.js packages..."
