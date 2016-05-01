@@ -37,7 +37,7 @@
     "csswring": "^4.2.2",
     "del": "^2.2.0",
     "eslint": "^2.8.0",
-    "eslint-config-simbo": "^1.4.0",
+    "eslint-config-simbo": "^1.5.0",
     "eslintify": "^2.0.1",
     "gulp": "^3.9.1",
     "gulp-data": "^1.2.1",
