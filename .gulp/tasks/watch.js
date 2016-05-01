@@ -43,10 +43,10 @@ module.exports = [
       this.gulp.watch(
         watcher.glob,
         () => {
-          this.runSequence.apply(this.gulp, arrayify(watcher.start));
+          Reflect.apply(this.runSequence, this.gulp, arrayify(watcher.start));
         },
         (event) => {
-          onWatchEvent.apply(this, [event, watcher]);
+          Reflect.apply(onWatchEvent, this, [event, watcher]);
         }
       );
       this.util.log(`Watching ${this.util.colors.magenta(watcherId)}...`);

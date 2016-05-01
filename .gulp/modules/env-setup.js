@@ -9,7 +9,7 @@ module.exports = envStatus;
 function envStatus(plug) {
 
   // setter/getter for environment
-  Object.defineProperty(plug, 'env', {
+  Reflect.defineProperty(plug, 'env', {
     get() {
       return env;
     },

@@ -7,7 +7,7 @@ module.exports = [
   'clean dest path completely',
 
   function(done) {
-    clean.apply(this, [[
+    Reflect.apply(clean, this, [[
       this.paths.dest
     ], done]);
   }

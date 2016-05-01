@@ -7,7 +7,7 @@ module.exports = [
   'clean generated nginx config',
 
   function(done) {
-    clean.apply(this, [[
+    Reflect.apply(clean, this, [[
       this.paths.nginx.dest
     ], done]);
   }

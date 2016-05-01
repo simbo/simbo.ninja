@@ -19,7 +19,9 @@ function sanitizeUrlPath(filepath) {
 
   // sanitize all folder names in path
   filepath.dirname = path.relative('.', filepath.dirname)
-    .split('/').map((part) => slug(part, slugOptions)).join('/');
+    .split('/')
+    .map((part) => slug(part, slugOptions))
+    .join('/');
 
   // sanitize file name
   filepath.basename = slug(filepath.basename, slugOptions);

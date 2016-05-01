@@ -9,7 +9,7 @@ module.exports = [
   'clean generated site',
 
   function(done) {
-    clean.apply(this, [[
+    Reflect.apply(clean, this, [[
       path.join(this.paths.site.dest, 'files'),
       path.join(this.paths.site.dest, 'assets/fonts')
     ], done]);

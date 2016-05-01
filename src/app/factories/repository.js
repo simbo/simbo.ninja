@@ -17,7 +17,7 @@ function repositoryFactory(dbName, repo = {}) {
       return q.Promise((resolve, reject) => {
         getObjectArguments(obj)
           .then((args) => {
-            db.save.apply(db, args.concat([obj.toJSON(), (err, response) => {
+            Reflect.apply(db.save, db, args.concat([obj.toJSON(), (err, response) => {
               if (err) reject(err);
               else {
                 obj._rev = response.rev;
@@ -32,7 +32,7 @@ function repositoryFactory(dbName, repo = {}) {
       return q.Promise((resolve, reject) => {
         getObjectArguments(obj)
           .then((args) => {
-            db.remove.apply(db, args.concat([(err, response) => {
+            Reflect.apply(db.remove, db, args.concat([(err, response) => {
               if (err) reject(err);
               else resolve(response);
             }]));

@@ -7,7 +7,7 @@ module.exports = [
   'clean generated javascripts',
 
   function(done) {
-    clean.apply(this, [[
+    Reflect.apply(clean, this, [[
       this.paths.js.dest
     ], done]);
   }
