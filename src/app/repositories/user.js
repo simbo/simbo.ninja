@@ -21,11 +21,10 @@ Object.assign(userRepo, {
       .then((email) => userRepo.one('byEmail', email));
   },
 
-  viewByFlag(str, options) {
+  viewByFlag(str, options = {}) {
     return q(str)
       .then(validator.validate('flag'))
       .then((flag) => {
-        options = typeof options === 'object' ? options : {};
         options.key = flag;
         return userRepo.view('byFlag', options);
       });

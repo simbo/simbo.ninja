@@ -2,9 +2,7 @@
 
 const uuid = require('uuid');
 
-function dbObjectFactory(dbObject) {
-
-  dbObject = typeof dbObject === 'object' ? dbObject : {};
+function dbObjectFactory(dbObject = {}) {
 
   Object.assign(dbObject, {
 

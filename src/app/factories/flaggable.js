@@ -4,9 +4,7 @@ const q = require('q');
 
 const validator = require('app/modules/validator');
 
-function flaggableFactory(flaggable) {
-
-  flaggable = typeof flaggable === 'object' ? flaggable : {};
+function flaggableFactory(flaggable = {}) {
 
   Object.assign(flaggable, {
 

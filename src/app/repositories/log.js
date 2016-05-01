@@ -14,9 +14,9 @@ Object.assign(logRepo, {
     });
   },
 
-  latest(limit) {
+  latest(limit = 50) {
     return logRepo.view('byTimestamp', {
-      limit: limit ? parseInt(limit, 10) : 50,
+      limit: parseInt(limit, 10),
       descending: true
     });
   }

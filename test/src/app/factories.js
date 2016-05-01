@@ -12,7 +12,7 @@ const allFactories = [
   const mod = require(path.join('app/factories', factoryName));
   factories[factoryName] = (obj) => {
     const args = [];
-    for (let i = 0; i < mod.length - 1; i++) args.push(null);
+    for (let i = 0; i < mod.length; i++) args.push(null);
     if (obj) args.push(obj);
     return mod.apply(null, args);
   };

@@ -8,9 +8,7 @@ const dbObjectFactory = require('app/factories/db-object'),
       userRepo = require('app/repositories/user'),
       validator = require('app/modules/validator');
 
-function userFactory(user) {
-
-  user = typeof user === 'object' ? user : {};
+function userFactory(user = {}) {
 
   dbObjectFactory(user);
   flaggableFactory(user);

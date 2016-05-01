@@ -7,11 +7,9 @@ const couch = require('app/modules/database').couch;
 
 module.exports = repositoryFactory;
 
-function repositoryFactory(dbName, repo) {
+function repositoryFactory(dbName, repo = {}) {
 
   const db = couch.database(dbName);
-
-  repo = typeof repo === 'object' ? repo : {};
 
   Object.assign(repo, {
 
