@@ -26,6 +26,7 @@
     "url": "https://github.com/simbo/simbo.ninja/issues"
   },
   "devDependencies": {
+    "angular2": "^2.0.0-beta.17",
     "autoprefixer": "^6.3.6",
     "babel-eslint": "^6.0.4",
     "babel-plugin-angular2-annotations": "^5.1.0",

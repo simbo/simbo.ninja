@@ -1,0 +1,12 @@
+extends /layouts/base.pug
+
+block append head_styles
+  +style("picr")
+
+block append head_scripts
+  +script("app-libs")
+
+block body
+  picr-app
+    p(style="margin: 1em;") Loading…
+  +script("picr")
