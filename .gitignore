@@ -5,4 +5,6 @@ npm-debug.log
 
 /dest
 
+/coverage
+
 *.sublime-workspace
