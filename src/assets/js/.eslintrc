@@ -8,8 +8,15 @@
     "$": true
   },
   "rules": {
+    "new-cap": 0,
     "prefer-reflect": 0,
+    "prefer-spread": 0,
+    "spaced-comment": 0,
     "require-jsdoc": 0,
     "vars-on-top": 0
+  },
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "sourceType": "module"
   }
 }
