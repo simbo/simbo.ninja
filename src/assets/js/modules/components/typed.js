@@ -1,5 +1,3 @@
-'use strict';
-
 require('typed.js');
 
 module.exports = {

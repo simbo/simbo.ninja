@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * template cache
  * @type {Object}

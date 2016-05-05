@@ -1,5 +1,3 @@
-'use strict';
-
 const cssClasses = {
   container: 'textfield',
   input: 'textfield_input',

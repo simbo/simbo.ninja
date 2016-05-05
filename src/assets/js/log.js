@@ -1,5 +1,3 @@
-'use strict';
-
 const $ = require('cash-dom'),
       moment = require('moment'),
       reqwest = require('reqwest');

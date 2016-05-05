@@ -1,5 +1,3 @@
-'use strict';
-
 const $ = require('cash-dom');
 
 $(document).ready(() => {
